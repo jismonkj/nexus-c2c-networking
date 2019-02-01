@@ -1,0 +1,12 @@
+<div class="container" *ngIf="user.valid">
+  <h3>{{ user.name }}</h3>
+  <p>Software Engineer</p>
+  <button (click)="showMore()">
+    {{ showButtonText }}
+  </button>
+  <div *ngIf="show">
+    <p>Kizhakkethottiyil House, Kannur</p>
+    Phone: 
+    <p *ngFor="let pno of user.phone">{{ pno }}</p>
+  </div>
+</div>
