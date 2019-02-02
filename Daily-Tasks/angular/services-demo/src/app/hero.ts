@@ -1,5 +1,3 @@
-import { stringify } from '@angular/core/src/render3/util';
-
 export class Hero {
     id: Number;
     username: String;
@@ -7,6 +5,6 @@ export class Hero {
     status: Number;
 
     constructor() {
-        
+
     }
 }

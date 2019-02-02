@@ -10,19 +10,26 @@ import { DemoService } from '../demo.service';
 })
 export class HeroesComponent implements OnInit {
   hero = new Hero();
-  service = new DemoService();
-  
   isRegistered = false;
+  success:string;
+  error:string;
 
-  constructor() { 
-
+  constructor(private service: DemoService) { 
+    // service.alert();
   }
+    
 
   ngOnInit() {
   }
 
-  registration(){
-    alert(this.hero.username);
+  registration(f:NgForm){
+    // alert(this.hero.username);
+    this.service.store(this.hero).subscribe(data => {
+      this.success = "Registered Successfully";
+      this.isRegistered = true;
+      console.log(this.success);
+      f.reset();
+    }, (err)=> {this.error = err; this.isRegistered = false});
   }
 
 }
