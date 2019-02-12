@@ -1,0 +1,17 @@
+/* landing page  
+____________________________________________*/
+.landing-page .header-spacer--standard {
+    margin-bottom: 0;
+}
+
+.header-spacer--standard {
+    height: 75px;
+}
+
+.registration-login-form .content {
+    padding: 35px 25px;
+}
+
+.registration-login-form {
+    min-height: 520px;
+}
