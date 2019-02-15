@@ -112,40 +112,43 @@
 				<div class="tab-content">
 					<div class="tab-pane active" id="home" role="tabpanel" data-mh="log-tab">
 						<div class="title h6">Register to Olympus</div>
-						<form  method="POST" action="{{ route('register') }}" class="content">
+
+						<!-- //registration form -->
+						<form  id="regForm" method="POST" action="{{ route('register') }}" class="content" v-on:submit.prevent="register">
+							@csrf
 							<div class="row">
 								<div class="col col-12 col-xl-6 col-lg-6 col-md-6 col-sm-12">
 									<div class="form-group label-floating is-empty">
 										<label class="control-label">First Name</label>
-										<input class="form-control" placeholder="" type="text">
+										<input class="form-control" placeholder="" type="text" name="fname">
 									</div>
 								</div>
 								<div class="col col-12 col-xl-6 col-lg-6 col-md-6 col-sm-12">
 									<div class="form-group label-floating is-empty">
 										<label class="control-label">Last Name</label>
-										<input class="form-control" placeholder="" type="text">
+										<input class="form-control" placeholder="" type="text" name="lname">
 									</div>
 								</div>
 								<div class="col col-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
 									<div class="form-group label-floating is-empty">
 										<label class="control-label">Your Email</label>
-										<input class="form-control" placeholder="" type="email">
+										<input class="form-control" placeholder="" type="email" name="email">
 									</div>
 									<div class="form-group label-floating is-empty">
 										<label class="control-label">Your Password</label>
-										<input class="form-control" placeholder="" type="password">
+										<input class="form-control" placeholder="" type="password" name="password">
 									</div>
-			
+
 									<div class="remember">
 										<div class="checkbox">
 											<label>
-												<input name="optionsCheckboxes" type="checkbox">
+												<input name="optionsCheckboxes" type="checkbox" checked><span class="checkbox-material"></span>
 												I accept the <a href="#">Terms and Conditions</a> of the website
 											</label>
 										</div>
 									</div>
 			
-									<a href="#" class="btn btn-purple btn-lg full-width" v-on:click.prevent="register">Complete Registration!</a>
+									<button type="submit" class="btn btn-purple btn-lg full-width" >Complete Registration!</button>
 								</div>
 							</div>
 						</form>

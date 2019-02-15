@@ -96,7 +96,8 @@
 var app = new Vue({
   el: '#guestApp',
   data: {
-    csrftoken: '' // info:null
+    csrftoken: '',
+    data: '' // info:null
 
   },
   mounted: function mounted() {
@@ -104,12 +105,11 @@ var app = new Vue({
   },
   methods: {
     register: function register() {
-      alert();
-      axios.post('/register', {
-        id: '12',
-        _token: this.csrftoken
-      }).then(function (response) {
-        return console.log(response);
+      var form = $('#regForm')[0];
+      this.data = new FormData(form); // this.data.append('_token', this.csrftoken);
+
+      axios.post('/register', this.data).then(function (response) {
+        return console.log(response.data);
       });
     }
   }

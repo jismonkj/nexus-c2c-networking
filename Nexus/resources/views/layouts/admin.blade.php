@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Lumino - Dashboard</title>
+	<title>Nexus Home</title>
 	<link href="{{ asset('panel/css/bootstrap.min.css') }}" rel="stylesheet">
 	<link href="{{ asset('panel/css/font-awesome.min.css') }}" rel="stylesheet">
 	<link href="{{ asset('panel/css/datepicker3.css') }}" rel="stylesheet">

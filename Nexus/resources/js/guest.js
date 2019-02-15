@@ -2,7 +2,8 @@
 const app = new Vue({
     el: '#guestApp',
     data:{
-        csrftoken:''
+        csrftoken:'',
+        data:''
         // info:null
     },
     mounted(){
@@ -10,9 +11,12 @@ const app = new Vue({
     },
     methods: {
         register:function(){
-            alert();
-    axios.post('/register', {id:'12', _token:this.csrftoken})
-      .then(response => (console.log(response)))
+            var form = $('#regForm')[0];
+            this.data = new FormData(form);
+            // this.data.append('_token', this.csrftoken);
+            
+    axios.post('/register', this.data)
+      .then(response => (console.log(response.data)))
         }
     }
 });

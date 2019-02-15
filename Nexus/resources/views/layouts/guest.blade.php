@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 
-	<title>Landing Page</title>
+	<title>Welcome to Nexus</title>
 
 	<!-- Required meta tags always come first -->
 	<meta charset="utf-8">
