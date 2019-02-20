@@ -9,9 +9,18 @@ ____________________________________________*/
 }
 
 .registration-login-form .content {
-    padding: 35px 25px;
+    padding: 15px 25px;
 }
 
 .registration-login-form {
-    min-height: 520px;
+    min-height: 615px;
+}
+
+.registration-login-form .title {
+    padding: 15px 25px;
+}
+
+.label-floating .form-control, .label-floating input, .label-floating select {
+    padding: 1.3rem 1.1rem .5rem;
+    line-height: 1;
 }

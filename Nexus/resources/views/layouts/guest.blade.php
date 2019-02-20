@@ -81,6 +81,6 @@
 
 <script src="{{ asset('theme/Bootstrap/dist/js/bootstrap.bundle.js') }}"></script>
 <script src="{{ asset('js/app.js') }}"></script>
-<script src="{{ asset('js/guest.js') }}"></script>
+<!-- <script src="{{ asset('js/guest.js') }}"></script> -->
 </body>
 </html>

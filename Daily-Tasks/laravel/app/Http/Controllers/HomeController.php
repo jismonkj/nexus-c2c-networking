@@ -23,13 +23,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        if(Auth::user()->type == 'admin'){
-            return '/admin';
-        }
-        else if(Auth::user()->type == 'distrib'){
-
-        }else{
-            return '/nexushome';
-        }
+        return view('home');
     }
 }

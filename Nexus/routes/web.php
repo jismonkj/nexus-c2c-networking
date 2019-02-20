@@ -11,11 +11,11 @@
 |
  */
 
-Route::get('/', function () {
-    return view('auth.login');
-});
+Route::get('/', 'Auth\LoginController@showLoginForm');
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('nexushome');
 Route::view('/admin', 'layouts.admin');
+
+Auth::routes();

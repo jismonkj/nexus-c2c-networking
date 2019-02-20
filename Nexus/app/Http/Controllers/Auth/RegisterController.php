@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\Auth;
 
 class RegisterController extends Controller
 {
@@ -29,8 +30,13 @@ class RegisterController extends Controller
      * @var string
      */
     // protected $redirectTo = '/home';
-    protected function redirectTo(){
-        return '/';
+    public function redirectTo()
+    {
+        if(Auth::type() == 'admin'){
+            return '/admin';
+        }else{
+            return '/home';
+        }
     }
 
     /**
@@ -52,8 +58,8 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'fname' => ['required', 'string', 'max:255'],
-            'lname' => ['required', 'string', 'max:255'],
+            // 'fname' => ['required', 'string', 'max:255'],
+            // 'lname' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
         ]);
     }
