@@ -32,11 +32,7 @@ class RegisterController extends Controller
     // protected $redirectTo = '/home';
     public function redirectTo()
     {
-        if(Auth::type() == 'admin'){
-            return '/admin';
-        }else{
-            return '/home';
-        }
+        return '/home';
     }
 
     /**

@@ -10,12 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
  */
-
+Auth::routes();
 Route::get('/', 'Auth\LoginController@showLoginForm');
-
-Auth::routes();
-
 Route::get('/home', 'HomeController@index')->name('nexushome');
-Route::view('/admin', 'layouts.admin');
 
-Auth::routes();

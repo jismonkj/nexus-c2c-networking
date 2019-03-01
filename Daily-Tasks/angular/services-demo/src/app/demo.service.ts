@@ -22,7 +22,7 @@ export class DemoService {
       this.hero = (res['data']);
       return this.hero;
     }), catchError(this.handleError));
-  
+
   }
 
   private handleError(error:HttpErrorResponse) {

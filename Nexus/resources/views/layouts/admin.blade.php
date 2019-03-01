@@ -17,6 +17,7 @@
 	<![endif]-->
 </head>
 <body>
+	<div id="adminApp">
 	<nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
 		<div class="container-fluid">
 			<div class="navbar-header">
@@ -24,7 +25,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span></button>
-				<a class="navbar-brand" href="#"><span>Lumino</span>Admin</a>
+				<a class="navbar-brand" href="#"><span>NEXUS</span></a>
 				<ul class="nav navbar-top-links navbar-right">
 					<li class="dropdown"><a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
 						<em class="fa fa-envelope"></em><span class="label label-danger">15</span>
@@ -87,7 +88,7 @@
 				<img src="http://placehold.it/50/30a5ff/fff" class="img-responsive" alt="">
 			</div>
 			<div class="profile-usertitle">
-				<div class="profile-usertitle-name">Username</div>
+				<div class="profile-usertitle-name">Admin</div>
 				<div class="profile-usertitle-status"><span class="indicator label-success"></span>Online</div>
 			</div>
 			<div class="clear"></div>
@@ -119,7 +120,16 @@
 					</a></li>
 				</ul>
 			</li>
-			<li><a href="login.html"><em class="fa fa-power-off">&nbsp;</em> Logout</a></li>
+			<li>
+			<a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                        <em class="fa fa-power-off">&nbsp;</em> Logout
+                    </a>
+
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
+			</li>
 		</ul>
 	</div><!--/.sidebar-->
 		
@@ -490,6 +500,7 @@
 			</div>
 		</div><!--/.row-->
 	</div>	<!--/.main-->
+	</div>
 	
 	<script src="{{ asset('panel/js/jquery-1.11.1.min.js') }}"></script>
 	<script src="{{ asset('panel/js/bootstrap.min.js') }}"></script>
@@ -510,6 +521,7 @@
 	});
 };
 	</script>
+	<script src="{{ asset('js/admin.js') }}"></script>
 		
 </body>
 </html>

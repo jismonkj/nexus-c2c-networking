@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -24,12 +25,12 @@ class HomeController extends Controller
     public function index()
     {
         if(Auth::user()->type == 'admin'){
-            return '/admin';
+            return view('layouts.admin');
         }
         else if(Auth::user()->type == 'distrib'){
 
         }else{
-            return '/nexushome';
+            return view('/nexushome');
         }
     }
 }
