@@ -1,7 +1,14 @@
+// vue router
+import VueRouter from 'vue-router'
+Vue.use(VueRouter)
+
 // components
-Vue.component('admin-nav', require('./components/admin/Nav.vue').default);
+Vue.component(adminNav, require('./components/admin/Nav.vue').default);
 
 // admin app____________________
+let routes = [
+    {path: '/some', component: adminNav}
+];
 const app = new Vue({
     el: '#adminApp',
     data:{
