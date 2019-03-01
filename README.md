@@ -1,7 +1,7 @@
 # MainProject
 MCA 6th semester academic main project.
 
->> Contents
-Daily Tasks 
-Main Project
-Documentation
+## Contents
+- Daily Tasks 
+- Main Project
+- Documentation
