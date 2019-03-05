@@ -1,14 +1,28 @@
 // vue router
+// ________________________
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 // components
-Vue.component(adminNav, require('./components/admin/Nav.vue').default);
+// _____________________
+import SBar from './components/admin/SideBar.vue'
+import Places from './components/admin/Places.vue'
 
-// admin app____________________
+Vue.component('SBar', SBar)
+
+// routes
+// __________________
 let routes = [
-    {path: '/some', component: adminNav}
+    { path:'/dashboard', component:{ template:"<div>some</div>"} },
+    { path:'/places', component: Places }
 ];
+const router = new VueRouter({
+    routes // short for `routes: routes`
+  })
+
+
+// admin app
+// ____________________
 const app = new Vue({
     el: '#adminApp',
     data:{
@@ -16,6 +30,7 @@ const app = new Vue({
         data:''
         // info:null
     },
+    router,
     mounted(){
         this.csrftoken = $("#csrf-token").attr('content');
     },

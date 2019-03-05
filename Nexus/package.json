@@ -24,6 +24,7 @@
         "vue-template-compiler": "^2.6.5"
     },
     "dependencies": {
+        "animate.css": "^3.7.0",
         "vue-router": "^3.0.2"
     }
 }

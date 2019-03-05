@@ -27,4 +27,10 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    // relationships
+    public function Member()
+    {
+        return $this->hasOne('App\Member\Member', 'uid');
+    }
 }

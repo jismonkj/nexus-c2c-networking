@@ -963,10 +963,10 @@ h1.page-header {
   text-decoration: none;
   background-color: #f6f6f6; }
 
-.todo-list .fa-trash {
+.todo-list .fa-trash, .todo-list .fa-pencil {
   color: #444444; }
 
-.todo-list .fa-trash:hover {
+.todo-list .fa-trash:hover, .todo-list .fa-pencil:hover{
   color: #ef4040; }
 
 .chat .panel-body ul {

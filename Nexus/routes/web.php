@@ -13,4 +13,20 @@
 Auth::routes();
 Route::get('/', 'Auth\LoginController@showLoginForm');
 Route::get('/home', 'HomeController@index')->name('nexushome');
+/* common routes
+_________________________________________________________________*/
 
+//places
+Route::resource('/country', 'CountryController');
+Route::resource('/state', 'StateController');
+Route::resource('/city', 'CityController');
+
+/* member routes
+____________________________________________________________________*/
+
+Route::resource('/member', 'Member\MemberController');
+
+/* admin routes
+____________________________________________________________________*/
+
+Route::resource('/admin', 'Member\AdminController');
