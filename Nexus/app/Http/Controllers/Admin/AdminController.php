@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\App;
+use App\Member\Member;
 
 class AdminController extends Controller
 {
@@ -81,5 +83,18 @@ class AdminController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function listUsers(Request $request)
+    {
+        $type = $request->type;
+        // ret
+        switch ($type) {
+            case 'members':
+                return Member::where('type', 'user')->join('users', 'uid', '=', 'users.id')->join('cities', 'city_id', '=', 'cities.id')->select('users.id', 'fname', 'lname', 'city_name', 'city_id', 'email', 'status')->get();
+                break;
+            default:
+                break;
+        }
     }
 }

@@ -12,19 +12,19 @@
                 <li>
                   <ul class="dropdown-settings">
                     <li>
-                      <a href="#">
+                      <a href="">
                         <em class="fa fa-cog"></em> Settings 1
                       </a>
                     </li>
                     <li class="divider"></li>
                     <li>
-                      <a href="#">
+                      <a href="">
                         <em class="fa fa-cog"></em> Settings 2
                       </a>
                     </li>
                     <li class="divider"></li>
                     <li>
-                      <a href="#">
+                      <a href="">
                         <em class="fa fa-cog"></em> Settings 3
                       </a>
                     </li>
@@ -39,8 +39,7 @@
         </div>
         <div class="panel-body">
           <ul class="todo-list">
-           <transition-group enter-class="animated bounce"
-    leave-class="animated bounceOutRight">
+           <transition-group leave-active-class="animated fadeOutDown">
               <li class="todo-list-item" v-for="country in this.countries" v-bind:key="country.id">
               <div class="checkbox">
                 <i class="fa fa-check-square"></i>
@@ -48,11 +47,11 @@
                 <label for="checkbox-1">{{ country.country_name }}</label>
               </div>
               <div class="pull-right action-buttons">
-                <a href="#" class="pencil" @click="editCountry(country.id)">
+                <a class="pencil" @click="editCountry(country.id)">
                   <em class="fa fa-pencil"></em>
                 </a>
                 |
-                <a href="#" class="trash" @click="delCountry(country.id)">
+                <a class="trash" @click="delCountry(country.id)">
                   <em class="fa fa-trash"></em>
                 </a>
               </div>
@@ -150,11 +149,11 @@
                 <label for="checkbox-1">{{ state.state_name }}</label>
               </div>
               <div class="pull-right action-buttons">
-                <a href="#" class="pencil" @click="editState(state.id)">
+                <a href="" class="pencil" @click="editState(state.id)">
                   <em class="fa fa-pencil"></em>
                 </a>
                 |
-                <a href="#" class="trash" @click="delState(state.id)">
+                <a href="" class="trash" @click="delState(state.id)">
                   <em class="fa fa-trash"></em>
                 </a>
               </div>
@@ -244,11 +243,11 @@
                 <label for="checkbox-1">{{ city.city_name }}</label>
               </div>
               <div class="pull-right action-buttons">
-                <a href="#" class="pencil" @click="editCity(city.id)">
+                <a class="pencil" @click="editCity(city.id)">
                   <em class="fa fa-pencil"></em>
                 </a>
                 |
-                <a href="#" class="trash" @click="delCity(city.id)">
+                <a class="trash" @click="delCity(city.id)">
                   <em class="fa fa-trash"></em>
                 </a>
               </div>

@@ -33,4 +33,9 @@ class HomeController extends Controller
             return view('/nexushome');
         }
     }
+
+    public function getUserInfo()
+    {
+        return Auth::user();
+    }
 }

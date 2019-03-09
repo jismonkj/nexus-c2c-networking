@@ -108,14 +108,16 @@
                     <li><a href="#">
                             <em class="fa fa-home"></em>
                         </a></li>
-                    <li class="active">Widgets</li>
+                    <li class="active">
+                    @{{ breadCumbPath }}
+                    </li>
                 </ol>
             </div>
             <!-- breadcrumb ends -->
             <!-- section title -->
             <div class="row">
 			<div class="col-lg-12">
-				<h3 class="page-header">Dashboard</h3>
+				<h3 class="page-header"></h3>
 			</div>
 		</div>
             <!-- section title ends-->

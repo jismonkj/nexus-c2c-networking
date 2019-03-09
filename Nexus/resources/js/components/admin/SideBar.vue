@@ -17,22 +17,22 @@
                 </div>
             </form>
             <ul class="nav menu">
-                <li class="active">
+                <li v-bind:class="{ active : activeTab == 'Dashboard' }" @click="setBreadCumb('Dashboard')">
                     <router-link to="dashboard">
                         <a href=""><em class="fa fa-dashboard">&nbsp;</em>
                         Dashboard
                         </a>
                     </router-link>
                 </li>
-                 <li class="">
+                 <li v-bind:class="{ active : activeTab == 'Places' }" @click="setBreadCumb('Places')">
                     <router-link to="places">
                         <a href=""><em class="fa fa-dashboard">&nbsp;</em>
                         Places
                         </a>
                     </router-link>
                 </li>
-                 <li class="">
-                    <router-link to="users">
+                 <li v-bind:class="{ active : activeTab == 'Members' }" @click="setBreadCumb('Members')">
+                    <router-link to="members">
                         <a href=""><em class="fa fa-dashboard">&nbsp;</em>
                         Members
                         </a>
@@ -41,3 +41,17 @@
             </ul>
         </div>
 </template>
+
+<script>
+export default {
+    methods:{
+        setBreadCumb:function(title){
+            this.$parent.breadCumbPath = title;
+            this.activeTab = title;
+        }
+    },
+    data:function(){
+        return {activeTab:false};
+    }
+}
+</script>

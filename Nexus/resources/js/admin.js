@@ -7,6 +7,7 @@ Vue.use(VueRouter)
 // _____________________
 import SBar from './components/admin/SideBar.vue'
 import Places from './components/admin/Places.vue'
+import Members from './components/admin/Members.vue'
 
 Vue.component('SBar', SBar)
 
@@ -14,7 +15,8 @@ Vue.component('SBar', SBar)
 // __________________
 let routes = [
     { path:'/dashboard', component:{ template:"<div>some</div>"} },
-    { path:'/places', component: Places }
+    { path:'/places', component: Places },
+    { path:'/members', component: Members }
 ];
 const router = new VueRouter({
     routes // short for `routes: routes`
@@ -27,7 +29,8 @@ const app = new Vue({
     el: '#adminApp',
     data:{
         csrftoken:'',
-        data:''
+        data:'',
+        breadCumbPath:"Dashboard"
         // info:null
     },
     router,

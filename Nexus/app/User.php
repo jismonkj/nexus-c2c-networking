@@ -29,8 +29,8 @@ class User extends Authenticatable
     ];
 
     // relationships
-    public function Member()
+    public function profile()
     {
-        return $this->hasOne('App\Member\Member', 'uid');
+        return $this->hasOne('App\Member\Profile', 'uid');
     }
 }

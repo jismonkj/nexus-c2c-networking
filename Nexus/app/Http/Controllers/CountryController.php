@@ -70,7 +70,7 @@ class CountryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return Country::where('id', $id)->update(['country_name'=>$request->country_name]);
+        return Country::where('id', $id)->update(['country_name' => $request->country_name]);
     }
 
     /**
@@ -79,8 +79,8 @@ class CountryController extends Controller
      * @param  \App\Country  $country
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Country $country)
+    public function destroy($id)
     {
-        //
+        return Country::destroy($id);
     }
 }

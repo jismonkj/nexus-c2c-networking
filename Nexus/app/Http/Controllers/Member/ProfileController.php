@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Member;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
-use App\Member\Member;
+use App\Member\Profile;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 
-class MemberController extends Controller
+class ProfileController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,7 +18,8 @@ class MemberController extends Controller
      */
     public function index()
     {
-       return Member::where('city_id','=', '1')->where('type', 'user')->join('users', 'uid', '=', 'users.id')->join('cities', 'city_id', '=', 'cities.id')->select('users.id', 'fname', 'lname', 'city_name', 'city_id', 'email', 'status')->get();
+        //    return 'home';
+        return User::find('1')->profile;
     }
 
     /**
@@ -49,7 +51,7 @@ class MemberController extends Controller
      */
     public function show($id)
     {
-        //
+        return User::find($id)->profile;
     }
 
     /**
@@ -72,7 +74,19 @@ class MemberController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //check whether user profile created already
+        if (Auth::user()->profile) {
+            //update profile
+            $data = $request->except(['email', '_token']);
+            // return $data;
+            return Profile::where('uid', Auth::id())->update($data);
+        } else {
+            //new profile
+            $data = $request->all();
+            $data['uid'] = Auth::id();
+            return Profile::create($data);
+        }
+        return 0;
     }
 
     /**
@@ -84,5 +98,14 @@ class MemberController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    //change password
+    public function changePassword(Request $request)
+    {
+        $currPassword = Hash::make($request->currPassword);
+        $newPassword = Hash::make($request->newPassword);
+        return User::find(1)->where('password', $currPassword)->update(['password'=>$newPassword]);
+        
     }
 }
