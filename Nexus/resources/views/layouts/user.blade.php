@@ -419,7 +419,7 @@
                                         </li>
                                     </ul>
 
-                                    <div class="ui-block-title ui-block-title-small">
+                                    <!-- <div class="ui-block-title ui-block-title-small">
                                         <h6 class="title">Chat Settings</h6>
                                     </div>
 
@@ -449,16 +449,16 @@
                                                 <span>Invisible</span>
                                             </a>
                                         </li>
-                                    </ul>
+                                    </ul> -->
 
                                     <div class="ui-block-title ui-block-title-small">
                                         <h6 class="title">Custom Status</h6>
                                     </div>
 
-                                    <form class="form-group with-button custom-status">
-                                        <input class="form-control" placeholder="" type="text" value="Space Cowboy">
+                                    <form class="form-group with-button custom-status" @submit.prevent="setMyStatus">
+                                        <input class="form-control" placeholder="" type="text" value="Space Cowboy" name="status_text" v-model="newUserStatus">
 
-                                        <button class="bg-purple">
+                                        <button class="bg-purple" type="submit">
                                             <svg class="olymp-check-icon">
                                                 <use xlink:href="{{ asset('theme/svg-icons/sprites/icons.svg#olymp-check-icon') }}"></use>
                                             </svg>
@@ -498,11 +498,13 @@
                         <router-link to="/profile-page" class="author-name fn">
 
                             <div class="author-title">
-                                James Spiegel <svg class="olymp-dropdown-arrow-icon">
+                                @{{ user.uname }}<svg class="olymp-dropdown-arrow-icon">
                                     <use xlink:href="{{ asset('theme/svg-icons/sprites/icons.svg#olymp-dropdown-arrow-icon') }}"></use>
                                 </svg>
                             </div>
-                            <span class="author-subtitle">SPACE COWBOY</span>
+                            <span class="author-subtitle">
+                                @{{ user.status_text }}
+                            </span>
 
                         </router-link>
                     </div>
@@ -870,7 +872,6 @@
         <a class="back-to-top" href="#">
             <img src="{{ asset('theme/svg-icons/back-to-top.svg') }}" alt="arrow" class="back-icon">
         </a>
-
     </div>
     <!-- JS Scripts -->
     <script src="{{ asset('theme/js/jquery-3.2.1.js') }}"></script>
@@ -912,7 +913,7 @@
     <script defer src="{{ asset('theme/fonts/fontawesome-all.js') }}"></script>
 
     <script src="{{ asset('theme/Bootstrap/dist/js/bootstrap.bundle.js') }}"></script>
-    
+
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ asset('js/member.js') }}"></script>
 </body>

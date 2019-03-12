@@ -8,9 +8,14 @@ use App\Http\Controllers\Controller;
 use App\Member\Profile;
 use App\User;
 use Illuminate\Support\Facades\Auth;
+use App\Member\InterestList;
 
 class ProfileController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -18,8 +23,9 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        //    return 'home';
-        return User::find('1')->profile;
+        //fetch current user profiel
+        // return InterestList::where('uid', Auth::id())->join('interests', 'interests.id', 'interest_id')->get();
+        return Auth::user()->profile;
     }
 
     /**
@@ -51,6 +57,7 @@ class ProfileController extends Controller
      */
     public function show($id)
     {
+        //fetch another user profile
         return User::find($id)->profile;
     }
 
@@ -78,8 +85,13 @@ class ProfileController extends Controller
         if (Auth::user()->profile) {
             //update profile
             $data = $request->except(['email', '_token']);
-            // return $data;
-            return Profile::where('uid', Auth::id())->update($data);
+            $email = $request->email;
+
+            //update login
+            $user = User::where('id', Auth::id())->update(['email' => $email]);
+            $profile = Profile::where('uid', Auth::id())->update($data);
+
+            return ($user) ? $user : $profile;
         } else {
             //new profile
             $data = $request->all();
@@ -105,7 +117,6 @@ class ProfileController extends Controller
     {
         $currPassword = Hash::make($request->currPassword);
         $newPassword = Hash::make($request->newPassword);
-        return User::find(1)->where('password', $currPassword)->update(['password'=>$newPassword]);
-        
+        return User::find(1)->where('password', $currPassword)->update(['password' => $newPassword]);
     }
 }

@@ -90,11 +90,11 @@
                           My Interests
                         </router-link>
                     </li>
-                    <li>
+                    <!-- <li>
                       <router-link to="/account/education-employment">
                           Education and Employment
                         </router-link>
-                    </li>
+                    </li> -->
                   </ul>
                 </div>
               </div>
@@ -211,11 +211,11 @@
                         </router-link>
 
                       </li>
-                      <li>
+                      <!-- <li>
                         <router-link to="/account/education-employment">
                           Education and Employment
                         </router-link>
-                      </li>
+                      </li> -->
                     </ul>
                   </div>
                 </div>

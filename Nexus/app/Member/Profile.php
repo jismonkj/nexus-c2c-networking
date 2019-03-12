@@ -10,7 +10,7 @@ class Profile extends Model
     protected $timestamp = false;
     protected $primaryKey = 'uid';
 
-    protected $fillable = ['uid', 'about_you', 'birth_place', 'city_id', 'country_id', 'dob', 'dribble', 'facebook', 'fname', 'gender', 'lname', 'mobile', 'relationship', 'rss_feed', 'spotify', 'state_id', 'twitter', 'website'];
+    protected $fillable = ['uid', 'about_you', 'birth_place', 'city_id', 'country_id', 'dob', 'dribble', 'facebook', 'fname', 'gender', 'lname', 'status_text', 'mobile', 'relationship', 'rss_feed', 'spotify', 'state_id', 'twitter', 'website'];
 
     public function user()
     {

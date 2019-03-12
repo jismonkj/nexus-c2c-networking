@@ -14,8 +14,10 @@ Auth::routes();
 Route::get('/', 'Auth\LoginController@showLoginForm');
 Route::view('/some', 'some');
 Route::get('/home', 'HomeController@index')->name('nexushome');
+
 /* common routes
-_________________________________________________________________*/
+_________________________________________________________________
+___________________________________________________________________ */
 
 //places
 Route::resource('/country', 'CountryController');
@@ -24,13 +26,24 @@ Route::resource('/city', 'CityController');
 Route::post('/user/info', 'HomeController@getUserInfo');
 
 /* member routes
-____________________________________________________________________*/
+____________________________________________________________________
+________________________________________________________________________*/
 
 Route::resource('/member/profile', 'Member\ProfileController');
 Route::post('/member/password/change', 'Member\ProfileController@changePassword');
+# -- interests
+Route::post('member/interest/search', 'Member\MemberController@searchInt');
+Route::put('member/interest', 'Member\MemberController@setUserInterest');
+Route::post('member/interest/del', 'Member\MemberController@delUserInterest');
+Route::get('member/interest', 'Member\MemberController@getUserInterests');
+# -- status
+Route::post('member/status/text', 'Member\MemberController@updateStatus');
+# -- friends
+Route::resource('member/friends', 'Member\FriendCircleController');
 
 /* admin routes
-____________________________________________________________________*/
+_____________________________________________________________________________
+______________________________________________________________________________*/
 
 Route::resource('/admin', 'Admin\AdminController');
 Route::post('/admin/users/list', 'Admin\AdminController@listUsers');
@@ -38,8 +51,9 @@ Route::post('/admin/users/list', 'Admin\AdminController@listUsers');
 
 
 
-// testing routes
-//___________________________________
-Route::get('/test', 'Member\ProfileController@index');
+/* testing routes
+___________________________________ _________________________________________
+_______________________________________________________________________________*/
+Route::get('/test', 'HomeController@test');
 
 // end testing routes ________________________

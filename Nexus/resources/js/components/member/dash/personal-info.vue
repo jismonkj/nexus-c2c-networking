@@ -80,9 +80,11 @@
               <div class="form-group label-floating is-select">
                 <label class="control-label">Your Country</label>
                 <select name="country_id" @change="getStates" v-model="profile.country_id">
-                  <option v-for="country in countries" v-bind:key="country.id" v-bind:value="country.id">
-                    {{ country.country_name }}
-                  </option>
+                  <option
+                    v-for="country in countries"
+                    v-bind:key="country.id"
+                    v-bind:value="country.id"
+                  >{{ country.country_name }}</option>
                 </select>
               </div>
             </div>
@@ -91,9 +93,11 @@
               <div class="form-group label-floating is-select">
                 <label class="control-label">Your State/Province</label>
                 <select name="state_id" @change="getCities" v-model="profile.state_id">
-                  <option v-for="state in states" v-bind:key="state.id" v-bind:value="state.id">
-                    {{ state.state_name }}
-                  </option>
+                  <option
+                    v-for="state in states"
+                    v-bind:key="state.id"
+                    v-bind:value="state.id"
+                  >{{ state.state_name }}</option>
                 </select>
               </div>
             </div>
@@ -101,9 +105,11 @@
               <div class="form-group label-floating is-select">
                 <label class="control-label">Your City</label>
                 <select name="state_id" @change="getCities" v-model="profile.city_id">
-                  <option v-for="city in cities" v-bind:key="city.id" v-bind:value="city.id">
-                    {{ city.city_name }}
-                  </option>
+                  <option
+                    v-for="city in cities"
+                    v-bind:key="city.id"
+                    v-bind:value="city.id"
+                  >{{ city.city_name }}</option>
                 </select>
               </div>
             </div>
@@ -122,10 +128,9 @@
                 </select>
                 <span class="material-input"></span>
               </div>
-              
             </div>
             <div class="col col-lg-6 col-md-6 col-sm-12 col-12">
-              <div class="form-group label-floating ">
+              <div class="form-group label-floating">
                 <label class="control-label">Your Birthplace</label>
                 <input class="form-control" placeholder type="text" v-model="profile.birth_place">
                 <span class="material-input"></span>
@@ -144,7 +149,6 @@
                 </select>
                 <span class="material-input"></span>
               </div>
-
             </div>
             <div class="col col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
               <div class="form-group with-icon label-floating">
@@ -199,7 +203,7 @@
                 <!-- <i class="fab fa-twitter c-twitter" aria-hidden="true"></i> -->
                 <span class="material-input"></span>
               </div>
-              <div class="form-group with-icon label-floating ">
+              <div class="form-group with-icon label-floating">
                 <label class="control-label">Your RSS Feed Account</label>
                 <input class="form-control" type="text" v-model="profile.rss_feed">
                 <svg
@@ -246,7 +250,7 @@
                 <!-- <i class="fab fa-dribbble c-dribbble" aria-hidden="true"></i> -->
                 <span class="material-input"></span>
               </div>
-              <div class="form-group with-icon label-floating ">
+              <div class="form-group with-icon label-floating">
                 <label class="control-label">Your Spotify Account</label>
                 <input class="form-control" type="text" v-model="profile.spotify">
                 <svg
@@ -268,8 +272,7 @@
                 <span class="material-input"></span>
               </div>
             </div>
-            <div class="col col-lg-6 col-md-6 col-sm-12 col-12">
-            </div>
+            <div class="col col-lg-6 col-md-6 col-sm-12 col-12"></div>
             <div class="col col-lg-6 col-md-6 col-sm-12 col-12">
               <button class="btn btn-primary btn-lg full-width" type="submit">{{ btnTitle }}</button>
             </div>
@@ -284,8 +287,8 @@
 <script>
 export default {
   mounted() {
-    //fetch user profile
-    axios.get("/member/profile/" + this.$root.user.id).then(response => {
+    //fetch current-user profile
+    axios.get("/member/profile").then(response => {
       Object.assign(this.$data.profile, response.data);
     });
     axios.get("/country").then(response => {
@@ -328,17 +331,11 @@ export default {
       this.$data.profile._token = this.$root.csrftoken;
       //update server request
       this.btnTitle = "...";
-      axios
-        .put("/member/profile/0", this.$data.profile)
-        .then(response => {
-          console.log(response.data);
-          
-          if (response.data) {
-            this.btnTitle = "Profile is Updated";
-          } else {
-            this.btnTitle = "Something went wrong! Try again.";
-          }
-        });
+      axios.put("/member/profile/0", this.$data.profile).then(response => {
+        response.data != 0
+          ? this.notify("Profile is Updated")
+          : this.notify("Something went wrong! Try again.");
+      });
     },
     getStates: function() {
       this.cities = {};
@@ -351,6 +348,12 @@ export default {
       axios.get("/city/" + this.profile.state_id).then(response => {
         this.cities = response.data;
       });
+    },
+    notify: function(text) {
+      this.btnTitle = text;
+      setTimeout(() => {
+        this.btnTitle = "Save All Changes";
+      }, 5000);
     }
   }
 };

@@ -449,9 +449,9 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      countries: {},
-      states: {},
-      cities: {},
+      countries: [],
+      states: [],
+      cities: [],
       newCountry: "",
       newState: "",
       newCity: "",

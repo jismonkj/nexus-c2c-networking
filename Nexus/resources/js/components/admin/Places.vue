@@ -301,9 +301,9 @@ export default {
   },
   data: function() {
     return {
-      countries: {},
-      states: {},
-      cities: {},
+      countries: [],
+      states: [],
+      cities: [],
       newCountry: "",
       newState: "",
       newCity: "",
