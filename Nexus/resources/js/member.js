@@ -3,6 +3,10 @@
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
+
+// bootstrap-vue
+ 
+
 // components
 // _____________________
 // import SBar from './components/admin/SideBar.vue'
@@ -11,16 +15,20 @@ import AccountDash from './components/member/account-dash.vue'
 import PersonalInfo from './components/member/dash/personal-info.vue'
 import ChangePassword from './components/member/dash/change-password.vue'
 import MyInterests from './components/member/dash/my-interests.vue'
+import FriendRequests from './components/member/dash/friend-requests.vue'
+import FriendCircle from './components/member/dash/friend-circle.vue'
+// 
 import EducationEmployment from './components/member/dash/education-employment.vue'
 import ProfilePage from './components/member/profile-page.vue'
 import NewsFeed from './components/member/news-feed.vue'
 import MainFeed from './components/member/feed/main-feed.vue'
 import LeftSideBar from './components/member/feed/left-side-bar.vue'
 import RightSideBar from './components/member/feed/right-side-bar.vue'
-// import Axios from 'axios';
+
 
 Vue.component('PersonalInfo', PersonalInfo);
 Vue.component('ChangePassword', ChangePassword);
+Vue.component('FriendRequests', FriendRequests);
 Vue.component('AccountDash', AccountDash);
 Vue.component('MyInterests', MyInterests);
 Vue.component('EducationEmployment', EducationEmployment);
@@ -29,6 +37,7 @@ Vue.component('NewsFeed', NewsFeed);
 Vue.component('MainFeed', MainFeed);
 Vue.component('LeftSideBar', LeftSideBar);
 Vue.component('RightSideBar', RightSideBar);
+Vue.component('FriendCircle', FriendCircle);
 
 // routes
 // __________________
@@ -36,6 +45,8 @@ let routes = [
     { path:'/account', component: AccountDash, children:[
         { path:'/account/personal-info', component: PersonalInfo },
         { path:'/account/change-password', component: ChangePassword },
+        { path:'/account/friend-requests', component: FriendRequests },
+        { path:'/account/friend-circle', component: FriendCircle },
         { path:'/account/my-interests', component: MyInterests },
         { path:'/account/education-employment', component: EducationEmployment },
     ] },

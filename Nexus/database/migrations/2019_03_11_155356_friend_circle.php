@@ -17,8 +17,8 @@ class FriendCircle extends Migration
             $table->increments('fcid');
             $table->integer('uid');
             $table->integer('fid');
-            $table->enum('status', ['request', 'active', 'blocked', 'removed']);
-            $table->dateTime('date_accepted');
+            $table->enum('status', ['request', 'active', 'blocked', 'removed', 'cancelled'])->default('request');
+            $table->dateTime('date_accepted')->nullable();
             $table->timestamps();
         });
     }

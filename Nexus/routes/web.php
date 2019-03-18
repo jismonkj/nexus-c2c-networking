@@ -40,6 +40,7 @@ Route::get('member/interest', 'Member\MemberController@getUserInterests');
 Route::post('member/status/text', 'Member\MemberController@updateStatus');
 # -- friends
 Route::resource('member/friends', 'Member\FriendCircleController');
+Route::get('member/fsuggestions', 'Member\FriendCircleController@getFriendSuggestions');
 
 /* admin routes
 _____________________________________________________________________________

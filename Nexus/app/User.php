@@ -37,4 +37,22 @@ class User extends Authenticatable
     public function interests(){
         return $this->hasMany('App\Member\InterestList', 'uid');
     }
+
+
+    # friends
+    public function friendListPrimary()
+    {
+        return $this->hasMany('App\Member\Friends', 'uid');
+    }
+    
+    public function friendListSecondary()
+    {
+        return $this->hasMany('App\Member\Friends', 'fid');
+    }
+
+    public function friends()
+    {
+        return $this->friendListPrimary->merge($this->friendListSecondary);
+    }
+
 }

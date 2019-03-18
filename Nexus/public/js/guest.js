@@ -97,8 +97,14 @@ var app = new Vue({
   el: '#guestApp',
   data: {
     csrftoken: '',
-    data: '' // info:null
-
+    data: '',
+    //form-validation
+    email: '',
+    password: '',
+    errors: {},
+    rules: {
+      email: ''
+    }
   },
   mounted: function mounted() {
     this.csrftoken = $("#csrf-token").attr('content');
@@ -112,7 +118,8 @@ var app = new Vue({
         return console.log(response.data);
       });
     }
-  }
+  },
+  watch: {}
 });
 
 /***/ }),

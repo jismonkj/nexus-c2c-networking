@@ -347,8 +347,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {// this.csrftoken = $("#csrf-token").attr('content');
   },
@@ -459,6 +457,262 @@ __webpack_require__.r(__webpack_exports__);
       setTimeout(function () {
         _this2.chngPswdBtnTitle = "Change Password Now";
       }, 5000);
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/member/dash/friend-circle.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/member/dash/friend-circle.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      friends: {},
+      searchInput: '',
+      friendStore: '',
+      pattern: ''
+    };
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    axios.get('/member/friends').then(function (response) {
+      _this.friendStore = response.data;
+      _this.friends = _this.friendStore;
+    });
+  },
+  watch: {
+    searchInput: _.debounce(function () {
+      var pattern = new RegExp('^' + this.searchInput, 'i');
+      this.friends = this.friendStore.filter(function (el) {
+        return pattern.test(el.fname) || pattern.test(el.lname);
+      });
+    }, 500)
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/member/dash/friend-requests.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/member/dash/friend-requests.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  mounted: function mounted() {
+    var _this = this;
+
+    axios.get("member/friends/request").then(function (response) {
+      _this.requests = response.data;
+    });
+  },
+  data: function data() {
+    return {
+      requests: {},
+      accepted: [],
+      removed: []
+    };
+  },
+  methods: {
+    acceptRequest: function acceptRequest(uid) {
+      var _this2 = this;
+
+      //   server update
+      axios.put("member/friends/active", {
+        uid: uid
+      }).then(function (response) {
+        //   console.log(response.data);
+        //	ui update
+        var index = _this2.requests.findIndex(function (item) {
+          return item.uid == uid;
+        });
+
+        var user = _this2.requests.splice(index, 1);
+
+        _this2.accepted.push(user[0]);
+      });
+    },
+    delRequest: function delRequest(uid) {
+      var _this3 = this;
+
+      //   server update
+      axios.put("member/friends/removed", {
+        uid: uid
+      }).then(function (response) {
+        //   console.log(response.data);
+        //	ui update
+        var index = _this3.requests.findIndex(function (item) {
+          return item.uid == uid;
+        });
+
+        var user = _this3.requests.splice(index, 1);
+
+        _this3.removed.push(user[0]);
+      });
     }
   }
 });
@@ -997,6 +1251,314 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/member/feed/right-side-bar.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/member/feed/right-side-bar.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      peopleYouMayKnow: {}
+    };
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    axios.get("member/fsuggestions").then(function (response) {
+      if (response.data) {
+        _this.peopleYouMayKnow = response.data;
+      }
+    });
+  },
+  methods: {
+    sendFriendReq: function sendFriendReq($mid) {
+      var _this2 = this;
+
+      //move the person to bottom
+      var index = this.peopleYouMayKnow.findIndex(function (item) {
+        return item.uid == $mid;
+      });
+      this.peopleYouMayKnow[index].invited = true; //push server update
+
+      axios.post("member/friends", {
+        'fid': $mid
+      }).then(function (response) {
+        _this2.pushBottom(index);
+      });
+    },
+    delFriendReq: function delFriendReq($mid) {
+      var _this3 = this;
+
+      //push server update
+      axios.delete("member/friends/" + $mid).then(function (response) {
+        console.log(response.data); //move the person to bottom
+
+        var index = _this3.peopleYouMayKnow.findIndex(function (item) {
+          return item.uid == $mid;
+        });
+
+        _this3.peopleYouMayKnow[index].invited = false;
+
+        _this3.pushBottom(index);
+      });
+    },
+    pushBottom: _.debounce(function (index) {
+      //push the user to bottom
+      var user = this.peopleYouMayKnow.splice(index, 1);
+      this.peopleYouMayKnow.push(user[0]);
+    }, 150)
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/member/account-dash.vue?vue&type=template&id=70b8f70c&":
 /*!**********************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/member/account-dash.vue?vue&type=template&id=70b8f70c& ***!
@@ -1211,26 +1773,82 @@ var render = function() {
               _vm._v(" "),
               _vm._m(3),
               _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "ui-block-title" },
+                [
+                  _c(
+                    "router-link",
+                    {
+                      staticClass: "h6 title",
+                      attrs: { to: "/account/friend-requests" }
+                    },
+                    [
+                      _vm._v(
+                        "\n                Friend Requests\n                "
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "a",
+                    {
+                      staticClass: "items-round-little bg-blue",
+                      attrs: { href: "#" }
+                    },
+                    [_vm._v("4")]
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "ui-block-title" },
+                [
+                  _c(
+                    "router-link",
+                    {
+                      staticClass: "h6 title",
+                      attrs: { to: "/account/friend-circle" }
+                    },
+                    [
+                      _vm._v(
+                        "\n                Friend Circle\n                "
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "a",
+                    {
+                      staticClass: "items-round-little bg-blue",
+                      attrs: { href: "#" }
+                    },
+                    [_vm._v("4")]
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
               _vm._m(4),
               _vm._v(" "),
               _vm._m(5),
               _vm._v(" "),
-              _vm._m(6),
-              _vm._v(" "),
-              _vm._m(7)
+              _vm._m(6)
             ])
           ]),
           _vm._v(" "),
-          _vm._m(8),
+          _vm._m(7),
           _vm._v(" "),
-          _vm._m(9)
+          _vm._m(8)
         ]
       )
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "header-spacer header-spacer-small" }),
     _vm._v(" "),
-    _vm._m(10),
+    _vm._m(9),
     _vm._v(" "),
     _c("div", { staticClass: "container" }, [
       _c(
@@ -1246,7 +1864,7 @@ var render = function() {
             [
               _c("div", { staticClass: "ui-block" }, [
                 _c("div", { staticClass: "your-profile" }, [
-                  _vm._m(11),
+                  _vm._m(10),
                   _vm._v(" "),
                   _c(
                     "div",
@@ -1370,7 +1988,54 @@ var render = function() {
                     ]
                   ),
                   _vm._v(" "),
-                  _vm._m(12)
+                  _c(
+                    "div",
+                    { staticClass: "ui-block-title" },
+                    [
+                      _c(
+                        "router-link",
+                        {
+                          staticClass: "h6 title",
+                          attrs: { to: "/account/friend-requests" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                Friend Requests\n                "
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "a",
+                        {
+                          staticClass: "items-round-little bg-blue",
+                          attrs: { href: "#" }
+                        },
+                        [_vm._v("4")]
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "ui-block-title" },
+                    [
+                      _c(
+                        "router-link",
+                        {
+                          staticClass: "h6 title",
+                          attrs: { to: "/account/friend-circle" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                Friend Circle\n                "
+                          )
+                        ]
+                      )
+                    ],
+                    1
+                  )
                 ])
               ])
             ]
@@ -1435,27 +2100,6 @@ var staticRenderFns = [
           attrs: { href: "34-YourAccount-ChatMessages.html" }
         },
         [_vm._v("Chat / Messages")]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "ui-block-title" }, [
-      _c(
-        "a",
-        {
-          staticClass: "h6 title",
-          attrs: { href: "35-YourAccount-FriendsRequests.html" }
-        },
-        [_vm._v("Friend Requests")]
-      ),
-      _vm._v(" "),
-      _c(
-        "a",
-        { staticClass: "items-round-little bg-blue", attrs: { href: "#" } },
-        [_vm._v("4")]
       )
     ])
   },
@@ -1574,27 +2218,6 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "ui-block-title ui-block-title-small" }, [
       _c("h6", { staticClass: "title" }, [_vm._v("Your PROFILE")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "ui-block-title" }, [
-      _c(
-        "a",
-        {
-          staticClass: "h6 title",
-          attrs: { href: "35-YourAccount-FriendsRequests.html" }
-        },
-        [_vm._v("Friend Requests")]
-      ),
-      _vm._v(" "),
-      _c(
-        "a",
-        { staticClass: "items-round-little bg-blue", attrs: { href: "#" } },
-        [_vm._v("4")]
-      )
     ])
   }
 ]
@@ -2445,6 +3068,395 @@ var staticRenderFns = [
         ])
       ]
     )
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/member/dash/friend-circle.vue?vue&type=template&id=633c457c&":
+/*!****************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/member/dash/friend-circle.vue?vue&type=template&id=633c457c& ***!
+  \****************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticClass:
+        "col col-xl-9 order-xl-2 col-lg-9 order-lg-2 col-md-12 order-md-1 col-sm-12 col-12"
+    },
+    [
+      _c("div", { staticClass: "ui-block responsive-flex" }, [
+        _c("div", { staticClass: "ui-block-title" }, [
+          _c("div", { staticClass: "h6 title" }, [_vm._v("Your Friends (86)")]),
+          _vm._v(" "),
+          _c("form", { staticClass: "w-search" }, [
+            _c("div", { staticClass: "form-group with-button is-empty" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.searchInput,
+                    expression: "searchInput"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "text", placeholder: "Search Friends..." },
+                domProps: { value: _vm.searchInput },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.searchInput = $event.target.value
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("span", { staticClass: "material-input" })
+            ])
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "row" },
+        _vm._l(_vm.friends, function(friend) {
+          return _c("div", { key: friend.uid, staticClass: "col-4" }, [
+            _c("div", { staticClass: "ui-block" }, [
+              _c("div", { staticClass: "friend-item" }, [
+                _vm._m(0, true),
+                _vm._v(" "),
+                _c("div", { staticClass: "friend-item-content" }, [
+                  _c("div", { staticClass: "more" }, [
+                    _c("svg", { staticClass: "olymp-three-dots-icon" }, [
+                      _c("use", {
+                        attrs: {
+                          "xlink:href":
+                            "theme/svg-icons/sprites/icons.svg#olymp-three-dots-icon"
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _vm._m(1, true)
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "friend-avatar" }, [
+                    _vm._m(2, true),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "author-content" }, [
+                      _c(
+                        "a",
+                        { staticClass: "h5 author-name", attrs: { href: "#" } },
+                        [_vm._v(_vm._s(friend.fname + " " + friend.lname))]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "country" }, [
+                        _vm._v(
+                          _vm._s(friend.city_name) +
+                            " , " +
+                            _vm._s(friend.country_name)
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", [
+                      _c("span", [_vm._v("Friends Since:")]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "color-secondary" }, [
+                        _vm._v(_vm._s(friend.date_accepted))
+                      ])
+                    ])
+                  ])
+                ])
+              ])
+            ])
+          ])
+        }),
+        0
+      )
+    ]
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "friend-header-thumb" }, [
+      _c("img", { attrs: { src: "theme/img/friend1.jpg", alt: "friend" } })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("ul", { staticClass: "more-dropdown" }, [
+      _c("li", [_c("a", { attrs: { href: "#" } }, [_vm._v("Report Profile")])]),
+      _vm._v(" "),
+      _c("li", [_c("a", { attrs: { href: "#" } }, [_vm._v("Block Profile")])]),
+      _vm._v(" "),
+      _c("li", [
+        _c("a", { attrs: { href: "#" } }, [_vm._v("Turn Off Notifications")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "author-thumb" }, [
+      _c("img", { attrs: { src: "theme/img/avatar1.jpg", alt: "author" } })
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/member/dash/friend-requests.vue?vue&type=template&id=bb95cd20&":
+/*!******************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/member/dash/friend-requests.vue?vue&type=template&id=bb95cd20& ***!
+  \******************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticClass:
+        "col col-xl-9 order-xl-2 col-lg-9 order-lg-2 col-md-12 order-md-1 col-sm-12 col-12"
+    },
+    [
+      _c("div", { staticClass: "ui-block" }, [
+        _c("div", { staticClass: "ui-block-title" }, [
+          _c("h6", { staticClass: "title" }, [_vm._v("Friend Requests")]),
+          _vm._v(" "),
+          _c("a", { staticClass: "more", attrs: { href: "#" } }, [
+            _c("svg", { staticClass: "olymp-three-dots-icon" }, [
+              _c("use", {
+                attrs: {
+                  "xlink:href":
+                    "theme/svg-icons/sprites/icons.svg#olymp-three-dots-icon"
+                }
+              })
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c(
+          "ul",
+          { staticClass: "notification-list friend-requests" },
+          [
+            _vm.requests == ""
+              ? _c("li", [
+                  _c("div", { staticClass: "notification-event" }, [
+                    _vm._v("\n\t\t\t  No Pending Friend Requests\n\t\t  ")
+                  ])
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm._l(_vm.requests, function(user) {
+              return _c("li", { key: user.id }, [
+                _vm._m(0, true),
+                _vm._v(" "),
+                _c("div", { staticClass: "notification-event" }, [
+                  _c(
+                    "a",
+                    {
+                      staticClass: "h6 notification-friend",
+                      attrs: { href: "#" }
+                    },
+                    [_vm._v(_vm._s(user.fname + " " + user.lname))]
+                  ),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "chat-message-item" }, [
+                    _vm._v("Mutual Friend: Sarah Hetfield")
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("span", { staticClass: "notification-icon" }, [
+                  _c(
+                    "a",
+                    {
+                      staticClass: "accept-request",
+                      attrs: { href: "#" },
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          return _vm.acceptRequest(user.uid)
+                        }
+                      }
+                    },
+                    [
+                      _c("span", { staticClass: "icon-add" }, [
+                        _c("svg", { staticClass: "olymp-happy-face-icon" }, [
+                          _c("use", {
+                            attrs: {
+                              "xlink:href":
+                                "theme/svg-icons/sprites/icons.svg#olymp-happy-face-icon"
+                            }
+                          })
+                        ])
+                      ]),
+                      _vm._v(
+                        "\n              Accept Friend Request\n            "
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "a",
+                    {
+                      staticClass: "accept-request request-del",
+                      attrs: { href: "#" },
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          return _vm.delRequest(user.uid)
+                        }
+                      }
+                    },
+                    [
+                      _c("span", { staticClass: "icon-minus" }, [
+                        _c("svg", { staticClass: "olymp-happy-face-icon" }, [
+                          _c("use", {
+                            attrs: {
+                              "xlink:href":
+                                "theme/svg-icons/sprites/icons.svg#olymp-happy-face-icon"
+                            }
+                          })
+                        ])
+                      ])
+                    ]
+                  )
+                ])
+              ])
+            }),
+            _vm._v(" "),
+            _c(
+              "transition-group",
+              { attrs: { "enter-active-class": "animate fade" } },
+              _vm._l(_vm.accepted, function(user) {
+                return _c("li", { key: user.uid, staticClass: "accepted" }, [
+                  _c("div", { staticClass: "author-thumb" }, [
+                    _c("img", {
+                      attrs: { src: "theme/img/avatar17-sm.jpg", alt: "author" }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "notification-event" }, [
+                    _vm._v("\n              You and\n              "),
+                    _c(
+                      "a",
+                      {
+                        staticClass: "h6 notification-friend",
+                        attrs: { href: "#" }
+                      },
+                      [_vm._v(_vm._s(user.fname + " " + user.lname))]
+                    ),
+                    _vm._v(" just became friends. Write on\n              "),
+                    _c(
+                      "a",
+                      {
+                        staticClass: "notification-link",
+                        attrs: { href: "#" }
+                      },
+                      [
+                        user.gender == "male"
+                          ? _c("span", [_vm._v("his")])
+                          : _vm._e(),
+                        _vm._v(" "),
+                        user.gender == "female"
+                          ? _c("span", [_vm._v("her")])
+                          : _vm._e(),
+                        _vm._v(" wall\n              ")
+                      ]
+                    ),
+                    _vm._v(".\n            ")
+                  ]),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "notification-icon" }, [
+                    _c("svg", { staticClass: "olymp-happy-face-icon" }, [
+                      _c("use", {
+                        attrs: {
+                          "xlink:href":
+                            "theme/svg-icons/sprites/icons.svg#olymp-happy-face-icon"
+                        }
+                      })
+                    ])
+                  ])
+                ])
+              }),
+              0
+            ),
+            _vm._v(" "),
+            _c(
+              "transition-group",
+              { attrs: { "enter-active-class": "animate fade" } },
+              _vm._l(_vm.removed, function(user) {
+                return _c("li", { key: user.uid, staticClass: "accepted" }, [
+                  _c("div", { staticClass: "author-thumb" }, [
+                    _c("img", {
+                      attrs: { src: "theme/img/avatar17-sm.jpg", alt: "author" }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "notification-event" }, [
+                    _vm._v("\n              You removed\n              "),
+                    _c(
+                      "a",
+                      {
+                        staticClass: "h6 notification-friend",
+                        attrs: { href: "#" }
+                      },
+                      [_vm._v(_vm._s(user.fname + " " + user.lname))]
+                    ),
+                    _vm._v("'s friend request.\n            ")
+                  ])
+                ])
+              }),
+              0
+            )
+          ],
+          2
+        )
+      ])
+    ]
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "author-thumb" }, [
+      _c("img", { attrs: { src: "theme/img/avatar15-sm.jpg", alt: "author" } })
+    ])
   }
 ]
 render._withStripped = true
@@ -7746,35 +8758,158 @@ var render = function() {
                     "widget w-friend-pages-added notification-list friend-requests"
                 },
                 [
-                  _c("li", { staticClass: "inline-items" }, [
-                    _vm._m(1),
-                    _vm._v(" "),
-                    _vm._m(2),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "notification-icon" }, [
-                      _c(
-                        "a",
-                        { staticClass: "accept-request", attrs: { href: "#" } },
+                  _c(
+                    "transition-group",
+                    { attrs: { "leave-active-class": "animate fade" } },
+                    _vm._l(_vm.peopleYouMayKnow, function(people) {
+                      return _c(
+                        "li",
+                        { key: people.uid, staticClass: "inline-items" },
                         [
-                          _c("span", { staticClass: "icon-add without-text" }, [
+                          _c("div", { staticClass: "author-thumb" }, [
+                            _c("img", {
+                              attrs: {
+                                src: "theme/img/avatar38-sm.jpg",
+                                alt: "author"
+                              }
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "notification-event" }, [
                             _c(
-                              "svg",
-                              { staticClass: "olymp-happy-face-icon" },
-                              [
-                                _c("use", {
-                                  attrs: {
-                                    "xlink:href":
-                                      "theme/svg-icons/sprites/icons.svg#olymp-happy-face-icon"
+                              "a",
+                              {
+                                staticClass: "h6 notification-friend",
+                                attrs: { href: "#" }
+                              },
+                              [_vm._v(_vm._s(people.name))]
+                            ),
+                            _vm._v(" "),
+                            _c("span", { staticClass: "chat-message-item" }, [
+                              _vm._v("8 Friends in Common")
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "span",
+                            {
+                              directives: [
+                                {
+                                  name: "show",
+                                  rawName: "v-show",
+                                  value: !people.invited,
+                                  expression: "!people.invited"
+                                }
+                              ],
+                              staticClass: "notification-icon",
+                              attrs: {
+                                "data-toggle": "tooltip",
+                                "data-placement": "bottom",
+                                title: "Send Request"
+                              }
+                            },
+                            [
+                              _c(
+                                "a",
+                                {
+                                  staticClass: "accept-request",
+                                  attrs: { href: "#" },
+                                  on: {
+                                    click: function($event) {
+                                      $event.preventDefault()
+                                      return _vm.sendFriendReq(people.uid)
+                                    }
                                   }
-                                })
-                              ]
-                            )
-                          ])
+                                },
+                                [
+                                  _c(
+                                    "span",
+                                    { staticClass: "without-text icon-add" },
+                                    [
+                                      _c(
+                                        "svg",
+                                        {
+                                          staticClass: "olymp-happy-face-icon"
+                                        },
+                                        [
+                                          _c("use", {
+                                            attrs: {
+                                              "xlink:href":
+                                                "theme/svg-icons/sprites/icons.svg#olymp-happy-face-icon"
+                                            }
+                                          })
+                                        ]
+                                      )
+                                    ]
+                                  )
+                                ]
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "span",
+                            {
+                              directives: [
+                                {
+                                  name: "show",
+                                  rawName: "v-show",
+                                  value: people.invited,
+                                  expression: "people.invited"
+                                }
+                              ],
+                              staticClass: "notification-icon",
+                              attrs: {
+                                "data-toggle": "tooltip",
+                                "data-placement": "bottom",
+                                title: "Cancel Request"
+                              }
+                            },
+                            [
+                              _c(
+                                "a",
+                                {
+                                  staticClass: "accept-request bg-secondary",
+                                  attrs: { href: "#" },
+                                  on: {
+                                    click: function($event) {
+                                      $event.preventDefault()
+                                      return _vm.delFriendReq(people.uid)
+                                    }
+                                  }
+                                },
+                                [
+                                  _c(
+                                    "span",
+                                    { staticClass: "without-text icon-minus" },
+                                    [
+                                      _c(
+                                        "svg",
+                                        {
+                                          staticClass: "olymp-happy-face-icon"
+                                        },
+                                        [
+                                          _c("use", {
+                                            attrs: {
+                                              "xlink:href":
+                                                "theme/svg-icons/sprites/icons.svg#olymp-happy-face-icon"
+                                            }
+                                          })
+                                        ]
+                                      )
+                                    ]
+                                  )
+                                ]
+                              )
+                            ]
+                          )
                         ]
                       )
-                    ])
-                  ])
-                ]
+                    }),
+                    0
+                  )
+                ],
+                1
               )
             ]),
             _vm._v(" "),
@@ -7794,10 +8929,10 @@ var render = function() {
                 ])
               ]),
               _vm._v(" "),
-              _vm._m(3)
+              _vm._m(1)
             ]),
             _vm._v(" "),
-            _vm._m(4)
+            _vm._m(2)
           ]
         )
       ])
@@ -7831,28 +8966,6 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "author-thumb" }, [
-      _c("img", { attrs: { src: "theme/img/avatar38-sm.jpg", alt: "author" } })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "notification-event" }, [
-      _c("a", { staticClass: "h6 notification-friend", attrs: { href: "#" } }, [
-        _vm._v("Francine Smith")
-      ]),
-      _vm._v(" "),
-      _c("span", { staticClass: "chat-message-item" }, [
-        _vm._v("8 Friends in Common")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c(
       "ul",
       { staticClass: "widget w-activity-feed notification-list" },
@@ -7870,13 +8983,13 @@ var staticRenderFns = [
               { staticClass: "h6 notification-friend", attrs: { href: "#" } },
               [_vm._v("Marina Polson")]
             ),
-            _vm._v(" commented on Jason Mark’s\n                 "),
+            _vm._v(" commented on Jason Mark’s\n              "),
             _c(
               "a",
               { staticClass: "notification-link", attrs: { href: "#" } },
               [_vm._v("photo.")]
             ),
-            _vm._v(".\n                 "),
+            _vm._v(".\n              "),
             _c("span", { staticClass: "notification-date" }, [
               _c(
                 "time",
@@ -7903,13 +9016,13 @@ var staticRenderFns = [
               { staticClass: "h6 notification-friend", attrs: { href: "#" } },
               [_vm._v("Jake Parker")]
             ),
-            _vm._v(" liked Nicholas Grissom’s\n                 "),
+            _vm._v(" liked Nicholas Grissom’s\n              "),
             _c(
               "a",
               { staticClass: "notification-link", attrs: { href: "#" } },
               [_vm._v("status update.")]
             ),
-            _vm._v(".\n                 "),
+            _vm._v(".\n              "),
             _c("span", { staticClass: "notification-date" }, [
               _c(
                 "time",
@@ -7936,13 +9049,13 @@ var staticRenderFns = [
               { staticClass: "h6 notification-friend", attrs: { href: "#" } },
               [_vm._v("Mary Jane Stark")]
             ),
-            _vm._v(" added 20 new photos to her\n                 "),
+            _vm._v(" added 20 new photos to her\n              "),
             _c(
               "a",
               { staticClass: "notification-link", attrs: { href: "#" } },
               [_vm._v("gallery album.")]
             ),
-            _vm._v(".\n                 "),
+            _vm._v(".\n              "),
             _c("span", { staticClass: "notification-date" }, [
               _c(
                 "time",
@@ -7969,13 +9082,13 @@ var staticRenderFns = [
               { staticClass: "h6 notification-friend", attrs: { href: "#" } },
               [_vm._v("Nicholas Grissom")]
             ),
-            _vm._v(" updated his profile\n                 "),
+            _vm._v(" updated his profile\n              "),
             _c(
               "a",
               { staticClass: "notification-link", attrs: { href: "#" } },
               [_vm._v("photo")]
             ),
-            _vm._v(".\n                 "),
+            _vm._v(".\n              "),
             _c("span", { staticClass: "notification-date" }, [
               _c(
                 "time",
@@ -8002,13 +9115,13 @@ var staticRenderFns = [
               { staticClass: "h6 notification-friend", attrs: { href: "#" } },
               [_vm._v("Marina Valentine")]
             ),
-            _vm._v(" commented on Chris Greyson’s\n                 "),
+            _vm._v(" commented on Chris Greyson’s\n              "),
             _c(
               "a",
               { staticClass: "notification-link", attrs: { href: "#" } },
               [_vm._v("status update")]
             ),
-            _vm._v(".\n                 "),
+            _vm._v(".\n              "),
             _c("span", { staticClass: "notification-date" }, [
               _c(
                 "time",
@@ -8035,13 +9148,13 @@ var staticRenderFns = [
               { staticClass: "h6 notification-friend", attrs: { href: "#" } },
               [_vm._v("Green Goo Rock")]
             ),
-            _vm._v(" posted a\n                 "),
+            _vm._v(" posted a\n              "),
             _c(
               "a",
               { staticClass: "notification-link", attrs: { href: "#" } },
               [_vm._v("status update")]
             ),
-            _vm._v(".\n                 "),
+            _vm._v(".\n              "),
             _c("span", { staticClass: "notification-date" }, [
               _c(
                 "time",
@@ -8068,13 +9181,13 @@ var staticRenderFns = [
               { staticClass: "h6 notification-friend", attrs: { href: "#" } },
               [_vm._v("Elaine Dreyfuss")]
             ),
-            _vm._v(" liked your\n                 "),
+            _vm._v(" liked your\n              "),
             _c(
               "a",
               { staticClass: "notification-link", attrs: { href: "#" } },
               [_vm._v("blog post")]
             ),
-            _vm._v(".\n                 "),
+            _vm._v(".\n              "),
             _c("span", { staticClass: "notification-date" }, [
               _c(
                 "time",
@@ -8101,13 +9214,13 @@ var staticRenderFns = [
               { staticClass: "h6 notification-friend", attrs: { href: "#" } },
               [_vm._v("Elaine Dreyfuss")]
             ),
-            _vm._v(" commented on your\n                 "),
+            _vm._v(" commented on your\n              "),
             _c(
               "a",
               { staticClass: "notification-link", attrs: { href: "#" } },
               [_vm._v("blog post")]
             ),
-            _vm._v(".\n                 "),
+            _vm._v(".\n              "),
             _c("span", { staticClass: "notification-date" }, [
               _c(
                 "time",
@@ -8134,13 +9247,13 @@ var staticRenderFns = [
               { staticClass: "h6 notification-friend", attrs: { href: "#" } },
               [_vm._v("Bruce Peterson")]
             ),
-            _vm._v(" changed his\n                 "),
+            _vm._v(" changed his\n              "),
             _c(
               "a",
               { staticClass: "notification-link", attrs: { href: "#" } },
               [_vm._v("profile picture")]
             ),
-            _vm._v(".\n                 "),
+            _vm._v(".\n              "),
             _c("span", { staticClass: "notification-date" }, [
               _c(
                 "time",
@@ -11402,6 +12515,144 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/member/dash/friend-circle.vue":
+/*!***************************************************************!*\
+  !*** ./resources/js/components/member/dash/friend-circle.vue ***!
+  \***************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _friend_circle_vue_vue_type_template_id_633c457c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./friend-circle.vue?vue&type=template&id=633c457c& */ "./resources/js/components/member/dash/friend-circle.vue?vue&type=template&id=633c457c&");
+/* harmony import */ var _friend_circle_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./friend-circle.vue?vue&type=script&lang=js& */ "./resources/js/components/member/dash/friend-circle.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _friend_circle_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _friend_circle_vue_vue_type_template_id_633c457c___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _friend_circle_vue_vue_type_template_id_633c457c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/member/dash/friend-circle.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/member/dash/friend-circle.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/components/member/dash/friend-circle.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_friend_circle_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./friend-circle.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/member/dash/friend-circle.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_friend_circle_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/member/dash/friend-circle.vue?vue&type=template&id=633c457c&":
+/*!**********************************************************************************************!*\
+  !*** ./resources/js/components/member/dash/friend-circle.vue?vue&type=template&id=633c457c& ***!
+  \**********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_friend_circle_vue_vue_type_template_id_633c457c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./friend-circle.vue?vue&type=template&id=633c457c& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/member/dash/friend-circle.vue?vue&type=template&id=633c457c&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_friend_circle_vue_vue_type_template_id_633c457c___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_friend_circle_vue_vue_type_template_id_633c457c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/member/dash/friend-requests.vue":
+/*!*****************************************************************!*\
+  !*** ./resources/js/components/member/dash/friend-requests.vue ***!
+  \*****************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _friend_requests_vue_vue_type_template_id_bb95cd20___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./friend-requests.vue?vue&type=template&id=bb95cd20& */ "./resources/js/components/member/dash/friend-requests.vue?vue&type=template&id=bb95cd20&");
+/* harmony import */ var _friend_requests_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./friend-requests.vue?vue&type=script&lang=js& */ "./resources/js/components/member/dash/friend-requests.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _friend_requests_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _friend_requests_vue_vue_type_template_id_bb95cd20___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _friend_requests_vue_vue_type_template_id_bb95cd20___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/member/dash/friend-requests.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/member/dash/friend-requests.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************!*\
+  !*** ./resources/js/components/member/dash/friend-requests.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_friend_requests_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./friend-requests.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/member/dash/friend-requests.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_friend_requests_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/member/dash/friend-requests.vue?vue&type=template&id=bb95cd20&":
+/*!************************************************************************************************!*\
+  !*** ./resources/js/components/member/dash/friend-requests.vue?vue&type=template&id=bb95cd20& ***!
+  \************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_friend_requests_vue_vue_type_template_id_bb95cd20___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./friend-requests.vue?vue&type=template&id=bb95cd20& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/member/dash/friend-requests.vue?vue&type=template&id=bb95cd20&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_friend_requests_vue_vue_type_template_id_bb95cd20___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_friend_requests_vue_vue_type_template_id_bb95cd20___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/member/dash/my-interests.vue":
 /*!**************************************************************!*\
   !*** ./resources/js/components/member/dash/my-interests.vue ***!
@@ -11656,15 +12907,17 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _right_side_bar_vue_vue_type_template_id_698d5255___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./right-side-bar.vue?vue&type=template&id=698d5255& */ "./resources/js/components/member/feed/right-side-bar.vue?vue&type=template&id=698d5255&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony import */ var _right_side_bar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./right-side-bar.vue?vue&type=script&lang=js& */ "./resources/js/components/member/feed/right-side-bar.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
-var script = {}
+
+
 
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__["default"])(
-  script,
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _right_side_bar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
   _right_side_bar_vue_vue_type_template_id_698d5255___WEBPACK_IMPORTED_MODULE_0__["render"],
   _right_side_bar_vue_vue_type_template_id_698d5255___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
@@ -11678,6 +12931,20 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 if (false) { var api; }
 component.options.__file = "resources/js/components/member/feed/right-side-bar.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/member/feed/right-side-bar.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************!*\
+  !*** ./resources/js/components/member/feed/right-side-bar.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_right_side_bar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./right-side-bar.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/member/feed/right-side-bar.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_right_side_bar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -11819,16 +13086,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_member_dash_personal_info_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/member/dash/personal-info.vue */ "./resources/js/components/member/dash/personal-info.vue");
 /* harmony import */ var _components_member_dash_change_password_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/member/dash/change-password.vue */ "./resources/js/components/member/dash/change-password.vue");
 /* harmony import */ var _components_member_dash_my_interests_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/member/dash/my-interests.vue */ "./resources/js/components/member/dash/my-interests.vue");
-/* harmony import */ var _components_member_dash_education_employment_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/member/dash/education-employment.vue */ "./resources/js/components/member/dash/education-employment.vue");
-/* harmony import */ var _components_member_profile_page_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/member/profile-page.vue */ "./resources/js/components/member/profile-page.vue");
-/* harmony import */ var _components_member_news_feed_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/member/news-feed.vue */ "./resources/js/components/member/news-feed.vue");
-/* harmony import */ var _components_member_feed_main_feed_vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/member/feed/main-feed.vue */ "./resources/js/components/member/feed/main-feed.vue");
-/* harmony import */ var _components_member_feed_left_side_bar_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/member/feed/left-side-bar.vue */ "./resources/js/components/member/feed/left-side-bar.vue");
-/* harmony import */ var _components_member_feed_right_side_bar_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/member/feed/right-side-bar.vue */ "./resources/js/components/member/feed/right-side-bar.vue");
+/* harmony import */ var _components_member_dash_friend_requests_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/member/dash/friend-requests.vue */ "./resources/js/components/member/dash/friend-requests.vue");
+/* harmony import */ var _components_member_dash_friend_circle_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/member/dash/friend-circle.vue */ "./resources/js/components/member/dash/friend-circle.vue");
+/* harmony import */ var _components_member_dash_education_employment_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/member/dash/education-employment.vue */ "./resources/js/components/member/dash/education-employment.vue");
+/* harmony import */ var _components_member_profile_page_vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/member/profile-page.vue */ "./resources/js/components/member/profile-page.vue");
+/* harmony import */ var _components_member_news_feed_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/member/news-feed.vue */ "./resources/js/components/member/news-feed.vue");
+/* harmony import */ var _components_member_feed_main_feed_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/member/feed/main-feed.vue */ "./resources/js/components/member/feed/main-feed.vue");
+/* harmony import */ var _components_member_feed_left_side_bar_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/member/feed/left-side-bar.vue */ "./resources/js/components/member/feed/left-side-bar.vue");
+/* harmony import */ var _components_member_feed_right_side_bar_vue__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/member/feed/right-side-bar.vue */ "./resources/js/components/member/feed/right-side-bar.vue");
 // vue router
 // ________________________
 
-Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]); // components
+Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]); // bootstrap-vue
+// components
 // _____________________
 // import SBar from './components/admin/SideBar.vue'
 // import Places from './components/admin/Places.vue'
@@ -11838,22 +13108,26 @@ Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]); // components
 
 
 
+ // 
 
 
 
 
- // import Axios from 'axios';
+
+
 
 Vue.component('PersonalInfo', _components_member_dash_personal_info_vue__WEBPACK_IMPORTED_MODULE_2__["default"]);
 Vue.component('ChangePassword', _components_member_dash_change_password_vue__WEBPACK_IMPORTED_MODULE_3__["default"]);
+Vue.component('FriendRequests', _components_member_dash_friend_requests_vue__WEBPACK_IMPORTED_MODULE_5__["default"]);
 Vue.component('AccountDash', _components_member_account_dash_vue__WEBPACK_IMPORTED_MODULE_1__["default"]);
 Vue.component('MyInterests', _components_member_dash_my_interests_vue__WEBPACK_IMPORTED_MODULE_4__["default"]);
-Vue.component('EducationEmployment', _components_member_dash_education_employment_vue__WEBPACK_IMPORTED_MODULE_5__["default"]);
-Vue.component('ProfilePage', _components_member_profile_page_vue__WEBPACK_IMPORTED_MODULE_6__["default"]);
-Vue.component('NewsFeed', _components_member_news_feed_vue__WEBPACK_IMPORTED_MODULE_7__["default"]);
-Vue.component('MainFeed', _components_member_feed_main_feed_vue__WEBPACK_IMPORTED_MODULE_8__["default"]);
-Vue.component('LeftSideBar', _components_member_feed_left_side_bar_vue__WEBPACK_IMPORTED_MODULE_9__["default"]);
-Vue.component('RightSideBar', _components_member_feed_right_side_bar_vue__WEBPACK_IMPORTED_MODULE_10__["default"]); // routes
+Vue.component('EducationEmployment', _components_member_dash_education_employment_vue__WEBPACK_IMPORTED_MODULE_7__["default"]);
+Vue.component('ProfilePage', _components_member_profile_page_vue__WEBPACK_IMPORTED_MODULE_8__["default"]);
+Vue.component('NewsFeed', _components_member_news_feed_vue__WEBPACK_IMPORTED_MODULE_9__["default"]);
+Vue.component('MainFeed', _components_member_feed_main_feed_vue__WEBPACK_IMPORTED_MODULE_10__["default"]);
+Vue.component('LeftSideBar', _components_member_feed_left_side_bar_vue__WEBPACK_IMPORTED_MODULE_11__["default"]);
+Vue.component('RightSideBar', _components_member_feed_right_side_bar_vue__WEBPACK_IMPORTED_MODULE_12__["default"]);
+Vue.component('FriendCircle', _components_member_dash_friend_circle_vue__WEBPACK_IMPORTED_MODULE_6__["default"]); // routes
 // __________________
 
 var routes = [{
@@ -11866,18 +13140,24 @@ var routes = [{
     path: '/account/change-password',
     component: _components_member_dash_change_password_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
   }, {
+    path: '/account/friend-requests',
+    component: _components_member_dash_friend_requests_vue__WEBPACK_IMPORTED_MODULE_5__["default"]
+  }, {
+    path: '/account/friend-circle',
+    component: _components_member_dash_friend_circle_vue__WEBPACK_IMPORTED_MODULE_6__["default"]
+  }, {
     path: '/account/my-interests',
     component: _components_member_dash_my_interests_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
   }, {
     path: '/account/education-employment',
-    component: _components_member_dash_education_employment_vue__WEBPACK_IMPORTED_MODULE_5__["default"]
+    component: _components_member_dash_education_employment_vue__WEBPACK_IMPORTED_MODULE_7__["default"]
   }]
 }, {
   path: '/profile-page',
-  component: _components_member_profile_page_vue__WEBPACK_IMPORTED_MODULE_6__["default"]
+  component: _components_member_profile_page_vue__WEBPACK_IMPORTED_MODULE_8__["default"]
 }, {
   path: '/',
-  component: _components_member_news_feed_vue__WEBPACK_IMPORTED_MODULE_7__["default"]
+  component: _components_member_news_feed_vue__WEBPACK_IMPORTED_MODULE_9__["default"]
 }];
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
   routes: routes // short for `routes: routes`

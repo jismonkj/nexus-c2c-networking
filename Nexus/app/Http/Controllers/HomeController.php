@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Member\InterestList;
 use Illuminate\Support\Arr;
+use App\Member\Friends;
+use App\Member\Profile;
+use App\Http\Controllers\Member\FriendCircleController;
 
 class HomeController extends Controller
 {
@@ -51,37 +54,17 @@ class HomeController extends Controller
     public function test()
     {
         // return Auth::user()->interests()->select('interest_id')->get();
-        // return User::select('id')->get()->toArray();
-         // user interst list
-         $userInterests = Auth::user()->interests()->select('interest_id')->get()->toArray();
+        // $user = json_encode(User::select('id')->get());
+        // return response($user);
+        // return Auth::user()->friends->where('fid', 9);
+        // $request = new Request;
+        // $request->uid = '11';
+        // return Auth::user()->friends->where('fid', 8)->count();
+        // $user = Profile::where('uid', 11)->select('fname', 'lname')->get();
+        // return $user->count();
+        // return FriendCircleController::show('request');
+        return Friends::where('status', 'request')->where('fid', Auth::id())->join('nexus_member_profile', 'fid', 'nexus_member_profile.uid')->select('nexus_member_profile.uid', 'fname', 'lname', 'gender')->get();
+        // return Auth::user()->friends();
 
-         //get members for each interest
-         $memberList = []; //members share same interests
-
-         foreach($userInterests as $intrerest){
-             $iid = $intrerest['interest_id'];
-
-             $intrGroup = InterestList::where('interest_id', $iid)->select('uid')->get()->toArray();
-             return $intrGroup;
-            //  array_push($memberList, $intrGroup);
-
-            // return $intrGroup;l
-             foreach($intrGroup as $user){
-            //      if(Arr::has($memberList, $user['uid'])){
-            //         array_search($user['uid'], $memberList);
-            //      }else{
-            //          array_push($memberList, $user);
-            //      }
-                array_push($memberList, $user);
-
-                
-             }
-         }
-
-         return $memberList;
-         //prioritize the list
-         foreach($memberList as $int){
-            
-         }
     }
 }

@@ -9,8 +9,7 @@
 		<div class="col-md-6">
 			<div class="landing-content">
 				<h1>Welcome to the Biggest Social Network in the World</h1>
-				<p>We are the best and biggest social network with 5 billion active users all around the world. Share you
-					thoughts, write blog posts, show your favourite music via Stopify, earn badges and much more!
+				<p>We are the best and biggest social network with 5 billion active users all around the world. Share your items, buy, sell, auctions and much more!
 				</p>
 				<a href="#" class="btn btn-md btn-border c-white">Register Now!</a>
 			</div>
@@ -38,7 +37,7 @@
 				<!-- Tab panes -->
 				<div class="tab-content">
 					<div class="tab-pane" id="home" role="tabpanel" data-mh="log-tab">
-						<div class="title h6">Register to Olympus</div>
+						<div class="title h6">Register to Nexus</div>
                         <form method="POST" action="{{ route('register') }}" class="content">
                         @csrf
 							<div class="row">
@@ -101,14 +100,32 @@
                             @csrf
 							<div class="row">
 								<div class="col col-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
-									<div class="form-group label-floating is-empty">
+									<div class="form-group label-floating is-focused is-empty" v-bind:class="{ 'has-error': _.has(errors, 'email') }">
 										<label class="control-label">Your Email</label>
                                         <input class="form-control" placeholder="" type="email"
-                                        name="email">
+										name="email" v-model="email">
+										
+                                        <span role="alert">
+                                            <strong>
+											@if ($errors->has('email'))
+												{{ $errors->first('email') }}
+											@endif
+											@{{ errors.email }}
+											</strong>
+                                        </span>
+                                       
 									</div>
-									<div class="form-group label-floating is-empty">
+									<div class="form-group label-floating is-empty" v-bind:class="{ 'has-error': _.has(errors, 'password') }">
 										<label class="control-label">Your Password</label>
-										<input class="form-control" placeholder="" type="password" name="password">
+										<input class="form-control" placeholder="" type="password" name="password" v-model="password">
+										<span role="alert">
+                                            <strong>
+											@if ($errors->has('password'))
+												{{ $errors->first('password') }}
+											@endif
+											@{{ errors.password }}
+											</strong>
+                                        </span>
 									</div>
 			
 									<div class="remember">
@@ -131,7 +148,7 @@
 									<a href="#" class="btn btn-lg bg-twitter full-width btn-icon-left"><i class="fab fa-twitter" aria-hidden="true"></i>Login with Twitter</a>
 			
 			
-									<p>Don’t you have an account? <a href="#">Register Now!</a> it’s really simple and you can start enjoing all the benefits!</p>
+									<p>Don’t you have an account? <a data-toggle="tab" href="#home" role="tab">Register Now!</a> it’s really simple and you can start enjoing all the benefits!</p>
 								</div>
 							</div>
 						</form>

@@ -28,6 +28,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('theme/css/main.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('theme/css/fonts.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/theme.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/animate.css') }}">
 
 
@@ -41,7 +42,7 @@
         <header class="header" id="site-header">
 
             <div class="page-title">
-                <h6>Nexus | Feed</h6>
+                <h6>Nexus | Stay Connected Start Buying</h6>
             </div>
 
             <div class="header-content-wrapper">
