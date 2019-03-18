@@ -98,12 +98,30 @@ var app = new Vue({
   data: {
     csrftoken: '',
     data: '',
+    queryServer: false,
+    chngLoginBtnTitle: 'Login',
+    chngRegBtnTitle: 'Complete Registration',
     //form-validation
     email: '',
     password: '',
     errors: {},
     rules: {
-      email: ''
+      email: /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/,
+      password: /^(?=.*\d).{4,10}$/,
+      fname: /[a-z]{1,10}/,
+      // lname: /[A-z][a-z]+/,
+      dob: /(\d{4})-(\d{2})-(\d{2})/,
+      gender: /^male$|^female$/
+    },
+    //registration
+    registerForm: {
+      email: '',
+      fname: '',
+      lname: '',
+      password: '',
+      dob: '',
+      gender: '',
+      validMail: false
     }
   },
   mounted: function mounted() {
@@ -111,15 +129,180 @@ var app = new Vue({
   },
   methods: {
     register: function register() {
-      var form = $('#regForm')[0];
-      this.data = new FormData(form); // this.data.append('_token', this.csrftoken);
+      var _this = this;
 
+      if (Object.keys(this.errors).length != 0) {
+        this.notifyR("Form has invalid details");
+        return;
+      }
+
+      if (this.hasEmptyFields('register')) {
+        this.notifyR("Please complete the form");
+        return;
+      }
+
+      var form = $('#regForm')[0];
+      this.data = new FormData(form);
+      this.queryServer = true;
       axios.post('/register', this.data).then(function (response) {
-        return console.log(response.data);
+        _this.queryServer = false; // console.log(response.data);
+
+        if (response.data) {
+          _this.notifyR("Registration Successful!");
+
+          setTimeout(function () {
+            window.location.href = "/home#/account/personal-info";
+          }, 1200);
+        } else {
+          _this.notifyR('Err! Something went wrong.');
+        }
       });
+    },
+    loginNex: function loginNex() {
+      if (this.hasEmptyFields('login')) {
+        this.notify("Please complete the form");
+        return;
+      }
+
+      if (Object.keys(this.errors).length == 0) {
+        $("#logNexus").submit();
+      }
+    },
+    notify: function notify(text) {
+      var _this2 = this;
+
+      this.chngLoginBtnTitle = text;
+      setTimeout(function () {
+        _this2.chngLoginBtnTitle = "Login";
+      }, 4000);
+    },
+    notifyR: function notifyR(text) {
+      var _this3 = this;
+
+      this.chngRegBtnTitle = text;
+      setTimeout(function () {
+        _this3.chngRegBtnTitle = "Complete Registration";
+      }, 4000);
+    },
+    validate: _.debounce(function (type) {
+      var _this4 = this;
+
+      switch (type) {
+        case 'email':
+          if (this.rules.email.test(this.registerForm.email)) {
+            this.queryServer = true;
+            axios.post('/check/mail/exists', {
+              'email': this.registerForm.email
+            }).then(function (response) {
+              if (response.data) {
+                _this4.errors.email = true;
+
+                _this4.notifyR("Email Already Exists");
+
+                _this4.registerForm.validMail = false;
+              } else {
+                _this4.registerForm.validMail = true;
+                delete _this4.errors.email;
+              }
+
+              _this4.queryServer = false;
+            });
+          } else {
+            this.errors.email = true;
+            this.registerForm.validMail = false;
+            this.notifyR("Invalid Email!");
+          }
+
+          break;
+
+        case 'fname':
+          if (!this.rules.fname.test(this.registerForm.fname)) {
+            this.errors.fname = true;
+            this.notifyR("Invalid First Name!");
+          } else {
+            delete this.errors.fname;
+          }
+
+          break;
+
+        case 'lname':
+          // if (!this.rules.lname.test(this.registerForm.lname)) {
+          //     this.errors.lname = true;
+          //     this.notifyR("Invalid Last Name!");
+          // } else {
+          //     delete this.errors.lname;
+          // }
+          break;
+
+        case 'dob':
+          if (!this.rules.dob.test(this.registerForm.dob)) {
+            this.errors.dob = true;
+            this.notifyR("Invalid Date of Birth!");
+          } else {
+            delete this.errors.dob;
+          }
+
+          break;
+
+        case 'gender':
+          if (!this.rules.gender.test(this.registerForm.gender)) {
+            this.errors.gender = true;
+            this.notifyR("Select Gender!");
+          } else {
+            delete this.errors.gender;
+          }
+
+          break;
+
+        case 'password':
+          if (!this.rules.password.test(this.registerForm.password)) {
+            this.errors.password = true;
+            this.notifyR("Invalid Password!");
+          } else {
+            delete this.errors.password;
+          }
+
+          break;
+      }
+    }, 400),
+    hasEmptyFields: function hasEmptyFields(type) {
+      switch (type) {
+        case 'login':
+          if (this.email == "" || this.password == "") {
+            return false;
+          }
+
+          return true;
+          break;
+
+        case 'register':
+          if (this.registerForm.email == "" || this.registerForm.password == "" || this.registerForm.fname == "" || this.registerForm.lname == "" || this.registerForm.dob == "" || this.registerForm.gender == "") {
+            return true;
+          }
+
+          return false;
+          break;
+      }
     }
   },
-  watch: {}
+  watch: {
+    email: _.debounce(function () {
+      if (!this.rules.email.test(this.email)) {
+        this.errors.email = true;
+        this.notify("Invalid Email!");
+      } else {
+        delete this.errors.email;
+      }
+    }, 500),
+    password: _.debounce(function () {
+      if (!this.rules.password.test(this.password)) {
+        this.errors.password = true;
+        this.notify("Invalid Password!");
+      } else {
+        delete this.errors.password;
+      }
+    }, 500)
+  }
 });
 
 /***/ }),

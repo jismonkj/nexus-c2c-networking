@@ -24,6 +24,7 @@ Route::resource('/country', 'CountryController');
 Route::resource('/state', 'StateController');
 Route::resource('/city', 'CityController');
 Route::post('/user/info', 'HomeController@getUserInfo');
+Route::post('/check/mail/exists', 'GuestController@checkIfMailExists');
 
 /* member routes
 ____________________________________________________________________
@@ -50,11 +51,10 @@ Route::resource('/admin', 'Admin\AdminController');
 Route::post('/admin/users/list', 'Admin\AdminController@listUsers');
 
 
-
-
 /* testing routes
 ___________________________________ _________________________________________
 _______________________________________________________________________________*/
 Route::get('/test', 'HomeController@test');
+Route::get('/te', 'GuestController@checkIfMailExists');
 
 // end testing routes ________________________

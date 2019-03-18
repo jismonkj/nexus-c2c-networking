@@ -446,8 +446,7 @@ CRUMINA.Bootstrap = function () {
 	 * ---------------------------*/
 	var date_select_field = $('input[name="datetimepicker"]');
 	if (date_select_field.length) {
-		var start = moment().subtract(29, 'days');
-
+		var start = moment().subtract(21, 'years');
 		date_select_field.daterangepicker({
 			startDate: start,
 			autoUpdateInput: false,

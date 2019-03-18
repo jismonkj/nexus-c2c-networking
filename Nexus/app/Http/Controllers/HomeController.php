@@ -48,8 +48,6 @@ class HomeController extends Controller
         return $data;
     }
 
-
-
     //test method
     public function test()
     {
@@ -64,7 +62,7 @@ class HomeController extends Controller
         // return $user->count();
         // return FriendCircleController::show('request');
         return Friends::where('status', 'request')->where('fid', Auth::id())->join('nexus_member_profile', 'fid', 'nexus_member_profile.uid')->select('nexus_member_profile.uid', 'fname', 'lname', 'gender')->get();
-        // return Auth::user()->friends();
-
+        return Auth::user()->friends();
+        return User::where('email', 'jismonkj1@gmail.com')->count();
     }
 }

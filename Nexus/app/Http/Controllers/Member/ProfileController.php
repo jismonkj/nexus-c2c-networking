@@ -115,8 +115,11 @@ class ProfileController extends Controller
     //change password
     public function changePassword(Request $request)
     {
-        $currPassword = Hash::make($request->currPassword);
+        $password = Auth::user()->password; //current password
         $newPassword = Hash::make($request->newPassword);
-        return User::find(1)->where('password', $currPassword)->update(['password' => $newPassword]);
+        if(Hash::check($request->currPassword, $password)){
+            return User::where('id', Auth::id())->update(['password' => $newPassword]);
+        }
+        return 0;
     }
 }

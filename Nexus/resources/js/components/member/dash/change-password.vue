@@ -61,7 +61,8 @@ export default {
       currPassword: "",
       newPassword: "",
       confirmPassword: "",
-      chngPswdBtnTitle: "Change Password Now!"
+      chngPswdBtnTitle: "Change Password Now!",
+      pattern: /^(?=.*\d).{4,10}$/
     };
   },
   methods: {
@@ -77,7 +78,9 @@ export default {
         this.notify("You cannot use the same password again!");
       } else if (this.newPassword != this.confirmPassword) {
         this.notify("Passwords do not match!");
-      } else {
+      } else if(!this.pattern.test(this.newPassword)){
+        this.notify("Password must be between 4 and 10 digits long and include at least one numeric digit.");
+      }else {
         //update password
         axios.post("member/password/change", this.$data).then(response => {
           this.notify(
