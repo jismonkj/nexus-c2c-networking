@@ -16,6 +16,7 @@ import PersonalInfo from './components/member/dash/personal-info.vue'
 import ChangePassword from './components/member/dash/change-password.vue'
 import MyInterests from './components/member/dash/my-interests.vue'
 import FriendRequests from './components/member/dash/friend-requests.vue'
+import SentRequests from './components/member/dash/sent-requests.vue'
 import FriendCircle from './components/member/dash/friend-circle.vue'
 // 
 import EducationEmployment from './components/member/dash/education-employment.vue'
@@ -29,6 +30,7 @@ import RightSideBar from './components/member/feed/right-side-bar.vue'
 Vue.component('PersonalInfo', PersonalInfo);
 Vue.component('ChangePassword', ChangePassword);
 Vue.component('FriendRequests', FriendRequests);
+Vue.component('SentRequests', SentRequests);
 Vue.component('AccountDash', AccountDash);
 Vue.component('MyInterests', MyInterests);
 Vue.component('EducationEmployment', EducationEmployment);
@@ -46,6 +48,7 @@ let routes = [
         { path:'/account/personal-info', component: PersonalInfo },
         { path:'/account/change-password', component: ChangePassword },
         { path:'/account/friend-requests', component: FriendRequests },
+        { path:'/account/sent-requests', component: SentRequests },
         { path:'/account/friend-circle', component: FriendCircle },
         { path:'/account/my-interests', component: MyInterests },
         { path:'/account/education-employment', component: EducationEmployment },

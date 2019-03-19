@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Member\InterestList;
+use App\Member\Profile;
 
-class InterestListTableSeeder extends Seeder
+class ProfileTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,6 +12,6 @@ class InterestListTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(InterestList::class, 20)->create();
+        factory(Profile::class, 12)->create();
     }
 }

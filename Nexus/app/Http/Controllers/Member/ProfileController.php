@@ -23,9 +23,13 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        //fetch current user profiel
-        // return InterestList::where('uid', Auth::id())->join('interests', 'interests.id', 'interest_id')->get();
-        return Auth::user()->profile;
+        //fetch current user profile
+        if(Auth::user()->profile){
+            $data = Auth::user()->profile;
+        }
+        $data['email'] = Auth::user()->email;
+        
+        return $data;
     }
 
     /**
@@ -96,7 +100,8 @@ class ProfileController extends Controller
             //new profile
             $data = $request->all();
             $data['uid'] = Auth::id();
-            return Profile::create($data);
+            // return $data;
+            return Profile::create($data)->count();
         }
         return 0;
     }

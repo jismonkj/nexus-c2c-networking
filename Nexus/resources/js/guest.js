@@ -39,10 +39,10 @@ const app = new Vue({
                 return;
             }
 
-            if (this.hasEmptyFields('register')) {
-                this.notifyR("Please complete the form");
-                return;
-            }
+            // if (this.hasEmptyFields('register')) {
+            //     this.notifyR("Please complete the form");
+            //     return;
+            // }
 
             var form = $('#regForm')[0];
             this.data = new FormData(form);
@@ -50,22 +50,23 @@ const app = new Vue({
             axios.post('/register', this.data)
                 .then(response => {
                     this.queryServer = false;
-                    // console.log(response.data);
                     if (response.data) {
                         this.notifyR("Registration Successful!");
-                        setTimeout(function(){
+                        setTimeout(function () {
                             window.location.href = "/home#/account/personal-info";
                         }, 1200);
                     } else {
                         this.notifyR('Err! Something went wrong.');
                     }
+                }).catch(error => {
+                    this.notifyR('Err! Something went wrong.');
                 });
         },
         loginNex: function () {
-            if (this.hasEmptyFields('login')) {
-                this.notify("Please complete the form");
-                return;
-            }
+            // if (this.hasEmptyFields('login')) {
+            //     this.notify("Please complete the form");
+            //     return;
+            // }
 
             if (Object.keys(this.errors).length == 0) {
                 $("#logNexus").submit();

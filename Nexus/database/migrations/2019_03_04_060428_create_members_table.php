@@ -17,7 +17,7 @@ class CreateMembersTable extends Migration
             $table->integer('uid')->unique();
             $table->string('fname', '60');
             $table->string('lname', '60');
-            $table->string('website', '60')->nullable();
+            $table->string('website')->nullable();
             $table->enum('gender', ['male', 'female'])->default('male');
             $table->string('status_text')->nullable();
             $table->date('dob');

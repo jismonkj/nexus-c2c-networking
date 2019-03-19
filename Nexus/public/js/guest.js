@@ -134,18 +134,17 @@ var app = new Vue({
       if (Object.keys(this.errors).length != 0) {
         this.notifyR("Form has invalid details");
         return;
-      }
+      } // if (this.hasEmptyFields('register')) {
+      //     this.notifyR("Please complete the form");
+      //     return;
+      // }
 
-      if (this.hasEmptyFields('register')) {
-        this.notifyR("Please complete the form");
-        return;
-      }
 
       var form = $('#regForm')[0];
       this.data = new FormData(form);
       this.queryServer = true;
       axios.post('/register', this.data).then(function (response) {
-        _this.queryServer = false; // console.log(response.data);
+        _this.queryServer = false;
 
         if (response.data) {
           _this.notifyR("Registration Successful!");
@@ -156,14 +155,15 @@ var app = new Vue({
         } else {
           _this.notifyR('Err! Something went wrong.');
         }
+      }).catch(function (error) {
+        _this.notifyR('Err! Something went wrong.');
       });
     },
     loginNex: function loginNex() {
-      if (this.hasEmptyFields('login')) {
-        this.notify("Please complete the form");
-        return;
-      }
-
+      // if (this.hasEmptyFields('login')) {
+      //     this.notify("Please complete the form");
+      //     return;
+      // }
       if (Object.keys(this.errors).length == 0) {
         $("#logNexus").submit();
       }

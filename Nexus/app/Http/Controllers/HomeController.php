@@ -37,32 +37,26 @@ class HomeController extends Controller
         }
     }
 
+    //check profile controller@index
     public function getUserInfo()
     {
         $data = Auth::user();
-        Auth::user()->profile ? $data->fresher = false : $data->fresher = true; //check if fresh user
-        $data->status_text = Auth::user()->profile->status_text; //get status text
-        //get name
-        $fullname = Auth::user()->profile->fname . " " . Auth::user()->profile->lname;
-        $data->uname = $fullname;
+        $data->fresher = true; //check if fresh user
+
+        if (Auth::user()->profile) {
+            $data->fresher = false;
+            $data->status_text = Auth::user()->profile->status_text; //get status text
+            //get name
+            $fullname = Auth::user()->profile->fname . " " . Auth::user()->profile->lname;
+            $data->uname = $fullname;
+        }
+
         return $data;
     }
 
     //test method
     public function test()
     {
-        // return Auth::user()->interests()->select('interest_id')->get();
-        // $user = json_encode(User::select('id')->get());
-        // return response($user);
-        // return Auth::user()->friends->where('fid', 9);
-        // $request = new Request;
-        // $request->uid = '11';
-        // return Auth::user()->friends->where('fid', 8)->count();
-        // $user = Profile::where('uid', 11)->select('fname', 'lname')->get();
-        // return $user->count();
-        // return FriendCircleController::show('request');
-        return Friends::where('status', 'request')->where('fid', Auth::id())->join('nexus_member_profile', 'fid', 'nexus_member_profile.uid')->select('nexus_member_profile.uid', 'fname', 'lname', 'gender')->get();
-        return Auth::user()->friends();
-        return User::where('email', 'jismonkj1@gmail.com')->count();
+        return Friends::where('status', 'request')->where('nexus_friends_circle.uid', Auth::id())->join('nexus_member_profile', 'nexus_friends_circle.uid', 'nexus_member_profile.uid')->select('nexus_member_profile.uid', 'fname', 'lname', 'gender')->get();
     }
 }

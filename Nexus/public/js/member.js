@@ -347,6 +347,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {// this.csrftoken = $("#csrf-token").attr('content');
   },
@@ -1171,6 +1176,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     var _this = this;
@@ -1248,6 +1255,128 @@ __webpack_require__.r(__webpack_exports__);
       setTimeout(function () {
         _this5.btnTitle = "Save All Changes";
       }, 5000);
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/member/dash/sent-requests.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/member/dash/sent-requests.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  mounted: function mounted() {
+    var _this = this;
+
+    axios.get("member/friends/sent").then(function (response) {
+      _this.sentRequests = response.data;
+    }).catch(function (error) {
+      _this.sentRequests = "";
+    });
+  },
+  data: function data() {
+    return {
+      sentRequests: {},
+      removed: []
+    };
+  },
+  methods: {
+    acceptRequest: function acceptRequest(uid) {
+      var _this2 = this;
+
+      //   server update
+      axios.put("member/friends/active", {
+        uid: uid
+      }).then(function (response) {
+        //   console.log(response.data);
+        //	ui update
+        var index = _this2.sentRequests.findIndex(function (item) {
+          return item.uid == uid;
+        });
+
+        var user = _this2.sentRequests.splice(index, 1);
+
+        _this2.accepted.push(user[0]);
+      });
+    },
+    delRequest: function delRequest(uid) {
+      var _this3 = this;
+
+      //   server update
+      axios.put("member/friends/removed", {
+        uid: uid
+      }).then(function (response) {
+        //   console.log(response.data);
+        //	ui update
+        var index = _this3.sentRequests.findIndex(function (item) {
+          return item.uid == uid;
+        });
+
+        var user = _this3.sentRequests.splice(index, 1);
+
+        _this3.removed.push(user[0]);
+      });
     }
   }
 });
@@ -1853,202 +1982,232 @@ var render = function() {
     _vm._v(" "),
     _vm._m(9),
     _vm._v(" "),
-    _c("div", { staticClass: "container" }, [
-      _c(
-        "div",
-        { staticClass: "row" },
-        [
-          _c(
-            "div",
-            {
-              staticClass:
-                "col col-xl-3 order-xl-1 col-lg-3 order-lg-1 col-md-12 order-md-2 col-sm-12 responsive-display-none"
-            },
-            [
-              _c("div", { staticClass: "ui-block" }, [
-                _c("div", { staticClass: "your-profile" }, [
-                  _vm._m(10),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      attrs: {
-                        id: "accordion",
-                        role: "tablist",
-                        "aria-multiselectable": "true"
-                      }
-                    },
-                    [
-                      _c("div", { staticClass: "card" }, [
+    _c(
+      "div",
+      { staticClass: "container", staticStyle: { "min-height": "90vh" } },
+      [
+        _c(
+          "div",
+          { staticClass: "row" },
+          [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "col col-xl-3 order-xl-1 col-lg-3 order-lg-1 col-md-12 order-md-2 col-sm-12 responsive-display-none"
+              },
+              [
+                _c("div", { staticClass: "ui-block" }, [
+                  _c("div", { staticClass: "your-profile" }, [
+                    _vm._m(10),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        attrs: {
+                          id: "accordion",
+                          role: "tablist",
+                          "aria-multiselectable": "true"
+                        }
+                      },
+                      [
+                        _c("div", { staticClass: "card" }, [
+                          _c(
+                            "div",
+                            {
+                              staticClass: "card-header",
+                              attrs: { role: "tab", id: "headingOne" }
+                            },
+                            [
+                              _c("h6", { staticClass: "mb-0" }, [
+                                _c(
+                                  "a",
+                                  {
+                                    attrs: {
+                                      "data-toggle": "collapse",
+                                      "data-parent": "#accordion",
+                                      href: "#collapseOne",
+                                      "aria-expanded": "true",
+                                      "aria-controls": "collapseOne"
+                                    }
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                        Profile Settings\n                        "
+                                    ),
+                                    _c(
+                                      "svg",
+                                      {
+                                        staticClass: "olymp-dropdown-arrow-icon"
+                                      },
+                                      [
+                                        _c("use", {
+                                          attrs: {
+                                            "xlink:href":
+                                              "svg-icons/sprites/icons.svg#olymp-dropdown-arrow-icon"
+                                          }
+                                        })
+                                      ]
+                                    )
+                                  ]
+                                )
+                              ])
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass: "collapse show",
+                              attrs: {
+                                id: "collapseOne",
+                                role: "tabpanel",
+                                "aria-labelledby": "headingOne"
+                              }
+                            },
+                            [
+                              _c("ul", { staticClass: "your-profile-menu" }, [
+                                _c(
+                                  "li",
+                                  [
+                                    _c(
+                                      "router-link",
+                                      {
+                                        attrs: { to: "/account/personal-info" }
+                                      },
+                                      [
+                                        _vm._v(
+                                          "\n                          Personal Information\n                        "
+                                        )
+                                      ]
+                                    )
+                                  ],
+                                  1
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "li",
+                                  [
+                                    _c(
+                                      "router-link",
+                                      {
+                                        attrs: {
+                                          to: "/account/change-password"
+                                        }
+                                      },
+                                      [
+                                        _vm._v(
+                                          "\n                          Change Password\n                        "
+                                        )
+                                      ]
+                                    )
+                                  ],
+                                  1
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "li",
+                                  [
+                                    _c(
+                                      "router-link",
+                                      {
+                                        attrs: { to: "/account/my-interests" }
+                                      },
+                                      [
+                                        _vm._v(
+                                          "\n                          My Interests\n                        "
+                                        )
+                                      ]
+                                    )
+                                  ],
+                                  1
+                                )
+                              ])
+                            ]
+                          )
+                        ])
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "ui-block-title" },
+                      [
                         _c(
-                          "div",
+                          "router-link",
                           {
-                            staticClass: "card-header",
-                            attrs: { role: "tab", id: "headingOne" }
+                            staticClass: "h6 title",
+                            attrs: { to: "/account/friend-requests" }
                           },
                           [
-                            _c("h6", { staticClass: "mb-0" }, [
-                              _c(
-                                "a",
-                                {
-                                  attrs: {
-                                    "data-toggle": "collapse",
-                                    "data-parent": "#accordion",
-                                    href: "#collapseOne",
-                                    "aria-expanded": "true",
-                                    "aria-controls": "collapseOne"
-                                  }
-                                },
-                                [
-                                  _vm._v(
-                                    "\n                        Profile Settings\n                        "
-                                  ),
-                                  _c(
-                                    "svg",
-                                    {
-                                      staticClass: "olymp-dropdown-arrow-icon"
-                                    },
-                                    [
-                                      _c("use", {
-                                        attrs: {
-                                          "xlink:href":
-                                            "svg-icons/sprites/icons.svg#olymp-dropdown-arrow-icon"
-                                        }
-                                      })
-                                    ]
-                                  )
-                                ]
-                              )
-                            ])
+                            _vm._v(
+                              "\n                Friend Requests\n                "
+                            )
                           ]
                         ),
                         _vm._v(" "),
                         _c(
-                          "div",
+                          "a",
                           {
-                            staticClass: "collapse show",
-                            attrs: {
-                              id: "collapseOne",
-                              role: "tabpanel",
-                              "aria-labelledby": "headingOne"
-                            }
+                            staticClass: "items-round-little bg-blue",
+                            attrs: { href: "#" }
+                          },
+                          [_vm._v("4")]
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "ui-block-title" },
+                      [
+                        _c(
+                          "router-link",
+                          {
+                            staticClass: "h6 title",
+                            attrs: { to: "/account/friend-circle" }
                           },
                           [
-                            _c("ul", { staticClass: "your-profile-menu" }, [
-                              _c(
-                                "li",
-                                [
-                                  _c(
-                                    "router-link",
-                                    { attrs: { to: "/account/personal-info" } },
-                                    [
-                                      _vm._v(
-                                        "\n                          Personal Information\n                        "
-                                      )
-                                    ]
-                                  )
-                                ],
-                                1
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "li",
-                                [
-                                  _c(
-                                    "router-link",
-                                    {
-                                      attrs: { to: "/account/change-password" }
-                                    },
-                                    [
-                                      _vm._v(
-                                        "\n                          Change Password\n                        "
-                                      )
-                                    ]
-                                  )
-                                ],
-                                1
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "li",
-                                [
-                                  _c(
-                                    "router-link",
-                                    { attrs: { to: "/account/my-interests" } },
-                                    [
-                                      _vm._v(
-                                        "\n                          My Interests\n                        "
-                                      )
-                                    ]
-                                  )
-                                ],
-                                1
-                              )
-                            ])
+                            _vm._v(
+                              "\n                Friend Circle\n                "
+                            )
                           ]
                         )
-                      ])
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "ui-block-title" },
-                    [
-                      _c(
-                        "router-link",
-                        {
-                          staticClass: "h6 title",
-                          attrs: { to: "/account/friend-requests" }
-                        },
-                        [
-                          _vm._v(
-                            "\n                Friend Requests\n                "
-                          )
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "a",
-                        {
-                          staticClass: "items-round-little bg-blue",
-                          attrs: { href: "#" }
-                        },
-                        [_vm._v("4")]
-                      )
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "ui-block-title" },
-                    [
-                      _c(
-                        "router-link",
-                        {
-                          staticClass: "h6 title",
-                          attrs: { to: "/account/friend-circle" }
-                        },
-                        [
-                          _vm._v(
-                            "\n                Friend Circle\n                "
-                          )
-                        ]
-                      )
-                    ],
-                    1
-                  )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "ui-block-title" },
+                      [
+                        _c(
+                          "router-link",
+                          {
+                            staticClass: "h6 title",
+                            attrs: { to: "/account/sent-requests" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                Sent Friend Requests\n                "
+                            )
+                          ]
+                        )
+                      ],
+                      1
+                    )
+                  ])
                 ])
-              ])
-            ]
-          ),
-          _vm._v(" "),
-          _c("router-view")
-        ],
-        1
-      )
-    ])
+              ]
+            ),
+            _vm._v(" "),
+            _c("router-view")
+          ],
+          1
+        )
+      ]
+    )
   ])
 }
 var staticRenderFns = [
@@ -3940,6 +4099,7 @@ var render = function() {
                                 expression: "profile.country_id"
                               }
                             ],
+                            staticClass: "form-control-lg",
                             attrs: { name: "country_id" },
                             on: {
                               change: [
@@ -4005,6 +4165,7 @@ var render = function() {
                                 expression: "profile.state_id"
                               }
                             ],
+                            staticClass: "form-control-lg",
                             attrs: { name: "state_id" },
                             on: {
                               change: [
@@ -4067,6 +4228,7 @@ var render = function() {
                                 expression: "profile.city_id"
                               }
                             ],
+                            staticClass: "form-control-lg",
                             attrs: { name: "state_id" },
                             on: {
                               change: [
@@ -4108,111 +4270,7 @@ var render = function() {
                 _vm._v(" "),
                 _c(
                   "div",
-                  { staticClass: "col col-lg-6 col-md-6 col-sm-12 col-12" },
-                  [
-                    _c("div", { staticClass: "form-group label-floating" }, [
-                      _c("label", { staticClass: "control-label" }, [
-                        _vm._v("Write a little description about you")
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "textarea",
-                        {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.profile.about_you,
-                              expression: "profile.about_you"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          attrs: { placeholder: "" },
-                          domProps: { value: _vm.profile.about_you },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.profile,
-                                "about_you",
-                                $event.target.value
-                              )
-                            }
-                          }
-                        },
-                        [
-                          _vm._v(
-                            "Hi, I’m James, I’m 36 and I work as a Digital Designer for the  “Daydreams” Agency in Pier 56"
-                          )
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c("span", { staticClass: "material-input" })
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "form-group label-floating is-select" },
-                      [
-                        _c("label", { staticClass: "control-label" }, [
-                          _vm._v("Your Gender")
-                        ]),
-                        _vm._v(" "),
-                        _c(
-                          "select",
-                          {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.profile.gender,
-                                expression: "profile.gender"
-                              }
-                            ],
-                            staticClass: "selectpicker form-control",
-                            attrs: { tabindex: "-98" },
-                            on: {
-                              change: function($event) {
-                                var $$selectedVal = Array.prototype.filter
-                                  .call($event.target.options, function(o) {
-                                    return o.selected
-                                  })
-                                  .map(function(o) {
-                                    var val = "_value" in o ? o._value : o.value
-                                    return val
-                                  })
-                                _vm.$set(
-                                  _vm.profile,
-                                  "gender",
-                                  $event.target.multiple
-                                    ? $$selectedVal
-                                    : $$selectedVal[0]
-                                )
-                              }
-                            }
-                          },
-                          [
-                            _c("option", { attrs: { value: "male" } }, [
-                              _vm._v("Male")
-                            ]),
-                            _vm._v(" "),
-                            _c("option", { attrs: { value: "female" } }, [
-                              _vm._v("Female")
-                            ])
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c("span", { staticClass: "material-input" })
-                      ]
-                    )
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "col col-lg-6 col-md-6 col-sm-12 col-12" },
+                  { staticClass: "col col-lg-4 col-md-4 col-sm-12 col-12" },
                   [
                     _c("div", { staticClass: "form-group label-floating" }, [
                       _c("label", { staticClass: "control-label" }, [
@@ -4228,7 +4286,7 @@ var render = function() {
                             expression: "profile.birth_place"
                           }
                         ],
-                        staticClass: "form-control",
+                        staticClass: "form-control-lg",
                         attrs: { placeholder: "", type: "text" },
                         domProps: { value: _vm.profile.birth_place },
                         on: {
@@ -4246,69 +4304,173 @@ var render = function() {
                       }),
                       _vm._v(" "),
                       _c("span", { staticClass: "material-input" })
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "col col-lg-4 col-md-4 col-sm-12 col-12" },
+                  [
+                    _c("div", { staticClass: "form-group label-floating " }, [
+                      _c("label", { staticClass: "control-label" }, [
+                        _vm._v("Your Gender")
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.profile.gender,
+                              expression: "profile.gender"
+                            }
+                          ],
+                          staticClass: " form-control-lg",
+                          attrs: { tabindex: "-98" },
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                _vm.profile,
+                                "gender",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              )
+                            }
+                          }
+                        },
+                        [
+                          _c("option", { attrs: { value: "male" } }, [
+                            _vm._v("Male")
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "female" } }, [
+                            _vm._v("Female")
+                          ])
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "material-input" })
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "col col-lg-4 col-md-4 col-sm-12 col-12" },
+                  [
+                    _c("div", { staticClass: "form-group label-floating" }, [
+                      _c("label", { staticClass: "control-label" }, [
+                        _vm._v("Status")
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.profile.relationship,
+                              expression: "profile.relationship"
+                            }
+                          ],
+                          staticClass: "form-control-lg",
+                          attrs: { tabindex: "-98" },
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                _vm.profile,
+                                "relationship",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              )
+                            }
+                          }
+                        },
+                        [
+                          _c("option", { attrs: { value: "married" } }, [
+                            _vm._v("Married")
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "single" } }, [
+                            _vm._v("Single")
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "open" } }, [
+                            _vm._v("In an open relationship")
+                          ])
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "material-input" })
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-12" }, [
+                  _c("div", { staticClass: "form-group label-floating" }, [
+                    _c("label", { staticClass: "control-label" }, [
+                      _vm._v("Write a little description about you")
                     ]),
                     _vm._v(" "),
                     _c(
-                      "div",
-                      { staticClass: "form-group label-floating is-select" },
-                      [
-                        _c("label", { staticClass: "control-label" }, [
-                          _vm._v("Status")
-                        ]),
-                        _vm._v(" "),
-                        _c(
-                          "select",
+                      "textarea",
+                      {
+                        directives: [
                           {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.profile.relationship,
-                                expression: "profile.relationship"
-                              }
-                            ],
-                            staticClass: "selectpicker form-control",
-                            attrs: { tabindex: "-98" },
-                            on: {
-                              change: function($event) {
-                                var $$selectedVal = Array.prototype.filter
-                                  .call($event.target.options, function(o) {
-                                    return o.selected
-                                  })
-                                  .map(function(o) {
-                                    var val = "_value" in o ? o._value : o.value
-                                    return val
-                                  })
-                                _vm.$set(
-                                  _vm.profile,
-                                  "relationship",
-                                  $event.target.multiple
-                                    ? $$selectedVal
-                                    : $$selectedVal[0]
-                                )
-                              }
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.profile.about_you,
+                            expression: "profile.about_you"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { placeholder: "" },
+                        domProps: { value: _vm.profile.about_you },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
                             }
-                          },
-                          [
-                            _c("option", { attrs: { value: "married" } }, [
-                              _vm._v("Married")
-                            ]),
-                            _vm._v(" "),
-                            _c("option", { attrs: { value: "single" } }, [
-                              _vm._v("Single")
-                            ]),
-                            _vm._v(" "),
-                            _c("option", { attrs: { value: "open" } }, [
-                              _vm._v("In an open relationship")
-                            ])
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c("span", { staticClass: "material-input" })
+                            _vm.$set(
+                              _vm.profile,
+                              "about_you",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "Hi, I’m James, I’m 36 and I work as a Digital Designer for the  “Daydreams” Agency in Pier 56"
+                        )
                       ]
-                    )
-                  ]
-                ),
+                    ),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "material-input" })
+                  ])
+                ]),
                 _vm._v(" "),
                 _c(
                   "div",
@@ -4680,6 +4842,155 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "ui-block-title" }, [
       _c("h6", { staticClass: "title" }, [_vm._v("Personal Information")])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/member/dash/sent-requests.vue?vue&type=template&id=4e60f014&":
+/*!****************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/member/dash/sent-requests.vue?vue&type=template&id=4e60f014& ***!
+  \****************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticClass:
+        "col col-xl-9 order-xl-2 col-lg-9 order-lg-2 col-md-12 order-md-1 col-sm-12 col-12"
+    },
+    [
+      _c("div", { staticClass: "ui-block" }, [
+        _c("div", { staticClass: "ui-block-title" }, [
+          _c("h6", { staticClass: "title" }, [_vm._v("Sent Friend Requests")]),
+          _vm._v(" "),
+          _c("a", { staticClass: "more", attrs: { href: "#" } }, [
+            _c("svg", { staticClass: "olymp-three-dots-icon" }, [
+              _c("use", {
+                attrs: {
+                  "xlink:href":
+                    "theme/svg-icons/sprites/icons.svg#olymp-three-dots-icon"
+                }
+              })
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c(
+          "ul",
+          { staticClass: "notification-list friend-requests" },
+          [
+            _vm.sentRequests == ""
+              ? _c("li", [
+                  _c("div", { staticClass: "notification-event" }, [
+                    _vm._v("\n\t\t\t  No Pending Sent Friend Requests\n\t\t  ")
+                  ])
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm._l(_vm.sentRequests, function(user) {
+              return _c("li", { key: user.id }, [
+                _vm._m(0, true),
+                _vm._v(" "),
+                _c("div", { staticClass: "notification-event" }, [
+                  _c(
+                    "a",
+                    {
+                      staticClass: "h6 notification-friend",
+                      attrs: { href: "#" }
+                    },
+                    [_vm._v(_vm._s(user.fname + " " + user.lname))]
+                  ),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "chat-message-item" }, [
+                    _vm._v("Mutual Friend: Sarah Hetfield")
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("span", { staticClass: "notification-icon" }, [
+                  _c(
+                    "a",
+                    {
+                      staticClass: "accept-request request-del",
+                      attrs: { href: "#" },
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          return _vm.delRequest(user.uid)
+                        }
+                      }
+                    },
+                    [
+                      _c("span", { staticClass: "icon-minus" }, [
+                        _c("svg", { staticClass: "olymp-happy-face-icon" }, [
+                          _c("use", {
+                            attrs: {
+                              "xlink:href":
+                                "theme/svg-icons/sprites/icons.svg#olymp-happy-face-icon"
+                            }
+                          })
+                        ])
+                      ])
+                    ]
+                  )
+                ])
+              ])
+            }),
+            _vm._v(" "),
+            _c(
+              "transition-group",
+              { attrs: { "enter-active-class": "animate fade" } },
+              _vm._l(_vm.removed, function(user) {
+                return _c("li", { key: user.uid, staticClass: "accepted" }, [
+                  _c("div", { staticClass: "author-thumb" }, [
+                    _c("img", {
+                      attrs: { src: "theme/img/avatar17-sm.jpg", alt: "author" }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "notification-event" }, [
+                    _vm._v("\n              You removed\n              "),
+                    _c(
+                      "a",
+                      {
+                        staticClass: "h6 notification-friend",
+                        attrs: { href: "#" }
+                      },
+                      [_vm._v(_vm._s(user.fname + " " + user.lname))]
+                    ),
+                    _vm._v("'s friend request.\n            ")
+                  ])
+                ])
+              }),
+              0
+            )
+          ],
+          2
+        )
+      ])
+    ]
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "author-thumb" }, [
+      _c("img", { attrs: { src: "theme/img/avatar15-sm.jpg", alt: "author" } })
     ])
   }
 ]
@@ -12794,6 +13105,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/member/dash/sent-requests.vue":
+/*!***************************************************************!*\
+  !*** ./resources/js/components/member/dash/sent-requests.vue ***!
+  \***************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _sent_requests_vue_vue_type_template_id_4e60f014___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./sent-requests.vue?vue&type=template&id=4e60f014& */ "./resources/js/components/member/dash/sent-requests.vue?vue&type=template&id=4e60f014&");
+/* harmony import */ var _sent_requests_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./sent-requests.vue?vue&type=script&lang=js& */ "./resources/js/components/member/dash/sent-requests.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _sent_requests_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _sent_requests_vue_vue_type_template_id_4e60f014___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _sent_requests_vue_vue_type_template_id_4e60f014___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/member/dash/sent-requests.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/member/dash/sent-requests.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/components/member/dash/sent-requests.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_sent_requests_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./sent-requests.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/member/dash/sent-requests.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_sent_requests_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/member/dash/sent-requests.vue?vue&type=template&id=4e60f014&":
+/*!**********************************************************************************************!*\
+  !*** ./resources/js/components/member/dash/sent-requests.vue?vue&type=template&id=4e60f014& ***!
+  \**********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_sent_requests_vue_vue_type_template_id_4e60f014___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./sent-requests.vue?vue&type=template&id=4e60f014& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/member/dash/sent-requests.vue?vue&type=template&id=4e60f014&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_sent_requests_vue_vue_type_template_id_4e60f014___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_sent_requests_vue_vue_type_template_id_4e60f014___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/member/feed/left-side-bar.vue":
 /*!***************************************************************!*\
   !*** ./resources/js/components/member/feed/left-side-bar.vue ***!
@@ -13090,13 +13470,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_member_dash_change_password_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/member/dash/change-password.vue */ "./resources/js/components/member/dash/change-password.vue");
 /* harmony import */ var _components_member_dash_my_interests_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/member/dash/my-interests.vue */ "./resources/js/components/member/dash/my-interests.vue");
 /* harmony import */ var _components_member_dash_friend_requests_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/member/dash/friend-requests.vue */ "./resources/js/components/member/dash/friend-requests.vue");
-/* harmony import */ var _components_member_dash_friend_circle_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/member/dash/friend-circle.vue */ "./resources/js/components/member/dash/friend-circle.vue");
-/* harmony import */ var _components_member_dash_education_employment_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/member/dash/education-employment.vue */ "./resources/js/components/member/dash/education-employment.vue");
-/* harmony import */ var _components_member_profile_page_vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/member/profile-page.vue */ "./resources/js/components/member/profile-page.vue");
-/* harmony import */ var _components_member_news_feed_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/member/news-feed.vue */ "./resources/js/components/member/news-feed.vue");
-/* harmony import */ var _components_member_feed_main_feed_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/member/feed/main-feed.vue */ "./resources/js/components/member/feed/main-feed.vue");
-/* harmony import */ var _components_member_feed_left_side_bar_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/member/feed/left-side-bar.vue */ "./resources/js/components/member/feed/left-side-bar.vue");
-/* harmony import */ var _components_member_feed_right_side_bar_vue__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/member/feed/right-side-bar.vue */ "./resources/js/components/member/feed/right-side-bar.vue");
+/* harmony import */ var _components_member_dash_sent_requests_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/member/dash/sent-requests.vue */ "./resources/js/components/member/dash/sent-requests.vue");
+/* harmony import */ var _components_member_dash_friend_circle_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/member/dash/friend-circle.vue */ "./resources/js/components/member/dash/friend-circle.vue");
+/* harmony import */ var _components_member_dash_education_employment_vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/member/dash/education-employment.vue */ "./resources/js/components/member/dash/education-employment.vue");
+/* harmony import */ var _components_member_profile_page_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/member/profile-page.vue */ "./resources/js/components/member/profile-page.vue");
+/* harmony import */ var _components_member_news_feed_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/member/news-feed.vue */ "./resources/js/components/member/news-feed.vue");
+/* harmony import */ var _components_member_feed_main_feed_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/member/feed/main-feed.vue */ "./resources/js/components/member/feed/main-feed.vue");
+/* harmony import */ var _components_member_feed_left_side_bar_vue__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/member/feed/left-side-bar.vue */ "./resources/js/components/member/feed/left-side-bar.vue");
+/* harmony import */ var _components_member_feed_right_side_bar_vue__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/member/feed/right-side-bar.vue */ "./resources/js/components/member/feed/right-side-bar.vue");
 // vue router
 // ________________________
 
@@ -13105,6 +13486,7 @@ Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]); // bootstrap-vue
 // _____________________
 // import SBar from './components/admin/SideBar.vue'
 // import Places from './components/admin/Places.vue'
+
 
 
 
@@ -13122,15 +13504,16 @@ Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]); // bootstrap-vue
 Vue.component('PersonalInfo', _components_member_dash_personal_info_vue__WEBPACK_IMPORTED_MODULE_2__["default"]);
 Vue.component('ChangePassword', _components_member_dash_change_password_vue__WEBPACK_IMPORTED_MODULE_3__["default"]);
 Vue.component('FriendRequests', _components_member_dash_friend_requests_vue__WEBPACK_IMPORTED_MODULE_5__["default"]);
+Vue.component('SentRequests', _components_member_dash_sent_requests_vue__WEBPACK_IMPORTED_MODULE_6__["default"]);
 Vue.component('AccountDash', _components_member_account_dash_vue__WEBPACK_IMPORTED_MODULE_1__["default"]);
 Vue.component('MyInterests', _components_member_dash_my_interests_vue__WEBPACK_IMPORTED_MODULE_4__["default"]);
-Vue.component('EducationEmployment', _components_member_dash_education_employment_vue__WEBPACK_IMPORTED_MODULE_7__["default"]);
-Vue.component('ProfilePage', _components_member_profile_page_vue__WEBPACK_IMPORTED_MODULE_8__["default"]);
-Vue.component('NewsFeed', _components_member_news_feed_vue__WEBPACK_IMPORTED_MODULE_9__["default"]);
-Vue.component('MainFeed', _components_member_feed_main_feed_vue__WEBPACK_IMPORTED_MODULE_10__["default"]);
-Vue.component('LeftSideBar', _components_member_feed_left_side_bar_vue__WEBPACK_IMPORTED_MODULE_11__["default"]);
-Vue.component('RightSideBar', _components_member_feed_right_side_bar_vue__WEBPACK_IMPORTED_MODULE_12__["default"]);
-Vue.component('FriendCircle', _components_member_dash_friend_circle_vue__WEBPACK_IMPORTED_MODULE_6__["default"]); // routes
+Vue.component('EducationEmployment', _components_member_dash_education_employment_vue__WEBPACK_IMPORTED_MODULE_8__["default"]);
+Vue.component('ProfilePage', _components_member_profile_page_vue__WEBPACK_IMPORTED_MODULE_9__["default"]);
+Vue.component('NewsFeed', _components_member_news_feed_vue__WEBPACK_IMPORTED_MODULE_10__["default"]);
+Vue.component('MainFeed', _components_member_feed_main_feed_vue__WEBPACK_IMPORTED_MODULE_11__["default"]);
+Vue.component('LeftSideBar', _components_member_feed_left_side_bar_vue__WEBPACK_IMPORTED_MODULE_12__["default"]);
+Vue.component('RightSideBar', _components_member_feed_right_side_bar_vue__WEBPACK_IMPORTED_MODULE_13__["default"]);
+Vue.component('FriendCircle', _components_member_dash_friend_circle_vue__WEBPACK_IMPORTED_MODULE_7__["default"]); // routes
 // __________________
 
 var routes = [{
@@ -13146,21 +13529,24 @@ var routes = [{
     path: '/account/friend-requests',
     component: _components_member_dash_friend_requests_vue__WEBPACK_IMPORTED_MODULE_5__["default"]
   }, {
+    path: '/account/sent-requests',
+    component: _components_member_dash_sent_requests_vue__WEBPACK_IMPORTED_MODULE_6__["default"]
+  }, {
     path: '/account/friend-circle',
-    component: _components_member_dash_friend_circle_vue__WEBPACK_IMPORTED_MODULE_6__["default"]
+    component: _components_member_dash_friend_circle_vue__WEBPACK_IMPORTED_MODULE_7__["default"]
   }, {
     path: '/account/my-interests',
     component: _components_member_dash_my_interests_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
   }, {
     path: '/account/education-employment',
-    component: _components_member_dash_education_employment_vue__WEBPACK_IMPORTED_MODULE_7__["default"]
+    component: _components_member_dash_education_employment_vue__WEBPACK_IMPORTED_MODULE_8__["default"]
   }]
 }, {
   path: '/profile-page',
-  component: _components_member_profile_page_vue__WEBPACK_IMPORTED_MODULE_8__["default"]
+  component: _components_member_profile_page_vue__WEBPACK_IMPORTED_MODULE_9__["default"]
 }, {
   path: '/',
-  component: _components_member_news_feed_vue__WEBPACK_IMPORTED_MODULE_9__["default"]
+  component: _components_member_news_feed_vue__WEBPACK_IMPORTED_MODULE_10__["default"]
 }];
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
   routes: routes // short for `routes: routes`

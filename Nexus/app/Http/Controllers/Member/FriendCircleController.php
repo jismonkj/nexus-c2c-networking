@@ -20,7 +20,7 @@ class FriendCircleController extends Controller
     /* FRIEND SUGGETIONS
     __________________________________________
     ********************************************/
-    public static function getFriendSuggestions()
+    public function getFriendSuggestions()
     {
         # user interst list
         $userInterests = Auth::user()->interests()->select('interest_id')->get();
@@ -31,11 +31,17 @@ class FriendCircleController extends Controller
             $intrGroup = InterestList::where('interest_id', $iid)->where('uid', '!=', Auth::id())->select('uid')->get()->toArray();
             # adding each member to the list
             foreach ($intrGroup as $member) {
-                if (Arr::has($memberList, $member['uid'])) {
-                    # increase rep. count for existing member
-                    $key = array_search(['uid' => $member['uid']], $memberList);
-                    $memberList[$key]['rep']++;
-                } else {
+                $key = 0;
+                $flag = false;
+                foreach ($memberList as $memberL) {
+                    if ($memberL['uid'] == $member['uid']) { //existing member
+                        $flag = true;
+                        # increase rep. count for existing member
+                        $memberList[$key]['rep']++;
+                    }
+                    $key++;
+                }
+                if (!$flag) {
                     # for new member
                     $member['rep'] = 1;
                     array_push($memberList, $member);
@@ -52,7 +58,7 @@ class FriendCircleController extends Controller
         # removing friends from the list
         foreach ($memberList as $member) {
             $key = array_search($member, $memberList);
-            if (Auth::user()->friends->where('fid', $member['uid'])->count()) {
+            if (Auth::user()->friends()->where('fid', $member['uid'])->count()) {
                 array_splice($memberList, $key, 1);
             } else {
                 # getting names of suggetion candidates
@@ -91,7 +97,10 @@ class FriendCircleController extends Controller
     {
         switch ($status) {
             case 'request':
-            return Friends::where('status', $status)->where('fid', Auth::id())->join('nexus_member_profile', 'nexus_friends_circle.uid', 'nexus_member_profile.uid')->select('nexus_member_profile.uid', 'fname', 'lname', 'gender')->get();
+                return Friends::where('status', $status)->where('fid', Auth::id())->join('nexus_member_profile', 'nexus_friends_circle.uid', 'nexus_member_profile.uid')->select('nexus_member_profile.uid', 'fname', 'lname', 'gender')->get();
+                break;
+            case 'sent':
+                return Friends::where('status', 'request')->where('nexus_friends_circle.uid', Auth::id())->join('nexus_member_profile', 'nexus_friends_circle.uid', 'nexus_member_profile.uid')->select('nexus_member_profile.uid', 'fname', 'lname', 'gender')->get();
                 break;
         }
 

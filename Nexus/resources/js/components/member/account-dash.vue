@@ -162,7 +162,7 @@
       <img class="img-bottom" src="/theme/img/account-bottom.png" alt="friends">
     </div>
 
-    <div class="container">
+    <div class="container" style="min-height:90vh">
       <div class="row">
         <div
           class="col col-xl-3 order-xl-1 col-lg-3 order-lg-1 col-md-12 order-md-2 col-sm-12 responsive-display-none"
@@ -237,6 +237,11 @@
               <div class="ui-block-title">
                 <router-link  class="h6 title" to="/account/friend-circle">
                 Friend Circle
+                </router-link>
+              </div>
+              <div class="ui-block-title">
+                <router-link  class="h6 title" to="/account/sent-requests">
+                Sent Friend Requests
                 </router-link>
               </div>
             </div>
