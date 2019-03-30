@@ -31494,9 +31494,9 @@ if (token) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/blake/Workspace/WebApps/MCAMainProject/Nexus/resources/js/app.js */"./resources/js/app.js");
-__webpack_require__(/*! /home/blake/Workspace/WebApps/MCAMainProject/Nexus/resources/sass/app.scss */"./resources/sass/app.scss");
-module.exports = __webpack_require__(/*! /home/blake/Workspace/WebApps/MCAMainProject/Nexus/resources/sass/animate.scss */"./resources/sass/animate.scss");
+__webpack_require__(/*! /home/blake/_workspace/WebApps/MCAMainProject/Nexus/resources/js/app.js */"./resources/js/app.js");
+__webpack_require__(/*! /home/blake/_workspace/WebApps/MCAMainProject/Nexus/resources/sass/app.scss */"./resources/sass/app.scss");
+module.exports = __webpack_require__(/*! /home/blake/_workspace/WebApps/MCAMainProject/Nexus/resources/sass/animate.scss */"./resources/sass/animate.scss");
 
 
 /***/ })

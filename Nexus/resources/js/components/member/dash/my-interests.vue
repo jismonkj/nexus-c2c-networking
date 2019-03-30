@@ -17,7 +17,7 @@
           <div class="available-widget">
             <div class="h6 title">{{ uinterest.name }}</div>
             <div class="more" @click="delInterest(uinterest.iid)">
-              <i class="fa fa-times"></i>
+              <i class="fa fa-times-circle"></i>
             </div>
           </div>
         </div>

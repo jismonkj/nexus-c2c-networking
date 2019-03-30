@@ -10,7 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
  */
-Auth::routes();
+Auth::routes(['verify' => true]);
 Route::get('/', 'Auth\LoginController@showLoginForm');
 Route::view('/some', 'some');
 Route::get('/home', 'HomeController@index')->name('nexushome');
@@ -23,13 +23,14 @@ ___________________________________________________________________ */
 Route::resource('/country', 'CountryController');
 Route::resource('/state', 'StateController');
 Route::resource('/city', 'CityController');
-Route::post('/user/info', 'HomeController@getUserInfo');
+
 Route::post('/check/mail/exists', 'GuestController@checkIfMailExists');
 
 /* member routes
 ____________________________________________________________________
 ________________________________________________________________________*/
-
+Route::post('/user/basicinfo', 'HomeController@getUserBasicInfo');
+Route::post('/user/info', 'HomeController@getUserInfo');
 Route::resource('/member/profile', 'Member\ProfileController');
 Route::post('/member/password/change', 'Member\ProfileController@changePassword');
 # -- interests
@@ -42,6 +43,7 @@ Route::post('member/status/text', 'Member\MemberController@updateStatus');
 # -- friends
 Route::resource('member/friends', 'Member\FriendCircleController');
 Route::get('member/fsuggestions', 'Member\FriendCircleController@getFriendSuggestions');
+Route::post('member/friend_circle', 'Member\FriendCircleController@getMemberFriendCircle');
 
 /* admin routes
 _____________________________________________________________________________

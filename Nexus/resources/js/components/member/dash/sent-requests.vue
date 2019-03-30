@@ -22,7 +22,7 @@
             <img src="theme/img/avatar15-sm.jpg" alt="author">
           </div>
           <div class="notification-event">
-            <a href="#" class="h6 notification-friend">{{ user.fname+" "+user.lname }}</a>
+            <a :href="$root.encr(user.uid)" class="h6 notification-friend">{{ user.fname+" "+user.lname }}</a>
             <span class="chat-message-item">Mutual Friend: Sarah Hetfield</span>
           </div>
           <span class="notification-icon">

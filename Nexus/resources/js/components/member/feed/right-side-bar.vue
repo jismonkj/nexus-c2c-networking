@@ -48,7 +48,7 @@
                   <img src="theme/img/avatar38-sm.jpg" alt="author">
                 </div>
                 <div class="notification-event">
-                  <a href="#" class="h6 notification-friend">{{ people.name }}</a>
+                  <a :href="$root.encr(people.uid)" class="h6 notification-friend">{{ people.name }}</a>
                   <span class="chat-message-item">8 Friends in Common</span>
                 </div>
                 <span

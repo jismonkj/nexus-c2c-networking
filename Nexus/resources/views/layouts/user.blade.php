@@ -496,7 +496,7 @@
 
                             </div>
                         </div>
-                        <router-link to="/profile-page" class="author-name fn">
+                        <router-link to="/profile/about" class="author-name fn">
 
                             <div class="author-title">
                                 @{{ user.uname }}<svg class="olymp-dropdown-arrow-icon">

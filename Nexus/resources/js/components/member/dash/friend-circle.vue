@@ -49,7 +49,7 @@
                   <img src="theme/img/avatar1.jpg" alt="author">
                 </div>
                 <div class="author-content">
-                  <a href="#" class="h5 author-name">{{ friend.fname+" "+friend.lname }}</a>
+                  <a :href="$root.encr(friend.uid)" class="h5 author-name">{{ friend.fname+" "+friend.lname }}</a>
                   <div class="country">{{ friend.city_name }} , {{ friend.country_name}}</div>
                 </div>
                 <div>

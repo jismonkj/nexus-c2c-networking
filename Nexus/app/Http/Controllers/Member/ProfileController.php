@@ -9,6 +9,11 @@ use App\Member\Profile;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use App\Member\InterestList;
+use App\Http\Controllers\Member\MemberController;
+use App\City;
+use App\State;
+use App\Country;
+use App\Member\Friends;
 
 class ProfileController extends Controller
 {
@@ -24,11 +29,11 @@ class ProfileController extends Controller
     public function index()
     {
         //fetch current user profile
-        if(Auth::user()->profile){
+        if (Auth::user()->profile) {
             $data = Auth::user()->profile;
         }
         $data['email'] = Auth::user()->email;
-        
+
         return $data;
     }
 
@@ -62,7 +67,34 @@ class ProfileController extends Controller
     public function show($id)
     {
         //fetch another user profile
-        return User::find($id)->profile;
+        $profile = User::find($id)->profile()->join('users', 'users.id', 'nexus_member_profile.uid')->select('nexus_member_profile.*', 'users.email')->get();
+
+        //set place names
+        if ($profile[0]->city_id != "") {
+            $city = City::where('id', $profile[0]->city_id)->get();
+            $state = State::where('id', $city[0]->sid)->get();
+            $country = Country::where('id', $state[0]->cid)->get();
+
+            $profile[0]->city_name = $city[0]->city_name;
+            $profile[0]->state_name = $state[0]->state_name;
+            $profile[0]->country_name = $country[0]->country_name;
+        }
+
+        $profile[0]->connected = false;
+        //see if connected
+        if(Friends::where('uid', $profile[0]->uid)->where('fid', Auth::id())->where('status', 'active')->count() || Friends::where('fid', $profile[0]->uid)->where('uid', Auth::id())->where('status', 'active')->count()){
+            $profile[0]->connected = true;
+                }
+
+        if(Friends::where('uid', $profile[0]->uid)->where('fid', Auth::id())->where('status', 'request')->count() || Friends::where('fid', $profile[0]->uid)->where('uid', Auth::id())->where('status', 'request')->count()){
+            $profile[0]->connected = 3;
+                }
+
+        // //get intererest list of the user
+        $interests = InterestList::where('uid', Auth::id())->join('interests', 'interests.id', 'interest_id')->select('name')->get();
+
+        $profile[0]->interests = $interests;
+        return $profile[0];
     }
 
     /**
@@ -122,7 +154,7 @@ class ProfileController extends Controller
     {
         $password = Auth::user()->password; //current password
         $newPassword = Hash::make($request->newPassword);
-        if(Hash::check($request->currPassword, $password)){
+        if (Hash::check($request->currPassword, $password)) {
             return User::where('id', Auth::id())->update(['password' => $newPassword]);
         }
         return 0;

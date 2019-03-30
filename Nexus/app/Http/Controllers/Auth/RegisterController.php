@@ -78,7 +78,7 @@ class RegisterController extends Controller
         Profile::create([
             'uid' => $user->id,
             'fname'=>$data['fname'],
-            'lname'=>$data['fname'],
+            'lname'=>$data['lname'],
             'gender'=>$data['gender'],
             'dob'=>$data['dob'],
         ]);
