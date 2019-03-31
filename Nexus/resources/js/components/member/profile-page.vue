@@ -7,7 +7,7 @@
           <div class="ui-block">
             <div class="top-header top-header-favorit">
               <div class="top-header-thumb">
-                <img src="theme/img/top-header2.jpg" alt="nature">
+                <img :src="coverUrl" alt="nature">
                 <div class="top-header-author">
                   <div class="author-thumb">
                     <img src="theme/img/author-main2.jpg" alt="author">
@@ -46,7 +46,7 @@
 
                     <ul class="more-dropdown more-with-triangle triangle-bottom-right">
                       <li>
-                        <a href="#" @click.prevent="isModalVisible=true">Update Profile Photo</a>
+                        <a href="#" @click.prevent="toggleShow">Update Profile Photo</a>
                       </li>
                       <li>
                         <a
@@ -71,13 +71,76 @@
     <div class="container">
       <router-view></router-view>
     </div>
-    <modal-photo v-show="isModalVisible"></modal-photo>
+    <!-- <modal-photo v-show="isModalVisible"></modal-photo> -->
+    <!-- <a class="btn" >set avatar</a> -->
+    <my-upload field="image"
+        @crop-success="cropSuccess"
+        @crop-upload-success="cropUploadSuccess"
+        @crop-upload-fail="cropUploadFail"
+        v-model="show"
+		:width="630"
+		:height="220"
+		url="images/upload"
+		:params="{_token:$root.csrftoken}"
+    lang-type="en"
+    noCircle='true'
+    method="post"
+		img-format="png"></my-upload>
+	<img :src="imgDataUrl">
   </div>
 </template>
 <script>
+import myUpload from "vue-image-crop-upload";
+
 export default {
+  mounted(){
+    axios.post('images/url', {type:'cover'}).then(res=>{console.log(res);
+    });
+  },
   data: function() {
-    return { isModalVisible: false };
+    return {
+      show: false,
+      imgDataUrl: "", // the datebase64 url of created image
+      coverUrl:"theme/img/top-header2.jpg"
+    };
+  },
+  components: {
+    "my-upload": myUpload
+  },
+  methods: {
+    toggleShow() {
+      this.show = !this.show;
+    },
+    /**
+     * crop success
+     *
+     * [param] imgDataUrl
+     * [param] field
+     */
+    cropSuccess(imgDataUrl, field) {
+      console.log("-------- crop success --------");
+      this.imgDataUrl = imgDataUrl;
+    },
+    /**
+     * upload success
+     *
+     * [param] jsonData  server api return data, already json encode
+     * [param] field
+     */
+    cropUploadSuccess(jsonData, field) {
+      this.coverUrl = "storage/"+jsonData;
+    },
+    /**
+     * upload fail
+     *
+     * [param] status    server api return error status, like 500
+     * [param] field
+     */
+    cropUploadFail(status, field) {
+      console.log("-------- upload fail --------");
+      console.log(status);
+      console.log("field: " + field);
+    }
   }
 };
 </script>

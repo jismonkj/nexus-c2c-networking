@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,7 +17,7 @@ Route::get('/', 'Auth\LoginController@showLoginForm');
 Route::view('/some', 'some');
 Route::get('/home', 'HomeController@index')->name('nexushome');
 
-/* common routes
+/* COMMON
 _________________________________________________________________
 ___________________________________________________________________ */
 
@@ -26,7 +28,7 @@ Route::resource('/city', 'CityController');
 
 Route::post('/check/mail/exists', 'GuestController@checkIfMailExists');
 
-/* member routes
+/* MEMBER
 ____________________________________________________________________
 ________________________________________________________________________*/
 Route::post('/user/basicinfo', 'HomeController@getUserBasicInfo');
@@ -45,13 +47,19 @@ Route::resource('member/friends', 'Member\FriendCircleController');
 Route::get('member/fsuggestions', 'Member\FriendCircleController@getFriendSuggestions');
 Route::post('member/friend_circle', 'Member\FriendCircleController@getMemberFriendCircle');
 
-/* admin routes
+/* ADMIN
 _____________________________________________________________________________
 ______________________________________________________________________________*/
 
 Route::resource('/admin', 'Admin\AdminController');
 Route::post('/admin/users/list', 'Admin\AdminController@listUsers');
 
+/* FILES
+______________________________________________________________________________
+_______________________________________________________________________________*/
+# -- images
+Route::post('images/upload', 'FileController@imageCollect');
+Route::post('images/url', 'FileController@getImageUrl');
 
 /* testing routes
 ___________________________________ _________________________________________

@@ -25,7 +25,9 @@
     },
     "dependencies": {
         "animate.css": "^3.7.0",
+        "babel-polyfill": "^6.26.0",
         "bootstrap-vue": "^2.0.0-rc.14",
+        "vue-image-crop-upload": "^2.5.0",
         "vue-router": "^3.0.2",
         "vue2-dropzone": "^3.5.8"
     }

@@ -1,3 +1,4 @@
+import "babel-polyfill"; // es6 shim
 // vue router
 // ________________________
 import VueRouter from 'vue-router'
