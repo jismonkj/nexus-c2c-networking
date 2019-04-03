@@ -12,6 +12,7 @@ use App\Member\Friends;
 use App\City;
 use App\State;
 use App\Country;
+use App\Http\Controllers\FileController;
 
 class FriendCircleController extends Controller
 {
@@ -64,13 +65,17 @@ class FriendCircleController extends Controller
             if (Auth::user()->friends()->where('fid', $member['uid'])->count() || Auth::user()->friends()->where('uid', $member['uid'])->count()) {
                 array_splice($memberList, $key, 1);
             } else {
-                # getting names of suggetion candidates
+                # getting names of suggestion candidates
                 $user = Profile::where('uid', $member['uid'])->select('fname', 'lname')->get();
                 if ($user->count()) {
                     $memberList[$key]['name'] = $user[0]['fname'] . " " . $user[0]['lname'];
                     // return $key;
                 }
                 $memberList[$key]['invited'] = false;
+
+                # -- avatar
+                $path = FileController::getImageUrl('avatar', $member['uid']);
+                ($path=="")? $memberList[$key]['avatar'] = "img/avatar38-sm.jpg": $memberList[$key]['avatar'] = $path ;
             }
         }
 

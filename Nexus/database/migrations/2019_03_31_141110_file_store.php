@@ -17,7 +17,7 @@ class FileStore extends Migration
             $table->increments('storeid');
             $table->string('path');
             $table->enum('type', ['cover', 'avatar', 'dist', 'items', 'auctions']);
-            $table->integer('refid');
+            $table->string('refid', 11);
             $table->timestamp('uploaded_on');
         });
     }

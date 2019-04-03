@@ -45,7 +45,7 @@
             <transition-group leave-active-class="animate fade">
               <li class="inline-items" v-for="people in peopleYouMayKnow" v-bind:key="people.uid">
                 <div class="author-thumb">
-                  <img src="theme/img/avatar38-sm.jpg" alt="author">
+                  <img :src="'storage/'+people.avatar" alt="author" class="smaller avatar">
                 </div>
                 <div class="notification-event">
                   <a :href="$root.encr(people.uid)" class="h6 notification-friend">{{ people.name }}</a>

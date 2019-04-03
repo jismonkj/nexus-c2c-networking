@@ -1383,6 +1383,449 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/member/feed/main-feed.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/member/feed/main-feed.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue2_dropzone__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue2-dropzone */ "./node_modules/vue2-dropzone/dist/vue2Dropzone.js");
+/* harmony import */ var vue2_dropzone__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue2_dropzone__WEBPACK_IMPORTED_MODULE_0__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//vue dropzone
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  mounted: function mounted() {
+    var _this = this;
+
+    axios.get('/feed').then(function (res) {
+      _this.stories = res.data;
+    });
+  },
+  data: function data() {
+    return {
+      stories: [],
+      numberOnlyPattern: /^\d+(,\d{1,2})?$/,
+      itemSubmitBtn: "Post Item",
+      imgCount: 0,
+      dropZoneActive: false,
+      dropzoneOptions: {
+        url: "images/items",
+        paramName: "image",
+        maxFiles: 4,
+        thumbnailWidth: 140,
+        thumbnailHeight: 120,
+        maxFilesize: 0.5,
+        acceptedFiles: "image/*",
+        params: {
+          x_token: Math.ceil(Math.random() * 100000)
+        },
+        autoProcessQueue: false
+      },
+      itemContent: "",
+      itemQuantity: "",
+      itemPrice: "",
+      itemLocation: ""
+    };
+  },
+  components: {
+    "vue-dropzone": vue2_dropzone__WEBPACK_IMPORTED_MODULE_0___default.a
+  },
+  watch: {
+    itemPrice: function itemPrice() {
+      if (!this.numberOnlyPattern.test(this.itemPrice)) {
+        this.notify("Invalid Price");
+        this.itemPrice = "";
+      }
+    },
+    itemQuantity: function itemQuantity() {
+      if (!this.numberOnlyPattern.test(this.itemQuantity)) {
+        this.notify("Invalid Quantity");
+        this.itemQuantity = "";
+      }
+    },
+    itemLocation: function itemLocation() {
+      if (this.numberOnlyPattern.test(this.itemLocation)) {
+        this.notify("Invalid Location");
+        this.itemPrice = "";
+      }
+    }
+  },
+  methods: {
+    dropZoneUpload: function dropZoneUpload() {
+      this.$refs.myVueDropzone.processQueue();
+      this.imgCount = this.$refs.myVueDropzone.getAcceptedFiles().length;
+    },
+    dropZoneClearAll: function dropZoneClearAll() {
+      this.$refs.myVueDropzone.removeAllFiles();
+      this.imgCount = 0;
+    },
+    postItem: function postItem() {
+      var _this2 = this;
+
+      if (this.validate("item")) {
+        //post item
+        axios.post("/items", {
+          x_token: this.dropzoneOptions.params.x_token,
+          contents: this.itemContent,
+          price: this.itemPrice,
+          quantity: this.itemQuantity,
+          privacy: "1",
+          status: "1",
+          loc_id: 12
+        }).then(function (res) {
+          return _this2.afterPostingItem(res);
+        });
+      }
+    },
+    afterPostingItem: function afterPostingItem(res) {
+      if (res) {
+        this.notify("Updated");
+        this.dropZoneClearAll();
+        this.imgCount = 0;
+      } else {
+        this.notify("Err! Network");
+      }
+    },
+    resetItemPost: function resetItemPost() {
+      this.itemContent = "";
+      this.itemPrice = "";
+      this.itemQuantity = "";
+      this.itemLocation = "";
+      this.dropZoneClearAll(); //clear dropzone
+    },
+    validate: function validate(type) {
+      switch (type) {
+        case "item":
+          if (this.itemContent == "" || this.itemQuantity == "" || this.itemPrice == "" || this.itemLocations == "") {
+            this.notify("Empty fields left behind!");
+            return false;
+          }
+
+          break;
+      }
+
+      return true;
+    },
+    notify: function notify(text) {
+      var _this3 = this;
+
+      this.itemSubmitBtn = text;
+      setTimeout(function () {
+        _this3.itemSubmitBtn = "Post Item";
+      }, 5000);
+    },
+    loveOnItem: function loveOnItem(id) {
+      var _this4 = this;
+
+      var pos = this.stories.findIndex(function (item) {
+        return item.item_id == id;
+      }); //axios
+
+      axios.get('item/like/' + this.stories[pos].item_id).then(function (res) {
+        console.log(res.data);
+        _this4.stories[pos].likes = res.data;
+      });
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/member/feed/right-side-bar.vue?vue&type=script&lang=js&":
 /*!*************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/member/feed/right-side-bar.vue?vue&type=script&lang=js& ***!
@@ -2090,19 +2533,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  mounted: function mounted() {
-    axios.post('images/url', {
-      type: 'cover'
-    }).then(function (res) {
-      console.log(res);
-    });
+  mounted: function mounted() {//
   },
   data: function data() {
     return {
+      user: '',
       show: false,
-      imgDataUrl: "",
-      // the datebase64 url of created image
-      coverUrl: "theme/img/top-header2.jpg"
+      imgDataUrl: "" // the datebase64 url of created image
+
     };
   },
   components: {
@@ -2340,71 +2778,6 @@ __webpack_require__.r(__webpack_exports__);
     });
   }
 });
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/utils/modal-photo-upload.vue?vue&type=script&lang=js&":
-/*!***********************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/utils/modal-photo-upload.vue?vue&type=script&lang=js& ***!
-  \***********************************************************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-/* harmony default export */ __webpack_exports__["default"] = (_defineProperty({
-  methods: {
-    close: function close() {
-      this.$parent.isModalVisible = false;
-    }
-  },
-  data: function data() {
-    return {
-      dropzoneOptions: {
-        url: "/",
-        maxFiles: 1,
-        thumbnailWidth: 500,
-        maxFilesize: 0.5,
-        addRemoveLinks: true,
-        headers: {
-          "My-Awesome-Header": "header value"
-        },
-        maxfilesexceeded: function maxfilesexceeded() {}
-      }
-    };
-  }
-}, "methods", {}));
 
 /***/ }),
 
@@ -21277,7 +21650,7 @@ var render = function() {
                       })
                     ]),
                     _vm._v(" "),
-                    _c("span", [_vm._v("Status")])
+                    _c("span", [_vm._v("Sell Item")])
                   ]
                 )
               ]),
@@ -21304,34 +21677,7 @@ var render = function() {
                       })
                     ]),
                     _vm._v(" "),
-                    _c("span", [_vm._v("Multimedia")])
-                  ]
-                )
-              ]),
-              _vm._v(" "),
-              _c("li", { staticClass: "nav-item" }, [
-                _c(
-                  "a",
-                  {
-                    staticClass: "nav-link inline-items",
-                    attrs: {
-                      "data-toggle": "tab",
-                      href: "#blog",
-                      role: "tab",
-                      "aria-expanded": "false"
-                    }
-                  },
-                  [
-                    _c("svg", { staticClass: "olymp-blog-icon" }, [
-                      _c("use", {
-                        attrs: {
-                          "xlink:href":
-                            "theme/svg-icons/sprites/icons.svg#olymp-blog-icon"
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("span", [_vm._v("Blog Post")])
+                    _c("span", [_vm._v("You need something?")])
                   ]
                 )
               ])
@@ -21345,6 +21691,262 @@ var render = function() {
                 staticClass: "tab-pane active",
                 attrs: {
                   id: "home-1",
+                  role: "tabpanel",
+                  "aria-expanded": "true"
+                }
+              },
+              [
+                _c("form", [
+                  _c("div", { staticClass: "author-thumb" }, [
+                    _c("img", {
+                      staticClass: "smaller avatar",
+                      attrs: {
+                        src: "storage/" + _vm.$root.$data.user.myAvatar,
+                        alt: "author"
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "form-group with-icon label-floating is-empty"
+                    },
+                    [
+                      _c("label", { staticClass: "control-label" }, [
+                        _vm._v("Share what you are thinking here...")
+                      ]),
+                      _vm._v(" "),
+                      _c("textarea", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.itemContent,
+                            expression: "itemContent"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        domProps: { value: _vm.itemContent },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.itemContent = $event.target.value
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "material-input" })
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "row" }, [
+                    _c("div", { staticClass: "col p-0" }, [
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "form-group with-icon label-floating is-empty"
+                        },
+                        [
+                          _c("label", { staticClass: "control-label" }, [
+                            _vm._v("Price")
+                          ]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.itemPrice,
+                                expression: "itemPrice"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: { type: "text" },
+                            domProps: { value: _vm.itemPrice },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.itemPrice = $event.target.value
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("span", { staticClass: "material-input" })
+                        ]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col p-0" }, [
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "form-group with-icon label-floating is-empty"
+                        },
+                        [
+                          _c("label", { staticClass: "control-label" }, [
+                            _vm._v("Quantity")
+                          ]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.itemQuantity,
+                                expression: "itemQuantity"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: { type: "text" },
+                            domProps: { value: _vm.itemQuantity },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.itemQuantity = $event.target.value
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("span", { staticClass: "material-input" })
+                        ]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col p-0" }, [
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "form-group with-icon label-floating is-empty"
+                        },
+                        [
+                          _c("label", { staticClass: "control-label" }, [
+                            _vm._v("Location")
+                          ]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.itemLocation,
+                                expression: "itemLocation"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: { type: "text" },
+                            domProps: { value: _vm.itemLocation },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.itemLocation = $event.target.value
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("span", { staticClass: "material-input" })
+                        ]
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "add-options-message" }, [
+                    _c(
+                      "a",
+                      {
+                        staticClass: "options-message",
+                        attrs: {
+                          href: "#",
+                          "data-toggle": "tooltip",
+                          "data-placement": "top",
+                          "data-original-title": "ADD PHOTOS"
+                        },
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            _vm.dropZoneActive = true
+                          }
+                        }
+                      },
+                      [
+                        _c(
+                          "svg",
+                          {
+                            staticClass: "olymp-camera-icon",
+                            attrs: {
+                              "data-toggle": "modal",
+                              "data-target": "#update-header-photo"
+                            }
+                          },
+                          [
+                            _c("use", {
+                              attrs: {
+                                "xlink:href":
+                                  "theme/svg-icons/sprites/icons.svg#olymp-camera-icon"
+                              }
+                            })
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _vm.imgCount > 0
+                          ? _c("div", { staticClass: "label-avatar bg-blue" }, [
+                              _vm._v(_vm._s(_vm.imgCount))
+                            ])
+                          : _vm._e()
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary btn-md-2",
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            return _vm.postItem($event)
+                          }
+                        }
+                      },
+                      [_vm._v(_vm._s(_vm.itemSubmitBtn))]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass:
+                          "btn btn-md-2 btn-border-think btn-transparent c-grey",
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            return _vm.resetItemPost($event)
+                          }
+                        }
+                      },
+                      [_vm._v("Reset")]
+                    )
+                  ])
+                ])
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "tab-pane",
+                attrs: {
+                  id: "profile-1",
                   role: "tabpanel",
                   "aria-expanded": "true"
                 }
@@ -21450,578 +22052,46 @@ var render = function() {
                   ])
                 ])
               ]
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass: "tab-pane",
-                attrs: {
-                  id: "profile-1",
-                  role: "tabpanel",
-                  "aria-expanded": "true"
-                }
-              },
-              [
-                _c("form", [
-                  _vm._m(2),
-                  _vm._v(" "),
-                  _vm._m(3),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "add-options-message" }, [
-                    _c(
-                      "a",
-                      {
-                        staticClass: "options-message",
-                        attrs: {
-                          href: "#",
-                          "data-toggle": "tooltip",
-                          "data-placement": "top",
-                          "data-original-title": "ADD PHOTOS"
-                        }
-                      },
-                      [
-                        _c(
-                          "svg",
-                          {
-                            staticClass: "olymp-camera-icon",
-                            attrs: {
-                              "data-toggle": "modal",
-                              "data-target": "#update-header-photo"
-                            }
-                          },
-                          [
-                            _c("use", {
-                              attrs: {
-                                "xlink:href":
-                                  "theme/svg-icons/sprites/icons.svg#olymp-camera-icon"
-                              }
-                            })
-                          ]
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "a",
-                      {
-                        staticClass: "options-message",
-                        attrs: {
-                          href: "#",
-                          "data-toggle": "tooltip",
-                          "data-placement": "top",
-                          "data-original-title": "TAG YOUR FRIENDS"
-                        }
-                      },
-                      [
-                        _c("svg", { staticClass: "olymp-computer-icon" }, [
-                          _c("use", {
-                            attrs: {
-                              "xlink:href":
-                                "theme/svg-icons/sprites/icons.svg#olymp-computer-icon"
-                            }
-                          })
-                        ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "a",
-                      {
-                        staticClass: "options-message",
-                        attrs: {
-                          href: "#",
-                          "data-toggle": "tooltip",
-                          "data-placement": "top",
-                          "data-original-title": "ADD LOCATION"
-                        }
-                      },
-                      [
-                        _c("svg", { staticClass: "olymp-small-pin-icon" }, [
-                          _c("use", {
-                            attrs: {
-                              "xlink:href":
-                                "theme/svg-icons/sprites/icons.svg#olymp-small-pin-icon"
-                            }
-                          })
-                        ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c("button", { staticClass: "btn btn-primary btn-md-2" }, [
-                      _vm._v("Post Status")
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass:
-                          "btn btn-md-2 btn-border-think btn-transparent c-grey"
-                      },
-                      [_vm._v("Preview")]
-                    )
-                  ])
-                ])
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass: "tab-pane",
-                attrs: { id: "blog", role: "tabpanel", "aria-expanded": "true" }
-              },
-              [
-                _c("form", [
-                  _vm._m(4),
-                  _vm._v(" "),
-                  _vm._m(5),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "add-options-message" }, [
-                    _c(
-                      "a",
-                      {
-                        staticClass: "options-message",
-                        attrs: {
-                          href: "#",
-                          "data-toggle": "tooltip",
-                          "data-placement": "top",
-                          "data-original-title": "ADD PHOTOS"
-                        }
-                      },
-                      [
-                        _c(
-                          "svg",
-                          {
-                            staticClass: "olymp-camera-icon",
-                            attrs: {
-                              "data-toggle": "modal",
-                              "data-target": "#update-header-photo"
-                            }
-                          },
-                          [
-                            _c("use", {
-                              attrs: {
-                                "xlink:href":
-                                  "theme/svg-icons/sprites/icons.svg#olymp-camera-icon"
-                              }
-                            })
-                          ]
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "a",
-                      {
-                        staticClass: "options-message",
-                        attrs: {
-                          href: "#",
-                          "data-toggle": "tooltip",
-                          "data-placement": "top",
-                          "data-original-title": "TAG YOUR FRIENDS"
-                        }
-                      },
-                      [
-                        _c("svg", { staticClass: "olymp-computer-icon" }, [
-                          _c("use", {
-                            attrs: {
-                              "xlink:href":
-                                "theme/svg-icons/sprites/icons.svg#olymp-computer-icon"
-                            }
-                          })
-                        ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "a",
-                      {
-                        staticClass: "options-message",
-                        attrs: {
-                          href: "#",
-                          "data-toggle": "tooltip",
-                          "data-placement": "top",
-                          "data-original-title": "ADD LOCATION"
-                        }
-                      },
-                      [
-                        _c("svg", { staticClass: "olymp-small-pin-icon" }, [
-                          _c("use", {
-                            attrs: {
-                              "xlink:href":
-                                "theme/svg-icons/sprites/icons.svg#olymp-small-pin-icon"
-                            }
-                          })
-                        ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c("button", { staticClass: "btn btn-primary btn-md-2" }, [
-                      _vm._v("Post Status")
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass:
-                          "btn btn-md-2 btn-border-think btn-transparent c-grey"
-                      },
-                      [_vm._v("Preview")]
-                    )
-                  ])
-                ])
-              ]
             )
           ])
         ])
       ]),
       _vm._v(" "),
-      _c("div", { attrs: { id: "newsfeed-items-grid" } }, [
-        _c("div", { staticClass: "ui-block" }, [
-          _c("article", { staticClass: "hentry post video" }, [
-            _c(
-              "div",
-              { staticClass: "post__author author vcard inline-items" },
-              [
-                _c("img", {
-                  attrs: { src: "theme/img/avatar7-sm.jpg", alt: "author" }
-                }),
-                _vm._v(" "),
-                _vm._m(6),
-                _vm._v(" "),
-                _c("div", { staticClass: "more" }, [
-                  _c("svg", { staticClass: "olymp-three-dots-icon" }, [
-                    _c("use", {
-                      attrs: {
-                        "xlink:href":
-                          "theme/svg-icons/sprites/icons.svg#olymp-three-dots-icon"
-                      }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _vm._m(7)
-                ])
-              ]
-            ),
-            _vm._v(" "),
-            _vm._m(8),
-            _vm._v(" "),
-            _c("div", { staticClass: "post-video" }, [
-              _c("div", { staticClass: "video-thumb" }, [
-                _c("img", {
-                  attrs: { src: "theme/img/video-youtube1.jpg", alt: "photo" }
-                }),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  {
-                    staticClass: "play-video",
-                    attrs: { href: "https://youtube.com/watch?v=excVFQ2TWig" }
-                  },
-                  [
-                    _c("svg", { staticClass: "olymp-play-icon" }, [
-                      _c("use", {
-                        attrs: {
-                          "xlink:href":
-                            "theme/svg-icons/sprites/icons.svg#olymp-play-icon"
-                        }
-                      })
-                    ])
-                  ]
-                )
-              ]),
-              _vm._v(" "),
-              _vm._m(9)
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "post-additional-info inline-items" }, [
-              _c(
-                "a",
-                {
-                  staticClass: "post-add-icon inline-items",
-                  attrs: { href: "#" }
-                },
-                [
-                  _c("svg", { staticClass: "olymp-heart-icon" }, [
-                    _c("use", {
-                      attrs: {
-                        "xlink:href":
-                          "theme/svg-icons/sprites/icons.svg#olymp-heart-icon"
-                      }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("span", [_vm._v("18")])
-                ]
-              ),
-              _vm._v(" "),
-              _vm._m(10),
-              _vm._v(" "),
-              _vm._m(11),
-              _vm._v(" "),
-              _c("div", { staticClass: "comments-shared" }, [
-                _c(
-                  "a",
-                  {
-                    staticClass: "post-add-icon inline-items",
-                    attrs: { href: "#" }
-                  },
-                  [
-                    _c("svg", { staticClass: "olymp-speech-balloon-icon" }, [
-                      _c("use", {
-                        attrs: {
-                          "xlink:href":
-                            "theme/svg-icons/sprites/icons.svg#olymp-speech-balloon-icon"
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("span", [_vm._v("0")])
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  {
-                    staticClass: "post-add-icon inline-items",
-                    attrs: { href: "#" }
-                  },
-                  [
-                    _c("svg", { staticClass: "olymp-share-icon" }, [
-                      _c("use", {
-                        attrs: {
-                          "xlink:href":
-                            "theme/svg-icons/sprites/icons.svg#olymp-share-icon"
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("span", [_vm._v("16")])
-                  ]
-                )
-              ])
-            ]),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "control-block-button post-control-button" },
-              [
-                _c(
-                  "a",
-                  { staticClass: "btn btn-control", attrs: { href: "#" } },
-                  [
-                    _c("svg", { staticClass: "olymp-like-post-icon" }, [
-                      _c("use", {
-                        attrs: {
-                          "xlink:href":
-                            "theme/svg-icons/sprites/icons.svg#olymp-like-post-icon"
-                        }
-                      })
-                    ])
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  { staticClass: "btn btn-control", attrs: { href: "#" } },
-                  [
-                    _c("svg", { staticClass: "olymp-comments-post-icon" }, [
-                      _c("use", {
-                        attrs: {
-                          "xlink:href":
-                            "theme/svg-icons/sprites/icons.svg#olymp-comments-post-icon"
-                        }
-                      })
-                    ])
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  { staticClass: "btn btn-control", attrs: { href: "#" } },
-                  [
-                    _c("svg", { staticClass: "olymp-share-icon" }, [
-                      _c("use", {
-                        attrs: {
-                          "xlink:href":
-                            "theme/svg-icons/sprites/icons.svg#olymp-share-icon"
-                        }
-                      })
-                    ])
-                  ]
-                )
-              ]
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "ui-block" }, [
-          _c("article", { staticClass: "hentry post" }, [
-            _c(
-              "div",
-              { staticClass: "post__author author vcard inline-items" },
-              [
-                _c("img", {
-                  attrs: { src: "theme/img/avatar10-sm.jpg", alt: "author" }
-                }),
-                _vm._v(" "),
-                _vm._m(12),
-                _vm._v(" "),
-                _c("div", { staticClass: "more" }, [
-                  _c("svg", { staticClass: "olymp-three-dots-icon" }, [
-                    _c("use", {
-                      attrs: {
-                        "xlink:href":
-                          "theme/svg-icons/sprites/icons.svg#olymp-three-dots-icon"
-                      }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _vm._m(13)
-                ])
-              ]
-            ),
-            _vm._v(" "),
-            _c("p", [
-              _vm._v(
-                "\n             Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempo incididunt ut\n             labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris consequat.\n           "
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "post-additional-info inline-items" }, [
-              _c(
-                "a",
-                {
-                  staticClass: "post-add-icon inline-items",
-                  attrs: { href: "#" }
-                },
-                [
-                  _c("svg", { staticClass: "olymp-heart-icon" }, [
-                    _c("use", {
-                      attrs: {
-                        "xlink:href":
-                          "theme/svg-icons/sprites/icons.svg#olymp-heart-icon"
-                      }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("span", [_vm._v("24")])
-                ]
-              ),
-              _vm._v(" "),
-              _vm._m(14),
-              _vm._v(" "),
-              _vm._m(15),
-              _vm._v(" "),
-              _c("div", { staticClass: "comments-shared" }, [
-                _c(
-                  "a",
-                  {
-                    staticClass: "post-add-icon inline-items",
-                    attrs: { href: "#" }
-                  },
-                  [
-                    _c("svg", { staticClass: "olymp-speech-balloon-icon" }, [
-                      _c("use", {
-                        attrs: {
-                          "xlink:href":
-                            "theme/svg-icons/sprites/icons.svg#olymp-speech-balloon-icon"
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("span", [_vm._v("17")])
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  {
-                    staticClass: "post-add-icon inline-items",
-                    attrs: { href: "#" }
-                  },
-                  [
-                    _c("svg", { staticClass: "olymp-share-icon" }, [
-                      _c("use", {
-                        attrs: {
-                          "xlink:href":
-                            "theme/svg-icons/sprites/icons.svg#olymp-share-icon"
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("span", [_vm._v("24")])
-                  ]
-                )
-              ])
-            ]),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "control-block-button post-control-button" },
-              [
-                _c(
-                  "a",
-                  { staticClass: "btn btn-control", attrs: { href: "#" } },
-                  [
-                    _c("svg", { staticClass: "olymp-like-post-icon" }, [
-                      _c("use", {
-                        attrs: {
-                          "xlink:href":
-                            "theme/svg-icons/sprites/icons.svg#olymp-like-post-icon"
-                        }
-                      })
-                    ])
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  { staticClass: "btn btn-control", attrs: { href: "#" } },
-                  [
-                    _c("svg", { staticClass: "olymp-comments-post-icon" }, [
-                      _c("use", {
-                        attrs: {
-                          "xlink:href":
-                            "theme/svg-icons/sprites/icons.svg#olymp-comments-post-icon"
-                        }
-                      })
-                    ])
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  { staticClass: "btn btn-control", attrs: { href: "#" } },
-                  [
-                    _c("svg", { staticClass: "olymp-share-icon" }, [
-                      _c("use", {
-                        attrs: {
-                          "xlink:href":
-                            "theme/svg-icons/sprites/icons.svg#olymp-share-icon"
-                        }
-                      })
-                    ])
-                  ]
-                )
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _c("ul", { staticClass: "comments-list" }, [
-            _c("li", { staticClass: "comment-item" }, [
+      _c(
+        "div",
+        { attrs: { id: "newsfeed-items-grid" } },
+        _vm._l(_vm.stories, function(story) {
+          return _c("div", { key: story.item_id, staticClass: "ui-block" }, [
+            _c("article", { staticClass: "hentry post has-post-thumbnail" }, [
               _c(
                 "div",
                 { staticClass: "post__author author vcard inline-items" },
                 [
-                  _c("img", {
-                    attrs: { src: "theme/img/author-page.jpg", alt: "author" }
-                  }),
+                  _c("img", { attrs: { src: story.avatar, alt: "author" } }),
                   _vm._v(" "),
-                  _vm._m(16),
+                  _c("div", { staticClass: "author-date" }, [
+                    _c(
+                      "a",
+                      {
+                        staticClass: "h6 post__author-name fn",
+                        attrs: { href: _vm.$root.encr(story.item_id) }
+                      },
+                      [_vm._v(_vm._s(story.fname + " " + story.lname))]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "post__date" }, [
+                      _c(
+                        "time",
+                        {
+                          staticClass: "published",
+                          attrs: { datetime: "2004-07-24T18:18" }
+                        },
+                        [_vm._v(_vm._s(story.created_at))]
+                      )
+                    ])
+                  ]),
                   _vm._v(" "),
-                  _c("a", { staticClass: "more", attrs: { href: "#" } }, [
+                  _c("div", { staticClass: "more" }, [
                     _c("svg", { staticClass: "olymp-three-dots-icon" }, [
                       _c("use", {
                         attrs: {
@@ -22029,619 +22099,132 @@ var render = function() {
                             "theme/svg-icons/sprites/icons.svg#olymp-three-dots-icon"
                         }
                       })
-                    ])
+                    ]),
+                    _vm._v(" "),
+                    _vm._m(2, true)
                   ])
                 ]
               ),
               _vm._v(" "),
               _c("p", [
-                _vm._v(
-                  "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium der doloremque laudantium."
-                )
+                _vm._v("\n          " + _vm._s(story.contents) + "\n        ")
               ]),
               _vm._v(" "),
-              _c(
-                "a",
-                {
-                  staticClass: "post-add-icon inline-items",
-                  attrs: { href: "#" }
-                },
-                [
-                  _c("svg", { staticClass: "olymp-heart-icon" }, [
-                    _c("use", {
-                      attrs: {
-                        "xlink:href":
-                          "theme/svg-icons/sprites/icons.svg#olymp-heart-icon"
-                      }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("span", [_vm._v("3")])
-                ]
-              ),
-              _vm._v(" "),
-              _c("a", { staticClass: "reply", attrs: { href: "#" } }, [
-                _vm._v("Reply")
-              ])
-            ]),
-            _vm._v(" "),
-            _c("li", { staticClass: "comment-item" }, [
-              _c(
-                "div",
-                { staticClass: "post__author author vcard inline-items" },
-                [
-                  _c("img", {
-                    attrs: { src: "theme/img/avatar1-sm.jpg", alt: "author" }
-                  }),
-                  _vm._v(" "),
-                  _vm._m(17),
-                  _vm._v(" "),
-                  _c("a", { staticClass: "more", attrs: { href: "#" } }, [
-                    _c("svg", { staticClass: "olymp-three-dots-icon" }, [
-                      _c("use", {
-                        attrs: {
-                          "xlink:href":
-                            "theme/svg-icons/sprites/icons.svg#olymp-three-dots-icon"
-                        }
-                      })
-                    ])
-                  ])
-                ]
-              ),
-              _vm._v(" "),
-              _c("p", [
-                _vm._v(
-                  "\n               Ratione voluptatem sequi en lod nesciunt. Neque porro quisquam est, quinder dolorem ipsum\n               quia dolor sit amet, consectetur adipisci velit en lorem ipsum duis aute irure dolor in reprehenderit in voluptate velit esse cillum.\n             "
-                )
-              ]),
-              _vm._v(" "),
-              _c(
-                "a",
-                {
-                  staticClass: "post-add-icon inline-items",
-                  attrs: { href: "#" }
-                },
-                [
-                  _c("svg", { staticClass: "olymp-heart-icon" }, [
-                    _c("use", {
-                      attrs: {
-                        "xlink:href":
-                          "theme/svg-icons/sprites/icons.svg#olymp-heart-icon"
-                      }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("span", [_vm._v("8")])
-                ]
-              ),
-              _vm._v(" "),
-              _c("a", { staticClass: "reply", attrs: { href: "#" } }, [
-                _vm._v("Reply")
-              ])
-            ])
-          ]),
-          _vm._v(" "),
-          _vm._m(18),
-          _vm._v(" "),
-          _c("form", { staticClass: "comment-form inline-items" }, [
-            _c(
-              "div",
-              { staticClass: "post__author author vcard inline-items" },
-              [
-                _c("img", {
-                  attrs: { src: "theme/img/author-page.jpg", alt: "author" }
-                }),
-                _vm._v(" "),
+              _c("div", { staticClass: "post-thumb" }, [
                 _c(
                   "div",
-                  { staticClass: "form-group with-icon-right is-empty" },
-                  [
-                    _c("textarea", {
-                      staticClass: "form-control",
-                      attrs: { placeholder: "" }
-                    }),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "add-options-message" }, [
-                      _c(
-                        "a",
-                        {
-                          staticClass: "options-message",
+                  { staticClass: "row" },
+                  _vm._l(story.itemImages, function(imgPath) {
+                    return _c(
+                      "div",
+                      { key: imgPath.path, staticClass: "col p-1" },
+                      [
+                        _c("img", {
                           attrs: {
-                            href: "#",
-                            "data-toggle": "modal",
-                            "data-target": "#update-header-photo"
+                            src: "storage/" + imgPath.path,
+                            alt: "photo"
                           }
-                        },
-                        [
-                          _c("svg", { staticClass: "olymp-camera-icon" }, [
-                            _c("use", {
-                              attrs: {
-                                "xlink:href":
-                                  "theme/svg-icons/sprites/icons.svg#olymp-camera-icon"
-                              }
-                            })
-                          ])
-                        ]
-                      )
+                        })
+                      ]
+                    )
+                  }),
+                  0
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "post-additional-info inline-items" }, [
+                _c(
+                  "a",
+                  {
+                    staticClass: "post-add-icon inline-items",
+                    attrs: { href: "#" }
+                  },
+                  [
+                    _c("svg", { staticClass: "olymp-heart-icon" }, [
+                      _c("use", {
+                        attrs: {
+                          "xlink:href":
+                            "theme/svg-icons/sprites/icons.svg#olymp-heart-icon"
+                        }
+                      })
                     ]),
                     _vm._v(" "),
-                    _c("span", { staticClass: "material-input" })
+                    _c("span", [_vm._v(_vm._s(story.likes))])
                   ]
-                )
-              ]
-            ),
-            _vm._v(" "),
-            _c("button", { staticClass: "btn btn-md-2 btn-primary" }, [
-              _vm._v("Post Comment")
-            ]),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
-                staticClass:
-                  "btn btn-md-2 btn-border-think c-grey btn-transparent custom-color"
-              },
-              [_vm._v("Cancel")]
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "ui-block" }, [
-          _c("article", { staticClass: "hentry post has-post-thumbnail" }, [
-            _c(
-              "div",
-              { staticClass: "post__author author vcard inline-items" },
-              [
-                _c("img", {
-                  attrs: { src: "theme/img/avatar5-sm.jpg", alt: "author" }
-                }),
+                ),
                 _vm._v(" "),
-                _vm._m(19),
-                _vm._v(" "),
-                _c("div", { staticClass: "more" }, [
-                  _c("svg", { staticClass: "olymp-three-dots-icon" }, [
-                    _c("use", {
-                      attrs: {
-                        "xlink:href":
-                          "theme/svg-icons/sprites/icons.svg#olymp-three-dots-icon"
-                      }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _vm._m(20)
+                _c("div", { staticClass: "comments-shared" }, [
+                  _c(
+                    "a",
+                    {
+                      staticClass: "post-add-icon inline-items",
+                      attrs: { href: "#" }
+                    },
+                    [
+                      _c("svg", { staticClass: "olymp-speech-balloon-icon" }, [
+                        _c("use", {
+                          attrs: {
+                            "xlink:href":
+                              "theme/svg-icons/sprites/icons.svg#olymp-speech-balloon-icon"
+                          }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c("span", [_vm._v("264")])
+                    ]
+                  )
                 ])
-              ]
-            ),
-            _vm._v(" "),
-            _vm._m(21),
-            _vm._v(" "),
-            _vm._m(22),
-            _vm._v(" "),
-            _c("div", { staticClass: "post-additional-info inline-items" }, [
+              ]),
+              _vm._v(" "),
               _c(
-                "a",
-                {
-                  staticClass: "post-add-icon inline-items",
-                  attrs: { href: "#" }
-                },
+                "div",
+                { staticClass: "control-block-button post-control-button" },
                 [
-                  _c("svg", { staticClass: "olymp-heart-icon" }, [
-                    _c("use", {
-                      attrs: {
-                        "xlink:href":
-                          "theme/svg-icons/sprites/icons.svg#olymp-heart-icon"
+                  _c(
+                    "a",
+                    {
+                      staticClass: "btn btn-control",
+                      attrs: { href: "#" },
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          return _vm.loveOnItem(story.item_id)
+                        }
                       }
-                    })
-                  ]),
+                    },
+                    [
+                      _c("svg", { staticClass: "olymp-like-post-icon" }, [
+                        _c("use", {
+                          attrs: {
+                            "xlink:href":
+                              "theme/svg-icons/sprites/icons.svg#olymp-like-post-icon"
+                          }
+                        })
+                      ])
+                    ]
+                  ),
                   _vm._v(" "),
-                  _c("span", [_vm._v("49")])
+                  _c(
+                    "a",
+                    { staticClass: "btn btn-control", attrs: { href: "#" } },
+                    [
+                      _c("svg", { staticClass: "olymp-share-icon" }, [
+                        _c("use", {
+                          attrs: {
+                            "xlink:href":
+                              "theme/svg-icons/sprites/icons.svg#olymp-share-icon"
+                          }
+                        })
+                      ])
+                    ]
+                  )
                 ]
-              ),
-              _vm._v(" "),
-              _vm._m(23),
-              _vm._v(" "),
-              _vm._m(24),
-              _vm._v(" "),
-              _c("div", { staticClass: "comments-shared" }, [
-                _c(
-                  "a",
-                  {
-                    staticClass: "post-add-icon inline-items",
-                    attrs: { href: "#" }
-                  },
-                  [
-                    _c("svg", { staticClass: "olymp-speech-balloon-icon" }, [
-                      _c("use", {
-                        attrs: {
-                          "xlink:href":
-                            "theme/svg-icons/sprites/icons.svg#olymp-speech-balloon-icon"
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("span", [_vm._v("264")])
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  {
-                    staticClass: "post-add-icon inline-items",
-                    attrs: { href: "#" }
-                  },
-                  [
-                    _c("svg", { staticClass: "olymp-share-icon" }, [
-                      _c("use", {
-                        attrs: {
-                          "xlink:href":
-                            "theme/svg-icons/sprites/icons.svg#olymp-share-icon"
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("span", [_vm._v("37")])
-                  ]
-                )
-              ])
-            ]),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "control-block-button post-control-button" },
-              [
-                _c(
-                  "a",
-                  { staticClass: "btn btn-control", attrs: { href: "#" } },
-                  [
-                    _c("svg", { staticClass: "olymp-like-post-icon" }, [
-                      _c("use", {
-                        attrs: {
-                          "xlink:href":
-                            "theme/svg-icons/sprites/icons.svg#olymp-like-post-icon"
-                        }
-                      })
-                    ])
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  { staticClass: "btn btn-control", attrs: { href: "#" } },
-                  [
-                    _c("svg", { staticClass: "olymp-comments-post-icon" }, [
-                      _c("use", {
-                        attrs: {
-                          "xlink:href":
-                            "theme/svg-icons/sprites/icons.svg#olymp-comments-post-icon"
-                        }
-                      })
-                    ])
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  { staticClass: "btn btn-control", attrs: { href: "#" } },
-                  [
-                    _c("svg", { staticClass: "olymp-share-icon" }, [
-                      _c("use", {
-                        attrs: {
-                          "xlink:href":
-                            "theme/svg-icons/sprites/icons.svg#olymp-share-icon"
-                        }
-                      })
-                    ])
-                  ]
-                )
-              ]
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "ui-block" }, [
-          _c("article", { staticClass: "hentry post has-post-thumbnail" }, [
-            _c(
-              "div",
-              { staticClass: "post__author author vcard inline-items" },
-              [
-                _c("img", {
-                  attrs: { src: "theme/img/avatar3-sm.jpg", alt: "author" }
-                }),
-                _vm._v(" "),
-                _vm._m(25),
-                _vm._v(" "),
-                _c("div", { staticClass: "more" }, [
-                  _c("svg", { staticClass: "olymp-three-dots-icon" }, [
-                    _c("use", {
-                      attrs: {
-                        "xlink:href":
-                          "theme/svg-icons/sprites/icons.svg#olymp-three-dots-icon"
-                      }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _vm._m(26)
-                ])
-              ]
-            ),
-            _vm._v(" "),
-            _c("p", [
-              _vm._v(
-                "\n             Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla\n             pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt\n             mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque.\n           "
               )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "post-additional-info inline-items" }, [
-              _c(
-                "a",
-                {
-                  staticClass: "post-add-icon inline-items",
-                  attrs: { href: "#" }
-                },
-                [
-                  _c("svg", { staticClass: "olymp-heart-icon" }, [
-                    _c("use", {
-                      attrs: {
-                        "xlink:href":
-                          "theme/svg-icons/sprites/icons.svg#olymp-heart-icon"
-                      }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("span", [_vm._v("0 Likes")])
-                ]
-              ),
-              _vm._v(" "),
-              _c("div", { staticClass: "comments-shared" }, [
-                _c(
-                  "a",
-                  {
-                    staticClass: "post-add-icon inline-items",
-                    attrs: { href: "#" }
-                  },
-                  [
-                    _c("svg", { staticClass: "olymp-speech-balloon-icon" }, [
-                      _c("use", {
-                        attrs: {
-                          "xlink:href":
-                            "theme/svg-icons/sprites/icons.svg#olymp-speech-balloon-icon"
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("span", [_vm._v("0 Comments")])
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  {
-                    staticClass: "post-add-icon inline-items",
-                    attrs: { href: "#" }
-                  },
-                  [
-                    _c("svg", { staticClass: "olymp-share-icon" }, [
-                      _c("use", {
-                        attrs: {
-                          "xlink:href":
-                            "theme/svg-icons/sprites/icons.svg#olymp-share-icon"
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("span", [_vm._v("2 Shares")])
-                  ]
-                )
-              ])
-            ]),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "control-block-button post-control-button" },
-              [
-                _c(
-                  "a",
-                  { staticClass: "btn btn-control", attrs: { href: "#" } },
-                  [
-                    _c("svg", { staticClass: "olymp-like-post-icon" }, [
-                      _c("use", {
-                        attrs: {
-                          "xlink:href":
-                            "theme/svg-icons/sprites/icons.svg#olymp-like-post-icon"
-                        }
-                      })
-                    ])
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  { staticClass: "btn btn-control", attrs: { href: "#" } },
-                  [
-                    _c("svg", { staticClass: "olymp-comments-post-icon" }, [
-                      _c("use", {
-                        attrs: {
-                          "xlink:href":
-                            "theme/svg-icons/sprites/icons.svg#olymp-comments-post-icon"
-                        }
-                      })
-                    ])
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  { staticClass: "btn btn-control", attrs: { href: "#" } },
-                  [
-                    _c("svg", { staticClass: "olymp-share-icon" }, [
-                      _c("use", {
-                        attrs: {
-                          "xlink:href":
-                            "theme/svg-icons/sprites/icons.svg#olymp-share-icon"
-                        }
-                      })
-                    ])
-                  ]
-                )
-              ]
-            )
+            ])
           ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "ui-block" }, [
-          _c("article", { staticClass: "hentry post has-post-thumbnail" }, [
-            _c(
-              "div",
-              { staticClass: "post__author author vcard inline-items" },
-              [
-                _c("img", {
-                  attrs: { src: "theme/img/avatar2-sm.jpg", alt: "author" }
-                }),
-                _vm._v(" "),
-                _vm._m(27),
-                _vm._v(" "),
-                _c("div", { staticClass: "more" }, [
-                  _c("svg", { staticClass: "olymp-three-dots-icon" }, [
-                    _c("use", {
-                      attrs: {
-                        "xlink:href":
-                          "theme/svg-icons/sprites/icons.svg#olymp-three-dots-icon"
-                      }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _vm._m(28)
-                ])
-              ]
-            ),
-            _vm._v(" "),
-            _c("p", [
-              _vm._v(
-                "\n             Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla\n             pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt\n             mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem\n             accusantium doloremque.\n           "
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "post-additional-info inline-items" }, [
-              _c(
-                "a",
-                {
-                  staticClass: "post-add-icon inline-items",
-                  attrs: { href: "#" }
-                },
-                [
-                  _c("svg", { staticClass: "olymp-heart-icon" }, [
-                    _c("use", {
-                      attrs: {
-                        "xlink:href":
-                          "theme/svg-icons/sprites/icons.svg#olymp-heart-icon"
-                      }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("span", [_vm._v("22")])
-                ]
-              ),
-              _vm._v(" "),
-              _vm._m(29),
-              _vm._v(" "),
-              _vm._m(30),
-              _vm._v(" "),
-              _c("div", { staticClass: "comments-shared" }, [
-                _c(
-                  "a",
-                  {
-                    staticClass: "post-add-icon inline-items",
-                    attrs: { href: "#" }
-                  },
-                  [
-                    _c("svg", { staticClass: "olymp-speech-balloon-icon" }, [
-                      _c("use", {
-                        attrs: {
-                          "xlink:href":
-                            "theme/svg-icons/sprites/icons.svg#olymp-speech-balloon-icon"
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("span", [_vm._v("0")])
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  {
-                    staticClass: "post-add-icon inline-items",
-                    attrs: { href: "#" }
-                  },
-                  [
-                    _c("svg", { staticClass: "olymp-share-icon" }, [
-                      _c("use", {
-                        attrs: {
-                          "xlink:href":
-                            "theme/svg-icons/sprites/icons.svg#olymp-share-icon"
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("span", [_vm._v("2")])
-                  ]
-                )
-              ])
-            ]),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "control-block-button post-control-button" },
-              [
-                _c(
-                  "a",
-                  { staticClass: "btn btn-control", attrs: { href: "#" } },
-                  [
-                    _c("svg", { staticClass: "olymp-like-post-icon" }, [
-                      _c("use", {
-                        attrs: {
-                          "xlink:href":
-                            "theme/svg-icons/sprites/icons.svg#olymp-like-post-icon"
-                        }
-                      })
-                    ])
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  { staticClass: "btn btn-control", attrs: { href: "#" } },
-                  [
-                    _c("svg", { staticClass: "olymp-comments-post-icon" }, [
-                      _c("use", {
-                        attrs: {
-                          "xlink:href":
-                            "theme/svg-icons/sprites/icons.svg#olymp-comments-post-icon"
-                        }
-                      })
-                    ])
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  { staticClass: "btn btn-control", attrs: { href: "#" } },
-                  [
-                    _c("svg", { staticClass: "olymp-share-icon" }, [
-                      _c("use", {
-                        attrs: {
-                          "xlink:href":
-                            "theme/svg-icons/sprites/icons.svg#olymp-share-icon"
-                        }
-                      })
-                    ])
-                  ]
-                )
-              ]
-            )
-          ])
-        ])
-      ]),
+        }),
+        0
+      ),
       _vm._v(" "),
       _c(
         "a",
@@ -22662,6 +22245,131 @@ var render = function() {
                   "theme/svg-icons/sprites/icons.svg#olymp-three-dots-icon"
               }
             })
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: _vm.dropZoneActive,
+              expression: "dropZoneActive"
+            }
+          ],
+          staticClass: "modal-backdrop"
+        },
+        [
+          _c("div", { staticClass: "modal" }, [
+            _c(
+              "div",
+              {
+                staticClass: "modal-dialog window-popup update-header-photo",
+                attrs: { role: "document" }
+              },
+              [
+                _c(
+                  "div",
+                  {
+                    staticClass: "modal-content",
+                    staticStyle: { display: "none" }
+                  },
+                  [
+                    _c(
+                      "a",
+                      {
+                        staticClass: "close icon-close",
+                        attrs: {
+                          href: "#",
+                          "data-dismiss": "modal",
+                          "aria-label": "Close"
+                        },
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            _vm.dropZoneActive = false
+                          }
+                        }
+                      },
+                      [
+                        _c("svg", { staticClass: "olymp-close-icon" }, [
+                          _c("use", {
+                            attrs: {
+                              "xlink:href":
+                                "theme/svg-icons/sprites/icons.svg#olymp-close-icon"
+                            }
+                          })
+                        ])
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _vm._m(3),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "modal-body" },
+                      [
+                        _c("vue-dropzone", {
+                          ref: "myVueDropzone",
+                          attrs: {
+                            id: "dropzone",
+                            options: _vm.dropzoneOptions
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "modal-footer" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary",
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              return _vm.dropZoneUpload($event)
+                            }
+                          }
+                        },
+                        [_vm._v("Upload")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-secondary",
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              return _vm.dropZoneClearAll($event)
+                            }
+                          }
+                        },
+                        [_vm._v("Clear")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-default",
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              _vm.dropZoneActive = false
+                            }
+                          }
+                        },
+                        [_vm._v("x")]
+                      )
+                    ])
+                  ]
+                )
+              ]
+            )
           ])
         ]
       )
@@ -22702,86 +22410,6 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "author-thumb" }, [
-      _c("img", { attrs: { src: "theme/img/author-page.jpg", alt: "author" } })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "form-group with-icon label-floating is-empty" },
-      [
-        _c("label", { staticClass: "control-label" }, [
-          _vm._v("Share what you are thinking here...")
-        ]),
-        _vm._v(" "),
-        _c("textarea", {
-          staticClass: "form-control",
-          attrs: { placeholder: "" }
-        }),
-        _vm._v(" "),
-        _c("span", { staticClass: "material-input" })
-      ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "author-thumb" }, [
-      _c("img", { attrs: { src: "theme/img/author-page.jpg", alt: "author" } })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "form-group with-icon label-floating is-empty" },
-      [
-        _c("label", { staticClass: "control-label" }, [
-          _vm._v("Share what you are thinking here...")
-        ]),
-        _vm._v(" "),
-        _c("textarea", {
-          staticClass: "form-control",
-          attrs: { placeholder: "" }
-        }),
-        _vm._v(" "),
-        _c("span", { staticClass: "material-input" })
-      ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "author-date" }, [
-      _c(
-        "a",
-        { staticClass: "h6 post__author-name fn", attrs: { href: "#" } },
-        [_vm._v("Marina Valentine")]
-      ),
-      _vm._v(" shared a\n               "),
-      _c("a", { attrs: { href: "#" } }, [_vm._v("link")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "post__date" }, [
-        _c(
-          "time",
-          { staticClass: "published", attrs: { datetime: "2004-07-24T18:18" } },
-          [_vm._v("March 4 at 2:05pm")]
-        )
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("ul", { staticClass: "more-dropdown" }, [
       _c("li", [_c("a", { attrs: { href: "#" } }, [_vm._v("Edit Post")])]),
       _vm._v(" "),
@@ -22800,494 +22428,8 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("p", [
-      _vm._v("\n             Hey\n             "),
-      _c("a", { attrs: { href: "#" } }, [_vm._v("Cindi")]),
-      _vm._v(
-        ", you should really check out this new song by Iron Maid. The next time they come to the city we should totally go!\n           "
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "video-content" }, [
-      _c("a", { staticClass: "h4 title", attrs: { href: "#" } }, [
-        _vm._v("Iron Maid - ChillGroves")
-      ]),
-      _vm._v(" "),
-      _c("p", [
-        _vm._v(
-          "\n                 Lorem ipsum dolor sit amet, consectetur ipisicing elit, sed do eiusmod tempor incididunt\n                 ut labore et dolore magna aliqua...\n               "
-        )
-      ]),
-      _vm._v(" "),
-      _c("a", { staticClass: "link-site", attrs: { href: "#" } }, [
-        _vm._v("YOUTUBE.COM")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("ul", { staticClass: "friends-harmonic" }, [
-      _c("li", [
-        _c("a", { attrs: { href: "#" } }, [
-          _c("img", {
-            attrs: { src: "theme/img/friend-harmonic9.jpg", alt: "friend" }
-          })
-        ])
-      ]),
-      _vm._v(" "),
-      _c("li", [
-        _c("a", { attrs: { href: "#" } }, [
-          _c("img", {
-            attrs: { src: "theme/img/friend-harmonic10.jpg", alt: "friend" }
-          })
-        ])
-      ]),
-      _vm._v(" "),
-      _c("li", [
-        _c("a", { attrs: { href: "#" } }, [
-          _c("img", {
-            attrs: { src: "theme/img/friend-harmonic7.jpg", alt: "friend" }
-          })
-        ])
-      ]),
-      _vm._v(" "),
-      _c("li", [
-        _c("a", { attrs: { href: "#" } }, [
-          _c("img", {
-            attrs: { src: "theme/img/friend-harmonic8.jpg", alt: "friend" }
-          })
-        ])
-      ]),
-      _vm._v(" "),
-      _c("li", [
-        _c("a", { attrs: { href: "#" } }, [
-          _c("img", {
-            attrs: { src: "theme/img/friend-harmonic11.jpg", alt: "friend" }
-          })
-        ])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "names-people-likes" }, [
-      _c("a", { attrs: { href: "#" } }, [_vm._v("Jenny")]),
-      _vm._v(",\n               "),
-      _c("a", { attrs: { href: "#" } }, [_vm._v("Robert")]),
-      _vm._v(" and\n               "),
-      _c("br"),
-      _vm._v("18 more liked this\n             ")
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "author-date" }, [
-      _c(
-        "a",
-        { staticClass: "h6 post__author-name fn", attrs: { href: "#" } },
-        [_vm._v("Elaine Dreyfuss")]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "post__date" }, [
-        _c(
-          "time",
-          { staticClass: "published", attrs: { datetime: "2004-07-24T18:18" } },
-          [_vm._v("9 hours ago")]
-        )
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("ul", { staticClass: "more-dropdown" }, [
-      _c("li", [_c("a", { attrs: { href: "#" } }, [_vm._v("Edit Post")])]),
-      _vm._v(" "),
-      _c("li", [_c("a", { attrs: { href: "#" } }, [_vm._v("Delete Post")])]),
-      _vm._v(" "),
-      _c("li", [
-        _c("a", { attrs: { href: "#" } }, [_vm._v("Turn Off Notifications")])
-      ]),
-      _vm._v(" "),
-      _c("li", [
-        _c("a", { attrs: { href: "#" } }, [_vm._v("Select as Featured")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("ul", { staticClass: "friends-harmonic" }, [
-      _c("li", [
-        _c("a", { attrs: { href: "#" } }, [
-          _c("img", {
-            attrs: { src: "theme/img/friend-harmonic7.jpg", alt: "friend" }
-          })
-        ])
-      ]),
-      _vm._v(" "),
-      _c("li", [
-        _c("a", { attrs: { href: "#" } }, [
-          _c("img", {
-            attrs: { src: "theme/img/friend-harmonic8.jpg", alt: "friend" }
-          })
-        ])
-      ]),
-      _vm._v(" "),
-      _c("li", [
-        _c("a", { attrs: { href: "#" } }, [
-          _c("img", {
-            attrs: { src: "theme/img/friend-harmonic9.jpg", alt: "friend" }
-          })
-        ])
-      ]),
-      _vm._v(" "),
-      _c("li", [
-        _c("a", { attrs: { href: "#" } }, [
-          _c("img", {
-            attrs: { src: "theme/img/friend-harmonic10.jpg", alt: "friend" }
-          })
-        ])
-      ]),
-      _vm._v(" "),
-      _c("li", [
-        _c("a", { attrs: { href: "#" } }, [
-          _c("img", {
-            attrs: { src: "theme/img/friend-harmonic11.jpg", alt: "friend" }
-          })
-        ])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "names-people-likes" }, [
-      _c("a", { attrs: { href: "#" } }, [_vm._v("You")]),
-      _vm._v(",\n               "),
-      _c("a", { attrs: { href: "#" } }, [_vm._v("Elaine")]),
-      _vm._v(" and\n               "),
-      _c("br"),
-      _vm._v("22 more liked this\n             ")
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "author-date" }, [
-      _c(
-        "a",
-        {
-          staticClass: "h6 post__author-name fn",
-          attrs: { href: "02-ProfilePage.html" }
-        },
-        [_vm._v("James Spiegel")]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "post__date" }, [
-        _c(
-          "time",
-          { staticClass: "published", attrs: { datetime: "2004-07-24T18:18" } },
-          [_vm._v("38 mins ago")]
-        )
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "author-date" }, [
-      _c(
-        "a",
-        { staticClass: "h6 post__author-name fn", attrs: { href: "#" } },
-        [_vm._v("Mathilda Brinker")]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "post__date" }, [
-        _c(
-          "time",
-          { staticClass: "published", attrs: { datetime: "2004-07-24T18:18" } },
-          [_vm._v("1 hour ago")]
-        )
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("a", { staticClass: "more-comments", attrs: { href: "#" } }, [
-      _vm._v("\n           View more comments\n           "),
-      _c("span", [_vm._v("+")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "author-date" }, [
-      _c(
-        "a",
-        { staticClass: "h6 post__author-name fn", attrs: { href: "#" } },
-        [_vm._v("Green Goo Rock")]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "post__date" }, [
-        _c(
-          "time",
-          { staticClass: "published", attrs: { datetime: "2004-07-24T18:18" } },
-          [_vm._v("March 8 at 6:42pm")]
-        )
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("ul", { staticClass: "more-dropdown" }, [
-      _c("li", [_c("a", { attrs: { href: "#" } }, [_vm._v("Edit Post")])]),
-      _vm._v(" "),
-      _c("li", [_c("a", { attrs: { href: "#" } }, [_vm._v("Delete Post")])]),
-      _vm._v(" "),
-      _c("li", [
-        _c("a", { attrs: { href: "#" } }, [_vm._v("Turn Off Notifications")])
-      ]),
-      _vm._v(" "),
-      _c("li", [
-        _c("a", { attrs: { href: "#" } }, [_vm._v("Select as Featured")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("p", [
-      _vm._v(
-        "\n             Hey guys! We are gona be playing this Saturday of\n             "
-      ),
-      _c("a", { attrs: { href: "#" } }, [_vm._v("The Marina Bar")]),
-      _vm._v(
-        " for their new Mystic Deer Party.\n             If you wanna hang out and have a really good time, come and join us. We’l be waiting for you!\n           "
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "post-thumb" }, [
-      _c("img", { attrs: { src: "theme/img/post__thumb1.jpg", alt: "photo" } })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("ul", { staticClass: "friends-harmonic" }, [
-      _c("li", [
-        _c("a", { attrs: { href: "#" } }, [
-          _c("img", {
-            attrs: { src: "theme/img/friend-harmonic9.jpg", alt: "friend" }
-          })
-        ])
-      ]),
-      _vm._v(" "),
-      _c("li", [
-        _c("a", { attrs: { href: "#" } }, [
-          _c("img", {
-            attrs: { src: "theme/img/friend-harmonic10.jpg", alt: "friend" }
-          })
-        ])
-      ]),
-      _vm._v(" "),
-      _c("li", [
-        _c("a", { attrs: { href: "#" } }, [
-          _c("img", {
-            attrs: { src: "theme/img/friend-harmonic7.jpg", alt: "friend" }
-          })
-        ])
-      ]),
-      _vm._v(" "),
-      _c("li", [
-        _c("a", { attrs: { href: "#" } }, [
-          _c("img", {
-            attrs: { src: "theme/img/friend-harmonic8.jpg", alt: "friend" }
-          })
-        ])
-      ]),
-      _vm._v(" "),
-      _c("li", [
-        _c("a", { attrs: { href: "#" } }, [
-          _c("img", {
-            attrs: { src: "theme/img/friend-harmonic11.jpg", alt: "friend" }
-          })
-        ])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "names-people-likes" }, [
-      _c("a", { attrs: { href: "#" } }, [_vm._v("Jimmy")]),
-      _vm._v(",\n               "),
-      _c("a", { attrs: { href: "#" } }, [_vm._v("Andrea")]),
-      _vm._v(" and\n               "),
-      _c("br"),
-      _vm._v("47 more liked this\n             ")
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "author-date" }, [
-      _c(
-        "a",
-        { staticClass: "h6 post__author-name fn", attrs: { href: "#" } },
-        [_vm._v("Sarah Hetfield")]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "post__date" }, [
-        _c(
-          "time",
-          { staticClass: "published", attrs: { datetime: "2004-07-24T18:18" } },
-          [_vm._v("March 2 at 9:06am")]
-        )
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("ul", { staticClass: "more-dropdown" }, [
-      _c("li", [_c("a", { attrs: { href: "#" } }, [_vm._v("Edit Post")])]),
-      _vm._v(" "),
-      _c("li", [_c("a", { attrs: { href: "#" } }, [_vm._v("Delete Post")])]),
-      _vm._v(" "),
-      _c("li", [
-        _c("a", { attrs: { href: "#" } }, [_vm._v("Turn Off Notifications")])
-      ]),
-      _vm._v(" "),
-      _c("li", [
-        _c("a", { attrs: { href: "#" } }, [_vm._v("Select as Featured")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "author-date" }, [
-      _c(
-        "a",
-        { staticClass: "h6 post__author-name fn", attrs: { href: "#" } },
-        [_vm._v("Nicholas Grissom")]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "post__date" }, [
-        _c(
-          "time",
-          { staticClass: "published", attrs: { datetime: "2004-07-24T18:18" } },
-          [_vm._v("March 2 at 8:34am")]
-        )
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("ul", { staticClass: "more-dropdown" }, [
-      _c("li", [_c("a", { attrs: { href: "#" } }, [_vm._v("Edit Post")])]),
-      _vm._v(" "),
-      _c("li", [_c("a", { attrs: { href: "#" } }, [_vm._v("Delete Post")])]),
-      _vm._v(" "),
-      _c("li", [
-        _c("a", { attrs: { href: "#" } }, [_vm._v("Turn Off Notifications")])
-      ]),
-      _vm._v(" "),
-      _c("li", [
-        _c("a", { attrs: { href: "#" } }, [_vm._v("Select as Featured")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("ul", { staticClass: "friends-harmonic" }, [
-      _c("li", [
-        _c("a", { attrs: { href: "#" } }, [
-          _c("img", {
-            attrs: { src: "theme/img/friend-harmonic9.jpg", alt: "friend" }
-          })
-        ])
-      ]),
-      _vm._v(" "),
-      _c("li", [
-        _c("a", { attrs: { href: "#" } }, [
-          _c("img", {
-            attrs: { src: "theme/img/friend-harmonic10.jpg", alt: "friend" }
-          })
-        ])
-      ]),
-      _vm._v(" "),
-      _c("li", [
-        _c("a", { attrs: { href: "#" } }, [
-          _c("img", {
-            attrs: { src: "theme/img/friend-harmonic7.jpg", alt: "friend" }
-          })
-        ])
-      ]),
-      _vm._v(" "),
-      _c("li", [
-        _c("a", { attrs: { href: "#" } }, [
-          _c("img", {
-            attrs: { src: "theme/img/friend-harmonic8.jpg", alt: "friend" }
-          })
-        ])
-      ]),
-      _vm._v(" "),
-      _c("li", [
-        _c("a", { attrs: { href: "#" } }, [
-          _c("img", {
-            attrs: { src: "theme/img/friend-harmonic11.jpg", alt: "friend" }
-          })
-        ])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "names-people-likes" }, [
-      _c("a", { attrs: { href: "#" } }, [_vm._v("Jimmy")]),
-      _vm._v(",\n               "),
-      _c("a", { attrs: { href: "#" } }, [_vm._v("Andrea")]),
-      _vm._v(" and\n               "),
-      _c("br"),
-      _vm._v("47 more liked this\n             ")
+    return _c("div", { staticClass: "modal-header" }, [
+      _c("h6", { staticClass: "title" }, [_vm._v("Update Header Photo")])
     ])
   }
 ]
@@ -23390,8 +22532,9 @@ var render = function() {
                         [
                           _c("div", { staticClass: "author-thumb" }, [
                             _c("img", {
+                              staticClass: "smaller avatar",
                               attrs: {
-                                src: "theme/img/avatar38-sm.jpg",
+                                src: "storage/" + people.avatar,
                                 alt: "author"
                               }
                             })
@@ -24838,10 +23981,22 @@ var render = function() {
               _c("div", { staticClass: "ui-block" }, [
                 _c("div", { staticClass: "top-header top-header-favorit" }, [
                   _c("div", { staticClass: "top-header-thumb" }, [
-                    _c("img", { attrs: { src: _vm.coverUrl, alt: "nature" } }),
+                    _c("img", {
+                      attrs: {
+                        src: "storage/" + this.$parent.$data.user.myCover,
+                        alt: "nature"
+                      }
+                    }),
                     _vm._v(" "),
                     _c("div", { staticClass: "top-header-author" }, [
-                      _vm._m(0),
+                      _c("div", { staticClass: "author-thumb" }, [
+                        _c("img", {
+                          attrs: {
+                            src: "storage/" + this.$parent.$data.user.myAvatar,
+                            alt: "author"
+                          }
+                        })
+                      ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "author-content" }, [
                         _c(
@@ -24952,7 +24107,7 @@ var render = function() {
                                 )
                               ]),
                               _vm._v(" "),
-                              _vm._m(1),
+                              _vm._m(0),
                               _vm._v(" "),
                               _c(
                                 "li",
@@ -25014,14 +24169,6 @@ var render = function() {
   )
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "author-thumb" }, [
-      _c("img", { attrs: { src: "theme/img/author-main2.jpg", alt: "author" } })
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -25356,98 +24503,6 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "more" }, [
       _c("i", { staticClass: "fa fa-check-circle" })
-    ])
-  }
-]
-render._withStripped = true
-
-
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/utils/modal-photo-upload.vue?vue&type=template&id=fae05cf6&":
-/*!***************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/utils/modal-photo-upload.vue?vue&type=template&id=fae05cf6& ***!
-  \***************************************************************************************************************************************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "modal-backdrop" }, [
-    _c("div", { staticClass: "modal" }, [
-      _c(
-        "div",
-        {
-          staticClass: "modal-dialog window-popup update-header-photo",
-          attrs: { role: "document" }
-        },
-        [
-          _c(
-            "div",
-            { staticClass: "modal-content", staticStyle: { display: "none" } },
-            [
-              _c(
-                "a",
-                {
-                  staticClass: "close icon-close",
-                  attrs: {
-                    href: "#",
-                    "data-dismiss": "modal",
-                    "aria-label": "Close"
-                  },
-                  on: {
-                    click: function($event) {
-                      $event.preventDefault()
-                      return _vm.close($event)
-                    }
-                  }
-                },
-                [
-                  _c("svg", { staticClass: "olymp-close-icon" }, [
-                    _c("use", {
-                      attrs: {
-                        "xlink:href":
-                          "theme/svg-icons/sprites/icons.svg#olymp-close-icon"
-                      }
-                    })
-                  ])
-                ]
-              ),
-              _vm._v(" "),
-              _vm._m(0),
-              _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "modal-body" },
-                [
-                  _c("vue-dropzone", {
-                    ref: "myVueDropzone",
-                    attrs: { id: "dropzone", options: _vm.dropzoneOptions }
-                  })
-                ],
-                1
-              )
-            ]
-          )
-        ]
-      )
-    ])
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-header" }, [
-      _c("h6", { staticClass: "title" }, [_vm._v("Update Header Photo")])
     ])
   }
 ]
@@ -28838,15 +27893,17 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _main_feed_vue_vue_type_template_id_0c0ffddb___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./main-feed.vue?vue&type=template&id=0c0ffddb& */ "./resources/js/components/member/feed/main-feed.vue?vue&type=template&id=0c0ffddb&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony import */ var _main_feed_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./main-feed.vue?vue&type=script&lang=js& */ "./resources/js/components/member/feed/main-feed.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
-var script = {}
+
+
 
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__["default"])(
-  script,
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _main_feed_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
   _main_feed_vue_vue_type_template_id_0c0ffddb___WEBPACK_IMPORTED_MODULE_0__["render"],
   _main_feed_vue_vue_type_template_id_0c0ffddb___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
@@ -28860,6 +27917,20 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 if (false) { var api; }
 component.options.__file = "resources/js/components/member/feed/main-feed.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/member/feed/main-feed.vue?vue&type=script&lang=js&":
+/*!************************************************************************************!*\
+  !*** ./resources/js/components/member/feed/main-feed.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_main_feed_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./main-feed.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/member/feed/main-feed.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_main_feed_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -29332,75 +28403,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/utils/modal-photo-upload.vue":
-/*!**************************************************************!*\
-  !*** ./resources/js/components/utils/modal-photo-upload.vue ***!
-  \**************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _modal_photo_upload_vue_vue_type_template_id_fae05cf6___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modal-photo-upload.vue?vue&type=template&id=fae05cf6& */ "./resources/js/components/utils/modal-photo-upload.vue?vue&type=template&id=fae05cf6&");
-/* harmony import */ var _modal_photo_upload_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modal-photo-upload.vue?vue&type=script&lang=js& */ "./resources/js/components/utils/modal-photo-upload.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-/* normalize component */
-
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _modal_photo_upload_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _modal_photo_upload_vue_vue_type_template_id_fae05cf6___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _modal_photo_upload_vue_vue_type_template_id_fae05cf6___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/js/components/utils/modal-photo-upload.vue"
-/* harmony default export */ __webpack_exports__["default"] = (component.exports);
-
-/***/ }),
-
-/***/ "./resources/js/components/utils/modal-photo-upload.vue?vue&type=script&lang=js&":
-/*!***************************************************************************************!*\
-  !*** ./resources/js/components/utils/modal-photo-upload.vue?vue&type=script&lang=js& ***!
-  \***************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_modal_photo_upload_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./modal-photo-upload.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/utils/modal-photo-upload.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_modal_photo_upload_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
-/***/ "./resources/js/components/utils/modal-photo-upload.vue?vue&type=template&id=fae05cf6&":
-/*!*********************************************************************************************!*\
-  !*** ./resources/js/components/utils/modal-photo-upload.vue?vue&type=template&id=fae05cf6& ***!
-  \*********************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_modal_photo_upload_vue_vue_type_template_id_fae05cf6___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./modal-photo-upload.vue?vue&type=template&id=fae05cf6& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/utils/modal-photo-upload.vue?vue&type=template&id=fae05cf6&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_modal_photo_upload_vue_vue_type_template_id_fae05cf6___WEBPACK_IMPORTED_MODULE_0__["render"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_modal_photo_upload_vue_vue_type_template_id_fae05cf6___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
-
-
-
-/***/ }),
-
 /***/ "./resources/js/member.js":
 /*!********************************!*\
   !*** ./resources/js/member.js ***!
@@ -29413,41 +28415,34 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var babel_polyfill__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! babel-polyfill */ "./node_modules/babel-polyfill/lib/index.js");
 /* harmony import */ var babel_polyfill__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(babel_polyfill__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
-/* harmony import */ var vue2_dropzone__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue2-dropzone */ "./node_modules/vue2-dropzone/dist/vue2Dropzone.js");
-/* harmony import */ var vue2_dropzone__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue2_dropzone__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _components_utils_modal_photo_upload_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/utils/modal-photo-upload.vue */ "./resources/js/components/utils/modal-photo-upload.vue");
-/* harmony import */ var _components_member_account_dash_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/member/account-dash.vue */ "./resources/js/components/member/account-dash.vue");
-/* harmony import */ var _components_member_dash_personal_info_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/member/dash/personal-info.vue */ "./resources/js/components/member/dash/personal-info.vue");
-/* harmony import */ var _components_member_dash_change_password_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/member/dash/change-password.vue */ "./resources/js/components/member/dash/change-password.vue");
-/* harmony import */ var _components_member_dash_my_interests_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/member/dash/my-interests.vue */ "./resources/js/components/member/dash/my-interests.vue");
-/* harmony import */ var _components_member_dash_friend_requests_vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/member/dash/friend-requests.vue */ "./resources/js/components/member/dash/friend-requests.vue");
-/* harmony import */ var _components_member_dash_sent_requests_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/member/dash/sent-requests.vue */ "./resources/js/components/member/dash/sent-requests.vue");
-/* harmony import */ var _components_member_dash_friend_circle_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/member/dash/friend-circle.vue */ "./resources/js/components/member/dash/friend-circle.vue");
-/* harmony import */ var _components_member_dash_education_employment_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/member/dash/education-employment.vue */ "./resources/js/components/member/dash/education-employment.vue");
-/* harmony import */ var _components_member_news_feed_vue__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/member/news-feed.vue */ "./resources/js/components/member/news-feed.vue");
-/* harmony import */ var _components_member_feed_main_feed_vue__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/member/feed/main-feed.vue */ "./resources/js/components/member/feed/main-feed.vue");
-/* harmony import */ var _components_member_feed_left_side_bar_vue__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/member/feed/left-side-bar.vue */ "./resources/js/components/member/feed/left-side-bar.vue");
-/* harmony import */ var _components_member_feed_right_side_bar_vue__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/member/feed/right-side-bar.vue */ "./resources/js/components/member/feed/right-side-bar.vue");
-/* harmony import */ var _components_member_profile_page_vue__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./components/member/profile-page.vue */ "./resources/js/components/member/profile-page.vue");
-/* harmony import */ var _components_member_profile_about_page_vue__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./components/member/profile/about-page.vue */ "./resources/js/components/member/profile/about-page.vue");
-/* harmony import */ var _components_member_profile_other_vue__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./components/member/profile-other.vue */ "./resources/js/components/member/profile-other.vue");
-/* harmony import */ var _components_member_other_member_friends_vue__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./components/member/other/member-friends.vue */ "./resources/js/components/member/other/member-friends.vue");
-/* harmony import */ var _components_member_other_member_about_vue__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./components/member/other/member-about.vue */ "./resources/js/components/member/other/member-about.vue");
+/* harmony import */ var _components_member_account_dash_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/member/account-dash.vue */ "./resources/js/components/member/account-dash.vue");
+/* harmony import */ var _components_member_dash_personal_info_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/member/dash/personal-info.vue */ "./resources/js/components/member/dash/personal-info.vue");
+/* harmony import */ var _components_member_dash_change_password_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/member/dash/change-password.vue */ "./resources/js/components/member/dash/change-password.vue");
+/* harmony import */ var _components_member_dash_my_interests_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/member/dash/my-interests.vue */ "./resources/js/components/member/dash/my-interests.vue");
+/* harmony import */ var _components_member_dash_friend_requests_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/member/dash/friend-requests.vue */ "./resources/js/components/member/dash/friend-requests.vue");
+/* harmony import */ var _components_member_dash_sent_requests_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/member/dash/sent-requests.vue */ "./resources/js/components/member/dash/sent-requests.vue");
+/* harmony import */ var _components_member_dash_friend_circle_vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/member/dash/friend-circle.vue */ "./resources/js/components/member/dash/friend-circle.vue");
+/* harmony import */ var _components_member_dash_education_employment_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/member/dash/education-employment.vue */ "./resources/js/components/member/dash/education-employment.vue");
+/* harmony import */ var _components_member_news_feed_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/member/news-feed.vue */ "./resources/js/components/member/news-feed.vue");
+/* harmony import */ var _components_member_feed_main_feed_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/member/feed/main-feed.vue */ "./resources/js/components/member/feed/main-feed.vue");
+/* harmony import */ var _components_member_feed_left_side_bar_vue__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/member/feed/left-side-bar.vue */ "./resources/js/components/member/feed/left-side-bar.vue");
+/* harmony import */ var _components_member_feed_right_side_bar_vue__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/member/feed/right-side-bar.vue */ "./resources/js/components/member/feed/right-side-bar.vue");
+/* harmony import */ var _components_member_profile_page_vue__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/member/profile-page.vue */ "./resources/js/components/member/profile-page.vue");
+/* harmony import */ var _components_member_profile_about_page_vue__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/member/profile/about-page.vue */ "./resources/js/components/member/profile/about-page.vue");
+/* harmony import */ var _components_member_profile_other_vue__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./components/member/profile-other.vue */ "./resources/js/components/member/profile-other.vue");
+/* harmony import */ var _components_member_other_member_friends_vue__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./components/member/other/member-friends.vue */ "./resources/js/components/member/other/member-friends.vue");
+/* harmony import */ var _components_member_other_member_about_vue__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./components/member/other/member-about.vue */ "./resources/js/components/member/other/member-about.vue");
  // es6 shim
 // vue router
 // ________________________
 
 
-Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]); //vue dropzone
-
- // bootstrap-vue
+Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]); // bootstrap-vue
 // components
 // _____________________
 // import SBar from './components/admin/SideBar.vue'
 // import Places from './components/admin/Places.vue'
-//modal
-
- //
+//
 
 
 
@@ -29468,80 +28463,77 @@ Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]); //vue dropzone
 
 
 
- //modal
+ //
 
-Vue.component('ModalPhoto', _components_utils_modal_photo_upload_vue__WEBPACK_IMPORTED_MODULE_3__["default"]);
-Vue.component('vueDropzone', vue2_dropzone__WEBPACK_IMPORTED_MODULE_2___default.a); //
+Vue.component('PersonalInfo', _components_member_dash_personal_info_vue__WEBPACK_IMPORTED_MODULE_3__["default"]);
+Vue.component('ChangePassword', _components_member_dash_change_password_vue__WEBPACK_IMPORTED_MODULE_4__["default"]);
+Vue.component('FriendRequests', _components_member_dash_friend_requests_vue__WEBPACK_IMPORTED_MODULE_6__["default"]);
+Vue.component('SentRequests', _components_member_dash_sent_requests_vue__WEBPACK_IMPORTED_MODULE_7__["default"]);
+Vue.component('AccountDash', _components_member_account_dash_vue__WEBPACK_IMPORTED_MODULE_2__["default"]);
+Vue.component('MyInterests', _components_member_dash_my_interests_vue__WEBPACK_IMPORTED_MODULE_5__["default"]);
+Vue.component('EducationEmployment', _components_member_dash_education_employment_vue__WEBPACK_IMPORTED_MODULE_9__["default"]);
+Vue.component('NewsFeed', _components_member_news_feed_vue__WEBPACK_IMPORTED_MODULE_10__["default"]);
+Vue.component('MainFeed', _components_member_feed_main_feed_vue__WEBPACK_IMPORTED_MODULE_11__["default"]);
+Vue.component('LeftSideBar', _components_member_feed_left_side_bar_vue__WEBPACK_IMPORTED_MODULE_12__["default"]);
+Vue.component('RightSideBar', _components_member_feed_right_side_bar_vue__WEBPACK_IMPORTED_MODULE_13__["default"]);
+Vue.component('FriendCircle', _components_member_dash_friend_circle_vue__WEBPACK_IMPORTED_MODULE_8__["default"]); //
 
-Vue.component('PersonalInfo', _components_member_dash_personal_info_vue__WEBPACK_IMPORTED_MODULE_5__["default"]);
-Vue.component('ChangePassword', _components_member_dash_change_password_vue__WEBPACK_IMPORTED_MODULE_6__["default"]);
-Vue.component('FriendRequests', _components_member_dash_friend_requests_vue__WEBPACK_IMPORTED_MODULE_8__["default"]);
-Vue.component('SentRequests', _components_member_dash_sent_requests_vue__WEBPACK_IMPORTED_MODULE_9__["default"]);
-Vue.component('AccountDash', _components_member_account_dash_vue__WEBPACK_IMPORTED_MODULE_4__["default"]);
-Vue.component('MyInterests', _components_member_dash_my_interests_vue__WEBPACK_IMPORTED_MODULE_7__["default"]);
-Vue.component('EducationEmployment', _components_member_dash_education_employment_vue__WEBPACK_IMPORTED_MODULE_11__["default"]);
-Vue.component('NewsFeed', _components_member_news_feed_vue__WEBPACK_IMPORTED_MODULE_12__["default"]);
-Vue.component('MainFeed', _components_member_feed_main_feed_vue__WEBPACK_IMPORTED_MODULE_13__["default"]);
-Vue.component('LeftSideBar', _components_member_feed_left_side_bar_vue__WEBPACK_IMPORTED_MODULE_14__["default"]);
-Vue.component('RightSideBar', _components_member_feed_right_side_bar_vue__WEBPACK_IMPORTED_MODULE_15__["default"]);
-Vue.component('FriendCircle', _components_member_dash_friend_circle_vue__WEBPACK_IMPORTED_MODULE_10__["default"]); //
+Vue.component('ProfilePage', _components_member_profile_page_vue__WEBPACK_IMPORTED_MODULE_14__["default"]);
+Vue.component('AboutPage', _components_member_profile_about_page_vue__WEBPACK_IMPORTED_MODULE_15__["default"]); //
 
-Vue.component('ProfilePage', _components_member_profile_page_vue__WEBPACK_IMPORTED_MODULE_16__["default"]);
-Vue.component('AboutPage', _components_member_profile_about_page_vue__WEBPACK_IMPORTED_MODULE_17__["default"]); //
-
-Vue.component('ProfileOther', _components_member_profile_other_vue__WEBPACK_IMPORTED_MODULE_18__["default"]);
-Vue.component('MemberFriends', _components_member_other_member_friends_vue__WEBPACK_IMPORTED_MODULE_19__["default"]);
-Vue.component('MemberAbout', _components_member_other_member_about_vue__WEBPACK_IMPORTED_MODULE_20__["default"]); // routes
+Vue.component('ProfileOther', _components_member_profile_other_vue__WEBPACK_IMPORTED_MODULE_16__["default"]);
+Vue.component('MemberFriends', _components_member_other_member_friends_vue__WEBPACK_IMPORTED_MODULE_17__["default"]);
+Vue.component('MemberAbout', _components_member_other_member_about_vue__WEBPACK_IMPORTED_MODULE_18__["default"]); // routes
 // __________________
 
 var routes = [{
   path: '/account',
-  component: _components_member_account_dash_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
+  component: _components_member_account_dash_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
   children: [{
     path: '/account/personal-info',
-    component: _components_member_dash_personal_info_vue__WEBPACK_IMPORTED_MODULE_5__["default"]
+    component: _components_member_dash_personal_info_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
   }, {
     path: '/account/change-password',
-    component: _components_member_dash_change_password_vue__WEBPACK_IMPORTED_MODULE_6__["default"]
+    component: _components_member_dash_change_password_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
   }, {
     path: '/account/friend-requests',
-    component: _components_member_dash_friend_requests_vue__WEBPACK_IMPORTED_MODULE_8__["default"]
+    component: _components_member_dash_friend_requests_vue__WEBPACK_IMPORTED_MODULE_6__["default"]
   }, {
     path: '/account/sent-requests',
-    component: _components_member_dash_sent_requests_vue__WEBPACK_IMPORTED_MODULE_9__["default"]
+    component: _components_member_dash_sent_requests_vue__WEBPACK_IMPORTED_MODULE_7__["default"]
   }, {
     path: '/account/friend-circle',
-    component: _components_member_dash_friend_circle_vue__WEBPACK_IMPORTED_MODULE_10__["default"]
+    component: _components_member_dash_friend_circle_vue__WEBPACK_IMPORTED_MODULE_8__["default"]
   }, {
     path: '/account/my-interests',
-    component: _components_member_dash_my_interests_vue__WEBPACK_IMPORTED_MODULE_7__["default"]
+    component: _components_member_dash_my_interests_vue__WEBPACK_IMPORTED_MODULE_5__["default"]
   }, {
     path: '/account/education-employment',
-    component: _components_member_dash_education_employment_vue__WEBPACK_IMPORTED_MODULE_11__["default"]
+    component: _components_member_dash_education_employment_vue__WEBPACK_IMPORTED_MODULE_9__["default"]
   }]
 }, {
   path: '/profile',
   //PROFILE
-  component: _components_member_profile_page_vue__WEBPACK_IMPORTED_MODULE_16__["default"],
+  component: _components_member_profile_page_vue__WEBPACK_IMPORTED_MODULE_14__["default"],
   children: [{
     path: '/profile/about',
-    component: _components_member_profile_about_page_vue__WEBPACK_IMPORTED_MODULE_17__["default"]
+    component: _components_member_profile_about_page_vue__WEBPACK_IMPORTED_MODULE_15__["default"]
   }, {
     path: '/profile/timeline' // component: AboutPage
 
   }]
 }, {
   path: '/',
-  component: _components_member_news_feed_vue__WEBPACK_IMPORTED_MODULE_12__["default"]
+  component: _components_member_news_feed_vue__WEBPACK_IMPORTED_MODULE_10__["default"]
 }, {
   path: '/user/:id',
-  component: _components_member_profile_other_vue__WEBPACK_IMPORTED_MODULE_18__["default"],
+  component: _components_member_profile_other_vue__WEBPACK_IMPORTED_MODULE_16__["default"],
   children: [{
     path: '/user/:id/friends',
-    component: _components_member_other_member_friends_vue__WEBPACK_IMPORTED_MODULE_19__["default"]
+    component: _components_member_other_member_friends_vue__WEBPACK_IMPORTED_MODULE_17__["default"]
   }, {
     path: '/user/:id/about',
-    component: _components_member_other_member_about_vue__WEBPACK_IMPORTED_MODULE_20__["default"]
+    component: _components_member_other_member_about_vue__WEBPACK_IMPORTED_MODULE_18__["default"]
   }]
 }];
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
@@ -29560,6 +28552,14 @@ var app = new Vue({
     axios.post('/user/basicinfo').then(function (response) {
       _this.user = response.data;
       _this.newUserStatus = _this.user.status_text;
+
+      if (_this.user.myAvatar == "") {
+        _this.user.myAvatar = "img/author-main2.jpg";
+      }
+
+      if (_this.user.myCover == "") {
+        _this.user.myAvatar = "img/top-header2.jpg";
+      }
     });
   },
   data: {

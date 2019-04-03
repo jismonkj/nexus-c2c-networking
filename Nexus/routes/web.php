@@ -46,6 +46,11 @@ Route::post('member/status/text', 'Member\MemberController@updateStatus');
 Route::resource('member/friends', 'Member\FriendCircleController');
 Route::get('member/fsuggestions', 'Member\FriendCircleController@getFriendSuggestions');
 Route::post('member/friend_circle', 'Member\FriendCircleController@getMemberFriendCircle');
+# -- items
+Route::resource('items', 'Member\ItemsController');
+# -- feed
+Route::get('feed/', 'HomeController@fetchMemberFeed');
+Route::get('item/like/{itemId}', 'HomeController@addLikes');
 
 /* ADMIN
 _____________________________________________________________________________
@@ -60,6 +65,7 @@ _______________________________________________________________________________*
 # -- images
 Route::post('images/upload', 'FileController@imageCollect');
 Route::post('images/url', 'FileController@getImageUrl');
+Route::post('images/items', 'FileController@itemImagesCollect');
 
 /* testing routes
 ___________________________________ _________________________________________

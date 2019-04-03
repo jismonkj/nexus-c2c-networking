@@ -4,9 +4,6 @@ import "babel-polyfill"; // es6 shim
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
-//vue dropzone
-import vue2Dropzone from 'vue2-dropzone'
-
 
 // bootstrap-vue
 
@@ -15,9 +12,6 @@ import vue2Dropzone from 'vue2-dropzone'
 // _____________________
 // import SBar from './components/admin/SideBar.vue'
 // import Places from './components/admin/Places.vue'
-
-//modal
-import ModalPhoto from './components/utils/modal-photo-upload.vue'
 //
 import AccountDash from './components/member/account-dash.vue'
 import PersonalInfo from './components/member/dash/personal-info.vue'
@@ -41,9 +35,6 @@ import MemberFriends from './components/member/other/member-friends.vue'
 import MemberAbout from './components/member/other/member-about.vue'
 
 
-//modal
-Vue.component('ModalPhoto', ModalPhoto);
-Vue.component('vueDropzone', vue2Dropzone);
 //
 Vue.component('PersonalInfo', PersonalInfo);
 Vue.component('ChangePassword', ChangePassword);
@@ -120,13 +111,12 @@ let routes = [{
     {
         path: '/user/:id',
         component: ProfileOther,
-        children:[
-            {
-                path:'/user/:id/friends',
+        children: [{
+                path: '/user/:id/friends',
                 component: MemberFriends
             },
             {
-                path:'/user/:id/about',
+                path: '/user/:id/about',
                 component: MemberAbout
             }
         ]
@@ -148,6 +138,12 @@ const app = new Vue({
             response => {
                 this.user = response.data;
                 this.newUserStatus = this.user.status_text;
+                if (this.user.myAvatar == "") {
+                    this.user.myAvatar= "img/author-main2.jpg"
+                }
+                if (this.user.myCover == "") {
+                    this.user.myAvatar= "img/top-header2.jpg"
+                }
             }
         );
     },
@@ -170,12 +166,12 @@ const app = new Vue({
             });
         },
         encr: function (uid) {
-            return 'home#/user/' + window.btoa(uid)+'/about';
+            return 'home#/user/' + window.btoa(uid) + '/about';
         },
-        redirectTo:function(url){
+        redirectTo: function (url) {
             window.location.href = url;
             // this.$router.go();
-            
+
         }
     }
 

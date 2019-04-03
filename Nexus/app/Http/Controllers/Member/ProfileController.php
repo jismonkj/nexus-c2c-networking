@@ -14,6 +14,7 @@ use App\City;
 use App\State;
 use App\Country;
 use App\Member\Friends;
+use App\Http\Controllers\FileController;
 
 class ProfileController extends Controller
 {
@@ -94,6 +95,13 @@ class ProfileController extends Controller
         $interests = InterestList::where('uid', Auth::id())->join('interests', 'interests.id', 'interest_id')->select('name')->get();
 
         $profile[0]->interests = $interests;
+
+        //get cover image
+        $file = new FileController();
+        $profile[0]->coverImage = $file->getImageUrl('cover', $id);
+        //get profile image
+        $profile[0]->profileImage = $file->getImageUrl('avatar', $id);
+
         return $profile[0];
     }
 

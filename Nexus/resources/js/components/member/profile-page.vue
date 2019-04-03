@@ -7,10 +7,10 @@
           <div class="ui-block">
             <div class="top-header top-header-favorit">
               <div class="top-header-thumb">
-                <img :src="coverUrl" alt="nature">
+                <img :src="'storage/'+this.$parent.$data.user.myCover" alt="nature">
                 <div class="top-header-author">
                   <div class="author-thumb">
-                    <img src="theme/img/author-main2.jpg" alt="author">
+                    <img :src="'storage/'+this.$parent.$data.user.myAvatar" alt="author">
                   </div>
                   <div class="author-content">
                     <a href="#" class="h3 author-name">{{ this.$parent.$data.user.uname }}</a>
@@ -94,14 +94,13 @@ import myUpload from "vue-image-crop-upload";
 
 export default {
   mounted(){
-    axios.post('images/url', {type:'cover'}).then(res=>{console.log(res);
-    });
+    //
   },
   data: function() {
     return {
+      user:'',
       show: false,
       imgDataUrl: "", // the datebase64 url of created image
-      coverUrl:"theme/img/top-header2.jpg"
     };
   },
   components: {
