@@ -5,7 +5,7 @@
         <img src="http://placehold.it/50/30a5ff/fff" class="img-responsive" alt>
       </div>
       <div class="profile-usertitle">
-        <div class="profile-usertitle-name">Admin</div>
+        <div class="profile-usertitle-name">Distributor</div>
         <div class="profile-usertitle-status">
           <span class="indicator label-success"></span>Online
         </div>
@@ -32,36 +32,6 @@
           <a href>
             <em class="fa fa-dashboard">&nbsp;</em>
             Places
-          </a>
-        </router-link>
-      </li>
-      <li v-bind:class="{ active : activeTab == 'Members' }" @click="setBreadCumb('Members')">
-        <router-link to="members">
-          <a href>
-            <em class="fa fa-dashboard">&nbsp;</em>
-            Members
-          </a>
-        </router-link>
-      </li>
-      <li
-        v-bind:class="{ active : activeTab == 'Distributors' }"
-        @click="setBreadCumb('Distributors')"
-      >
-        <router-link to="distributors">
-          <a href>
-            <em class="fa fa-dashboard">&nbsp;</em>
-            Distributors
-          </a>
-        </router-link>
-      </li>
-      <li
-        v-bind:class="{ active : activeTab == 'Add Distributor' }"
-        @click="setBreadCumb('Add Distributor')"
-      >
-        <router-link to="distribreg">
-          <a href>
-            <em class="fa fa-dashboard">&nbsp;</em>
-            Add Distributors
           </a>
         </router-link>
       </li>

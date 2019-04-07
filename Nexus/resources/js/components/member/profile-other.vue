@@ -101,6 +101,9 @@
 <script>
 export default {
   mounted() {
+   if(this.$root.$data.user.id==window.atob(this.id)){
+     window.location.href="home#/profile/about";
+   }
     this.getUserInfo(window.atob(this.id));
   },
   data: function() {

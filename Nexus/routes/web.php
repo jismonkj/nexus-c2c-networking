@@ -51,6 +51,15 @@ Route::resource('items', 'Member\ItemsController');
 # -- feed
 Route::get('feed/', 'HomeController@fetchMemberFeed');
 Route::get('item/like/{itemId}', 'HomeController@addLikes');
+Route::get('location/search/{query}', 'Member\MemberController@locationSearch');
+
+/* DISTRIBUTOR
+_____________________________________________________________________________
+______________________________________________________________________________*/
+# -- landmarks
+Route::post('/distrib/store/landm', 'Distrib\DistribController@storeLandMark');
+Route::get('/distrib/del/landm/{lid}', 'Distrib\DistribController@delLandMark');
+Route::get('/distrib/list/landm/{cityid}', 'Distrib\DistribController@listLandMarks');
 
 /* ADMIN
 _____________________________________________________________________________
@@ -58,6 +67,7 @@ ______________________________________________________________________________*/
 
 Route::resource('/admin', 'Admin\AdminController');
 Route::post('/admin/users/list', 'Admin\AdminController@listUsers');
+Route::post('/admin/add/distrib', 'Admin\AdminController@addDistrib');
 
 /* FILES
 ______________________________________________________________________________

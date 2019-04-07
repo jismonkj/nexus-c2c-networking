@@ -3,7 +3,7 @@ import "babel-polyfill"; // es6 shim
 // ________________________
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
-
+//VueBootstrapTypeahead
 
 // bootstrap-vue
 

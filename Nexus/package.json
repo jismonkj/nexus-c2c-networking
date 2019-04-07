@@ -14,7 +14,7 @@
         "bootstrap": "^4.0.0",
         "cross-env": "^5.1",
         "jquery": "^3.2",
-        "laravel-mix": "^4.0.7",
+        "laravel-mix": "^4.0.15",
         "lodash": "^4.17.5",
         "popper.js": "^1.12",
         "resolve-url-loader": "^2.3.1",
@@ -27,6 +27,7 @@
         "animate.css": "^3.7.0",
         "babel-polyfill": "^6.26.0",
         "bootstrap-vue": "^2.0.0-rc.14",
+        "v-autocomplete": "^1.8.2",
         "vue-image-crop-upload": "^2.5.0",
         "vue-router": "^3.0.2",
         "vue2-dropzone": "^3.5.8"

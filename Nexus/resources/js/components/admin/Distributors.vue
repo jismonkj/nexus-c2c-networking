@@ -3,15 +3,17 @@
     <div class="panel-body">
       <table class="table table-striped">
         <thead>
-          <th>Name</th>
-          <th>City</th>
+          <th>Distributor Name</th>
+          <th>Head Quarters</th>
           <th>Email</th>
+          <th>Contact</th>
         </thead>
         <tbody>
           <tr v-for="user in users" v-bind:key="user.id">
-            <td>{{ user.fname+" "+user.lname }}</td>
-            <td>{{ user.city_name }}</td>
+            <td>{{ user.distrib_name }}</td>
+            <td>{{ user.headq }}</td>
             <td>{{ user.email }}</td>
+            <td>{{ user.contact }}</td>
           </tr>
         </tbody>
       </table>
@@ -23,15 +25,13 @@
 export default {
   mounted() {
     axios.post("/admin/users/list", this.postData).then(response => {
-      console.log(response.data);
-      
       this.users = response.data;
     });
   },
   data: function() {
     return {
       users: "",
-      postData:{ type: 'members'},
+      postData:{ type: 'distrib'},
     };
   }
 };

@@ -11,6 +11,7 @@ use App\Http\Controllers\FileController;
 use App\Member\Friends;
 use App\FileStore;
 use App\Member\Items;
+use App\Member\PostLikes;
 
 
 class HomeController extends Controller
@@ -34,7 +35,9 @@ class HomeController extends Controller
     {
         if (Auth::user()->type == 'admin') {
             return view('layouts.admin');
-        } else if (Auth::user()->type == 'distrib') { } else {
+        } else if (Auth::user()->type == 'distrib') { 
+            return view('layouts.distrib');
+        } else {
             return view('/nexushome');
         }
     }
@@ -92,11 +95,12 @@ class HomeController extends Controller
     public function fetchMemberFeed()
     {
         //get friends set 1
-        $fSetOne = Friends::where('nexus_friends_circle.uid', Auth::id())->join('items', 'items.uid', 'nexus_friends_circle.fid')->join('nexus_member_profile', 'nexus_member_profile.uid', 'nexus_friends_circle.fid')->select('nexus_friends_circle.fid as xid', 'items.*', 'nexus_member_profile.fname', 'nexus_member_profile.lname')->get()->toArray();
+        $fSetOne = Friends::where('nexus_friends_circle.uid', Auth::id())->join('items', 'items.uid', 'nexus_friends_circle.fid')->join('nexus_member_profile', 'nexus_member_profile.uid', 'nexus_friends_circle.fid')->select('nexus_friends_circle.fid as xid', 'items.*', 'nexus_member_profile.fname', 'nexus_member_profile.lname')->orderBy('items.created_at', 'desc')->paginate(1)->toArray();
 
         //images for set 1
         $i = 0;
-        foreach ($fSetOne as $person) {
+        $dataSetOne = $fSetOne['data'];
+        foreach ($dataSetOne as $person) {
             $refid = $person['xid'];
             //item images
             $itemImages = FileStore::where('refid', $refid)->where('type', 'items')->select('path')->get();
@@ -106,17 +110,26 @@ class HomeController extends Controller
             if (sizeof($avatar) == 0) {
                 $avatar = "theme/img/avatar5-sm.jpg";
             }
-            $fSetOne[$i]['itemImages'] = $itemImages;
-            $fSetOne[$i]['avatar'] = $avatar;
+            $dataSetOne[$i]['itemImages'] = $itemImages;
+            $dataSetOne[$i]['avatar'] = $avatar;
+
+            //like count on post
+            $dataSetOne[$i]['likes'] = PostLikes::where('item_id', $dataSetOne[$i]['item_id'])->get()->count();
+            //check whether current user liked the post
+            $likes = PostLikes::where('item_id', $dataSetOne[$i]['item_id'])->where('user_id', Auth::id())->get()->count();
+            $dataSetOne[$i]['liked'] = $likes;
+
             $i++;
         }
 
         //get friends set 2
-        $fSetTwo = Friends::where('nexus_friends_circle.fid', Auth::id())->join('items', 'items.uid', 'nexus_friends_circle.uid')->join('nexus_member_profile', 'nexus_member_profile.uid', 'nexus_friends_circle.uid')->select('nexus_friends_circle.uid as xid', 'items.*', 'nexus_member_profile.fname', 'nexus_member_profile.lname')->get()->toArray();
+        //get friends set 2
+        $fSetTwo = Friends::where('nexus_friends_circle.fid', Auth::id())->join('items', 'items.uid', 'nexus_friends_circle.uid')->join('nexus_member_profile', 'nexus_member_profile.uid', 'nexus_friends_circle.uid')->select('nexus_friends_circle.uid as xid', 'items.*', 'nexus_member_profile.fname', 'nexus_member_profile.lname')->orderBy('items.created_at', 'desc')->paginate(1)->toArray();
 
         //images for set 2
         $i = 0;
-        foreach ($fSetTwo as $person) {
+        $dataSetTwo = $fSetTwo['data'];
+        foreach ($dataSetTwo as $person) {
             $refid = $person['xid'];
             //item images
             $itemImages = FileStore::where('refid', $refid)->where('type', 'items')->select('path')->get();
@@ -126,30 +139,93 @@ class HomeController extends Controller
             if (sizeof($avatar) == 0) {
                 $avatar = "theme/img/avatar5-sm.jpg";
             }
-            $fSetTwo[$i]['itemImages'] = $itemImages;
-            $fSetTwo[$i]['avatar'] = $avatar;
+            $dataSetTwo[$i]['itemImages'] = $itemImages;
+            $dataSetTwo[$i]['avatar'] = $avatar;
+
+            //likes count on post
+            $dataSetTwo[$i]['likes'] = PostLikes::where('item_id', $dataSetTwo[$i]['item_id'])->get()->count();
+            //check whether current user liked the post
+            $likes = PostLikes::where('item_id', $dataSetTwo[$i]['item_id'])->where('user_id', Auth::id())->get()->count();
+            $dataSetTwo[$i]['liked'] = $likes;
+
+            $i++;
+        }
+
+        //my own posts
+        $fSetThree = User::where('id', Auth::id())->join('items', 'items.uid', 'users.id')->join('nexus_member_profile', 'nexus_member_profile.uid', 'users.id')->select('users.id as xid', 'items.*', 'nexus_member_profile.fname', 'nexus_member_profile.lname')->orderBy('items.created_at', 'desc')->paginate(1)->toArray();
+
+        //images for own set 2
+        $i = 0;
+        $dataSetThree = $fSetThree['data'];
+        foreach ($dataSetThree as $person) {
+            $refid = $person['xid'];
+            //item images
+            $itemImages = FileStore::where('refid', $refid)->where('type', 'items')->select('path')->get();
+
+            //member avatar
+            $avatar = FileStore::where('refid', $refid)->where('type', 'avatar')->select('path')->get();
+            if (sizeof($avatar) == 0) {
+                $avatar = "theme/img/avatar5-sm.jpg";
+            }
+            $dataSetThree[$i]['itemImages'] = $itemImages;
+            $dataSetThree[$i]['avatar'] = $avatar;
+
+            //likes count on post
+            $dataSetThree[$i]['likes'] = PostLikes::where('item_id', $dataSetThree[$i]['item_id'])->get()->count();
+            //check whether current user liked the post
+            $likes = PostLikes::where('item_id', $dataSetThree[$i]['item_id'])->where('user_id', Auth::id())->get()->count();
+            $dataSetThree[$i]['liked'] = $likes;
+
             $i++;
         }
 
         //merge both
-        return array_merge($fSetOne, $fSetTwo);
+        $data = array_merge(array_merge($dataSetOne, $dataSetTwo), $dataSetThree);
+
+        //compare paginations with most number of pages
+        if($fSetOne['total'] >= $fSetTwo['total'] && $fSetOne['total'] >= $fSetThree['total']){
+            $fSetOne['data'] = $data;
+            return $fSetOne;
+        }
+
+        if($fSetTwo['total'] >= $fSetOne['total'] && $fSetTwo['total'] >= $fSetThree['total']){
+            $fSetTwo['data'] = $data;
+            return $fSetTwo;
+        }
+
+        if($fSetThree['total'] >= $fSetOne['total'] && $fSetThree['total'] >= $fSetTwo['total']){
+            $fSetThree['data'] = $data;
+            return $fSetThree;
+        }
+
         //orderby date
     }
 
     public function addLikes($itemId)
     {
-        $likeCount = Items::where('item_id', $itemId)->get()[0]->likes;
-        $likeCount++;
-        Items::where('item_id', $itemId)->update(['likes'=> $likeCount]);
-        return $likeCount;
+        $response = [];
+        $checkUserLike = PostLikes::where('item_id', $itemId)->where('user_id', Auth::id())->get()->count();
+        
+        
+        if(!$checkUserLike){
+            PostLikes::create(['item_id'=>$itemId, 'user_id'=>Auth::id()]);
+        }
+        else{
+            PostLikes::where('item_id', $itemId)->where('user_id', Auth::id())->delete();
+        }
+
+        $response['liked'] = !$checkUserLike;
+        $response['likes'] = PostLikes::where('item_id', $itemId)->get()->count();        
+        
+
+        return $response;
         
     }
 
     //test method
     public function test()
     {
-        // return $this->getUserInfo();
-        // return Friends::where('status', 'request')->where('nexus_friends_circle.uid', Auth::id())->join('nexus_member_profile', 'nexus_friends_circle.uid', 'nexus_member_profile.uid')->select('nexus_member_profile.uid', 'fname', 'lname', 'gender')->get();
+        return $this->fetchMemberFeed();
 
     }
 }

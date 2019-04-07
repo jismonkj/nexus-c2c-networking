@@ -155,7 +155,7 @@ var app = new Vue({
         } else {
           _this.notifyR('Err! Something went wrong.');
         }
-      }).catch(function (error) {
+      })["catch"](function (error) {
         _this.notifyR('Err! Something went wrong.');
       });
     },

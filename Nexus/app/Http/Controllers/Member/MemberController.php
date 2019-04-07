@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Member\InterestList;
 use Illuminate\Support\Facades\Auth;
 use App\Member\Profile;
+use App\City;
 
 class MemberController extends Controller
 {
@@ -48,4 +49,11 @@ class MemberController extends Controller
         // return $request->all();
         return Profile::where('uid', Auth::id())->update($request->all());
     }
+
+    // location search //auto complete
+    public function locationSearch($query)
+    {
+        return City::where('city_name', 'like', $query.'%')->join('states', 'cities.sid', 'states.id')->join('countries', 'countries.id', 'states.cid')->select('cities.city_name', 'cities.id', 'states.state_name', 'countries.country_name')->get();
+    }
+
 }

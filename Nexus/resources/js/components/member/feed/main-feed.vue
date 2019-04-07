@@ -68,11 +68,22 @@
                     <span class="material-input"></span>
                   </div>
                 </div>
+              </div>
+              <div class="row">
                 <div class="col p-0">
                   <div class="form-group with-icon label-floating is-empty">
-                    <label class="control-label">Location</label>
-                    <input type="text" class="form-control" v-model="itemLocation">
-                    <span class="material-input"></span>
+                    <label class="control-label">Search for Location</label>
+                  <v-autocomplete
+                    :items="items"
+                    v-model="item"
+                    :get-label="getLabel"
+                    :component-item="template"
+                    @update-items="updateItems"
+                    :wait="300"
+                    :value="item"
+                    :input-attrs="inputAttrs"
+                  ></v-autocomplete>
+                     <span class="material-input"></span>
                   </div>
                 </div>
               </div>
@@ -169,39 +180,22 @@
     </div>
 
     <div id="newsfeed-items-grid">
+      <!-- //post item -->
       <div class="ui-block" v-for="story in stories" v-bind:key="story.item_id">
         <article class="hentry post has-post-thumbnail">
           <div class="post__author author vcard inline-items">
             <img :src="story.avatar" alt="author">
             <div class="author-date">
-              <a :href="$root.encr(story.item_id)" class="h6 post__author-name fn">{{story.fname+" "+story.lname}}</a>
+              <a
+                :href="$root.encr(story.xid)"
+                class="h6 post__author-name fn"
+              >{{story.fname+" "+story.lname}}</a>
               <div class="post__date">
                 <time datetime="2004-07-24T18:18" class="published">{{ story.created_at }}</time>
               </div>
             </div>
-            <div class="more">
-              <svg class="olymp-three-dots-icon">
-                <use xlink:href="theme/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use>
-              </svg>
-              <ul class="more-dropdown">
-                <li>
-                  <a href="#">Edit Post</a>
-                </li>
-                <li>
-                  <a href="#">Delete Post</a>
-                </li>
-                <li>
-                  <a href="#">Turn Off Notifications</a>
-                </li>
-                <li>
-                  <a href="#">Select as Featured</a>
-                </li>
-              </ul>
-            </div>
           </div>
-          <p>
-            {{ story.contents }}
-          </p>
+          <p>{{ story.contents }}</p>
           <div class="post-thumb">
             <div class="row">
               <div class="col p-1" v-for="imgPath in story.itemImages" v-bind:key="imgPath.path">
@@ -210,7 +204,14 @@
             </div>
           </div>
           <div class="post-additional-info inline-items">
-            <a href="#" class="post-add-icon inline-items">
+            <a href="#" class="post-add-icon inline-items user-liked-font" v-show="story.liked">
+              <svg class="olymp-heart-icon">
+                <use xlink:href="theme/svg-icons/sprites/icons.svg#olymp-heart-icon"></use>
+              </svg>
+              <span>{{ story.likes }}</span>
+            </a>
+
+            <a href="#" class="post-add-icon inline-items" v-show="!story.liked">
               <svg class="olymp-heart-icon">
                 <use xlink:href="theme/svg-icons/sprites/icons.svg#olymp-heart-icon"></use>
               </svg>
@@ -227,12 +228,41 @@
           </div>
           <!-- //side icons -->
           <div class="control-block-button post-control-button">
-            <a href="#" @click.prevent="loveOnItem(story.item_id)" class="btn btn-control">
+            <a
+              href="#"
+              @click.prevent="loveOnItem(story.item_id)"
+              class="btn btn-control user-liked"
+              v-show="story.liked"
+              data-toggle="tooltip"
+              data-placement="left"
+              title="Unlike"
+            >
               <svg class="olymp-like-post-icon">
                 <use xlink:href="theme/svg-icons/sprites/icons.svg#olymp-like-post-icon"></use>
               </svg>
             </a>
-            <a href="#" class="btn btn-control">
+            <a
+              href="#"
+              @click.prevent="loveOnItem(story.item_id)"
+              class="btn btn-control"
+              v-show="!story.liked"
+              data-toggle="tooltip"
+              data-placement="left"
+              title="Like"
+            >
+              <svg class="olymp-like-post-icon">
+                <use xlink:href="theme/svg-icons/sprites/icons.svg#olymp-like-post-icon"></use>
+              </svg>
+            </a>
+            <a
+              href="#"
+              class="btn btn-control"
+              @click.prevent="showBuyModal(story.item_id)"
+              data-toggle="tooltip"
+              data-placement="left"
+              title="Buy"
+              v-if="$root.$data.user.id!=story.xid"
+            >
               <svg class="olymp-share-icon">
                 <use xlink:href="theme/svg-icons/sprites/icons.svg#olymp-share-icon"></use>
               </svg>
@@ -242,17 +272,19 @@
       </div>
     </div>
 
-    <a
-      id="load-more-button"
-      href="#"
-      class="btn btn-control btn-more"
-      data-load-link="items-to-load.html"
-      data-container="newsfeed-items-grid"
-    >
-      <svg class="olymp-three-dots-icon">
-        <use xlink:href="theme/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use>
-      </svg>
-    </a>
+   
+    <div class="text-center" v-show="loading">
+   loading..
+     <span class="fa btn-more fa-spin fa-circle-notch">
+    </span>
+    </div>
+    
+    
+    <div class="text-center" v-show="!loading">
+    no more stories for now!
+    </div>
+
+    
 
     <!-- //modal -->
     <div class="modal-backdrop" v-show="dropZoneActive">
@@ -288,18 +320,49 @@
         </div>
       </div>
     </div>
+
+    <transition leave-active-class="animate fade" enter-active-class="animate fade">
+      <modal-buy v-show="isBuyModalVisible" ref="modalBuy"></modal-buy>
+    </transition>
   </main>
 </template>
 <script>
+import Autocomplete from "v-autocomplete";
+import ItemTemplate from "./ItemTemplate.vue";
+Vue.use(Autocomplete);
+
+//modal buy
+import ModalBuy from "../../utils/modal-buy.vue";
 //vue dropzone
 import vue2Dropzone from "vue2-dropzone";
 export default {
-  mounted(){
-    axios.get('/feed').then(res => { this.stories = res.data;} );
+  mounted() {
+    axios.get("/feed").then(res => {
+      this.stories = res.data.data;
+      this.scrollPages = res.data.total;
+      this.next_url = res.data.next_page_url;
+      this.currentPage = 1;
+    });
+    this.scroll();
   },
   data: function() {
     return {
-      stories:[],
+      //infinite scroll
+      next_url:"",
+      scrollPages:"",
+      currentPage:0,
+      loading:true,
+      //infinite scroll end
+      //autocomplete
+      item: "",
+      items: [],
+      template: ItemTemplate,
+      inputAttrs:{
+        // placeholder:"search for location",
+        class:"form-control"
+      },
+      //auto-complete-end
+      stories: [],
       numberOnlyPattern: /^\d+(,\d{1,2})?$/,
       itemSubmitBtn: "Post Item",
       imgCount: 0,
@@ -318,11 +381,14 @@ export default {
       itemContent: "",
       itemQuantity: "",
       itemPrice: "",
-      itemLocation: ""
+      //buy modal
+      buyItemId: "",
+      isBuyModalVisible: false
     };
   },
   components: {
-    "vue-dropzone": vue2Dropzone
+    "vue-dropzone": vue2Dropzone,
+    "modal-buy": ModalBuy
   },
   watch: {
     itemPrice: function() {
@@ -345,6 +411,40 @@ export default {
     }
   },
   methods: {
+    //infinite scroll
+    scroll:function(){
+      window.onscroll = () => {
+        let bottomOfWindow = Math.floor(document.documentElement.scrollTop) + window.innerHeight >= document.documentElement.offsetHeight - 100 && Math.floor(document.documentElement.scrollTop) + window.innerHeight <= document.documentElement.offsetHeight + 100;
+
+        if(bottomOfWindow){
+            if(this.currentPage < this.scrollPages){
+              this.currentPage++;
+              var url = "/feed?page="+(this.currentPage);
+              this.loading = true;
+                axios.get(url).then(res => {
+                  var data = res.data.data;
+                  this.loading = false;
+                  data.forEach(story => {
+                    this.stories.push(story);
+                  });
+                  this.next_url = res.data.next_page_url;
+                  // this.currentPage++;
+              });
+            }
+        }
+      };
+    },
+    //auto complete
+    getLabel(item) {
+      this.placeId = item.city_id;
+      return item.city_name;
+    },
+    updateItems(text) {
+      axios.get("location/search/" + text).then(response => {
+        this.items = response.data;
+      });
+    },
+    //auto complete end
     dropZoneUpload: function() {
       this.$refs.myVueDropzone.processQueue();
       this.imgCount = this.$refs.myVueDropzone.getAcceptedFiles().length;
@@ -364,13 +464,17 @@ export default {
             quantity: this.itemQuantity,
             privacy: "1",
             status: "1",
-            loc_id: 12
+            loc_id: this.item.id
           })
           .then(res => this.afterPostingItem(res));
       }
     },
     afterPostingItem: function(res) {
       if (res) {
+        this.item = "";
+        this.itemContent = "",
+        this.itemQuantity = "",
+        this.itemPrice = "",
         this.notify("Updated");
         this.dropZoneClearAll();
         this.imgCount = 0;
@@ -382,7 +486,7 @@ export default {
       this.itemContent = "";
       this.itemPrice = "";
       this.itemQuantity = "";
-      this.itemLocation = "";
+      this.item = "";
       this.dropZoneClearAll(); //clear dropzone
     },
     validate: function(type) {
@@ -391,10 +495,14 @@ export default {
           if (
             this.itemContent == "" ||
             this.itemQuantity == "" ||
-            this.itemPrice == "" ||
-            this.itemLocations == ""
+            this.itemPrice == ""
           ) {
             this.notify("Empty fields left behind!");
+            return false;
+          }
+
+          if(this.item == null || this.item == ""){
+             this.notify("Choose Location");
             return false;
           }
           break;
@@ -408,15 +516,19 @@ export default {
         this.itemSubmitBtn = "Post Item";
       }, 5000);
     },
-    loveOnItem:function(id){
+    loveOnItem: function(id) {
       var pos = this.stories.findIndex(item => item.item_id == id);
       //axios
-      axios.get('item/like/'+this.stories[pos].item_id).then(res => {
-        console.log(res.data);
-        
-        this.stories[pos].likes = res.data;
+      axios.get("item/like/" + this.stories[pos].item_id).then(res => {
+        this.stories[pos].liked = res.data.liked;
+        this.stories[pos].likes = res.data.likes;
       });
-      
+    },
+    showBuyModal: function(itemId) {
+      this.buyItemId = itemId;
+      var pos = this.stories.findIndex(item => item.item_id == itemId);
+      this.isBuyModalVisible = true;
+      this.$refs.modalBuy.yes(this.stories[pos]);
     }
   }
 };

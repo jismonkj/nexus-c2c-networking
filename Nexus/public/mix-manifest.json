@@ -3,6 +3,7 @@
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
     "/css/animate.css": "/css/animate.css",
+    "/js/distrib.js": "/js/distrib.js",
     "/js/guest.js": "/js/guest.js",
     "/js/member.js": "/js/member.js"
 }

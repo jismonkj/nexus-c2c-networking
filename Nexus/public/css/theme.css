@@ -49,6 +49,10 @@ ____________________________________________*/
     padding-top: 10%;
 }
 
+.modal.buy{
+    padding:4%;
+}
+
 .modal-header,
 .modal-footer {
     padding: 15px;
@@ -101,4 +105,65 @@ ____________________________________________*/
     border-top-right-radius: 0;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
+}
+
+.user-liked{
+    background: #39a7fb!important;
+}
+
+.user-liked-font{
+    color: #39a7fb!important;
+}
+
+/* //vue autocomplete css */
+.v-autocomplete .v-autocomplete-input-group .v-autocomplete-input {
+    /* font-size: 1.5em; */
+    font-size: .875rem;
+	padding: 10px 15px;
+	box-shadow: none;
+	/* border: 1px solid rgb(230, 236, 245); */
+	/* width: calc(100% - 32px); */
+	outline: none;
+	background-color: #eee;
+}
+
+.v-autocomplete .v-autocomplete-input-group.v-autocomplete-selected .v-autocomplete-input {
+	color: #7554bd;
+	background-color: #f2fff2;
+}
+
+.v-autocomplete .v-autocomplete-list {
+	width: 100%;
+	text-align: left;
+	border: none;
+	border-top: none;
+	max-height: 400px;
+	overflow-y: auto;
+    border-bottom: 1px solid rgb(230, 236, 245);
+    position: relative;
+    z-index: 1000;
+}
+
+.v-autocomplete .v-autocomplete-list .v-autocomplete-list-item {
+	cursor: pointer;
+	background-color: #fff;
+	padding: 10px;
+	border-bottom: 1px solid rgb(230, 236, 245);
+	border-left: 1px solid rgb(230, 236, 245);
+	border-right: 1px solid rgb(230, 236, 245);
+}
+
+.v-autocomplete .v-autocomplete-list .v-autocomplete-list-item:last-child {
+	border-bottom: none;
+}
+
+.v-autocomplete .v-autocomplete-list .v-autocomplete-list-item:hover {
+	background-color: #eee;
+}
+
+.v-autocomplete .v-autocomplete-list .v-autocomplete-list-item abbr {
+	/* opacity: 0.8; */
+	font-size: 1em;
+	display:block;
+	font-family: sans-serif;
 }
