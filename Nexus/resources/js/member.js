@@ -10,9 +10,13 @@ Vue.use(VueRouter)
 
 // components
 // _____________________
+import Autocomplete from "v-autocomplete"
+Vue.use(Autocomplete);
+import Wallet from "./components/utils/wallet";
 // import SBar from './components/admin/SideBar.vue'
 // import Places from './components/admin/Places.vue'
-//
+
+//dash board
 import AccountDash from './components/member/account-dash.vue'
 import PersonalInfo from './components/member/dash/personal-info.vue'
 import ChangePassword from './components/member/dash/change-password.vue'
@@ -20,6 +24,9 @@ import MyInterests from './components/member/dash/my-interests.vue'
 import FriendRequests from './components/member/dash/friend-requests.vue'
 import SentRequests from './components/member/dash/sent-requests.vue'
 import FriendCircle from './components/member/dash/friend-circle.vue'
+import OrdersSent from './components/member/dash/orders-sent.vue'
+import OrdersRecieved from './components/member/dash/orders-recieved.vue'
+
 // 
 import EducationEmployment from './components/member/dash/education-employment.vue'
 import NewsFeed from './components/member/news-feed.vue'
@@ -35,26 +42,28 @@ import MemberFriends from './components/member/other/member-friends.vue'
 import MemberAbout from './components/member/other/member-about.vue'
 
 
-//
-Vue.component('PersonalInfo', PersonalInfo);
-Vue.component('ChangePassword', ChangePassword);
-Vue.component('FriendRequests', FriendRequests);
-Vue.component('SentRequests', SentRequests);
-Vue.component('AccountDash', AccountDash);
-Vue.component('MyInterests', MyInterests);
-Vue.component('EducationEmployment', EducationEmployment);
-Vue.component('NewsFeed', NewsFeed);
+// Vue.component('PersonalInfo', PersonalInfo);
+// Vue.component('ChangePassword', ChangePassword);
+// Vue.component('FriendRequests', FriendRequests);
+// Vue.component('SentRequests', SentRequests);
+// Vue.component('AccountDash', AccountDash);
+// Vue.component('MyInterests', MyInterests);
+// Vue.component('EducationEmployment', EducationEmployment);
+// Vue.component('OrdersSent', OrdersSent);
+// Vue.component('OrdersRecieved', OrdersRecieved);
+
+// Vue.component('NewsFeed', NewsFeed);
 Vue.component('MainFeed', MainFeed);
 Vue.component('LeftSideBar', LeftSideBar);
 Vue.component('RightSideBar', RightSideBar);
-Vue.component('FriendCircle', FriendCircle);
-//
-Vue.component('ProfilePage', ProfilePage);
-Vue.component('AboutPage', AboutPage);
-//
-Vue.component('ProfileOther', ProfileOther);
-Vue.component('MemberFriends', MemberFriends);
-Vue.component('MemberAbout', MemberAbout);
+// Vue.component('FriendCircle', FriendCircle);
+// //
+// Vue.component('ProfilePage', ProfilePage);
+// Vue.component('AboutPage', AboutPage);
+// //
+// Vue.component('ProfileOther', ProfileOther);
+// Vue.component('MemberFriends', MemberFriends);
+// Vue.component('MemberAbout', MemberAbout);
 
 // routes
 // __________________
@@ -89,6 +98,14 @@ let routes = [{
                 path: '/account/education-employment',
                 component: EducationEmployment
             },
+            {
+                path:'/account/orders-sent',
+                component:OrdersSent
+            },
+            {
+                path:'/account/orders-recieved',
+                component:OrdersRecieved
+            }
         ]
     },
     {
@@ -152,7 +169,8 @@ const app = new Vue({
         csrftoken: '',
         data: '',
         breadCumbPath: "Dashboard",
-        newUserStatus: ''
+        newUserStatus: '',
+        isWalletModalVisible:false,
     },
     router,
     methods: {
@@ -173,6 +191,9 @@ const app = new Vue({
             // this.$router.go();
 
         }
+    },
+    components:{
+        "modal-wallet":Wallet
     }
 
 });

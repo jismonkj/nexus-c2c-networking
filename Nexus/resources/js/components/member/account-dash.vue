@@ -173,7 +173,7 @@
               <div class="ui-block-title ui-block-title-small">
                 <h6 class="title">Your PROFILE</h6>
               </div>
-
+<!-- profile settings -->
               <div id="accordion" role="tablist" aria-multiselectable="true">
                 <div class="card">
                   <div class="card-header" role="tab" id="headingOne">
@@ -187,7 +187,7 @@
                       >
                         Profile Settings
                         <svg class="olymp-dropdown-arrow-icon">
-                          <use xlink:href="svg-icons/sprites/icons.svg#olymp-dropdown-arrow-icon"></use>
+                          <use xlink:href="theme/svg-icons/sprites/icons.svg#olymp-dropdown-arrow-icon"></use>
                         </svg>
                       </a>
                     </h6>
@@ -205,9 +205,6 @@
                           Personal Information
                         </router-link>
                       </li>
-                      <!-- <li>
-										<a href="29-YourAccount-AccountSettings.html">Account Settings</a>
-                      </li>-->
                       <li>
                         <router-link to="/account/change-password">
                           Change Password
@@ -219,27 +216,64 @@
                         </router-link>
 
                       </li>
-                      <!-- <li>
-                        <router-link to="/account/education-employment">
-                          Education and Employment
-                        </router-link>
-                      </li> -->
                     </ul>
                   </div>
                 </div>
               </div>
-              <div class="ui-block-title">
+
+              <!-- orders -->
+              <div id="accordionOrders" role="tablist" aria-multiselectable="true">
+                <div class="card">
+                  <div class="card-header" role="tab" id="headingOrders">
+                    <h6 class="mb-0">
+                      <a
+                        data-toggle="collapse"
+                        data-parent="#accordionOrders"
+                        href="#collapseOrders"
+                        aria-expanded="true"
+                        aria-controls="collapseOrders"
+                      >
+                        Your Orders
+                        <svg class="olymp-dropdown-arrow-icon">
+                          <use xlink:href="theme/svg-icons/sprites/icons.svg#olymp-dropdown-arrow-icon"></use>
+                        </svg>
+                      </a>
+                    </h6>
+                  </div>
+
+                  <div
+                    id="collapseOrders"
+                    class="collapse"
+                    role="tabpanel"
+                    aria-labelledby="headingOrders"
+                  >
+                    <ul class="your-profile-menu">
+                      <li>
+                        <router-link to="/account/orders-recieved">
+                          Orders Recieved
+                        </router-link>
+                      </li>
+                      <li>
+                        <router-link to="/account/orders-sent">
+                          Purchased Items
+                        </router-link>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="ui-block-title pl-36 py-3">
                 <router-link  class="h6 title" to="/account/friend-requests">
                 Friend Requests
                 </router-link>
                 <a href="#" class="items-round-little bg-blue">4</a>
               </div>
-              <div class="ui-block-title">
+              <div class="ui-block-title pl-36 py-3">
                 <router-link  class="h6 title" to="/account/friend-circle">
                 Friend Circle
                 </router-link>
               </div>
-              <div class="ui-block-title">
+              <div class="ui-block-title pl-36 py-3">
                 <router-link  class="h6 title" to="/account/sent-requests">
                 Sent Friend Requests
                 </router-link>

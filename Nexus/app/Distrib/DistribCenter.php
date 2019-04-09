@@ -10,5 +10,5 @@ class DistribCenter extends Model
     public $timestamps = false;
     protected $primaryKey = 'dcid';
 
-    protected $fillable = ['landmark', 'distirib_id', 'city_id'];
+    protected $fillable = ['landmark', 'distrib_id', 'city_id'];
 }

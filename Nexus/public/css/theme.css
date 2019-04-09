@@ -167,3 +167,25 @@ ____________________________________________*/
 	display:block;
 	font-family: sans-serif;
 }
+
+.cursor-pointer{
+    cursor: pointer;
+}
+
+/* main feed */
+pre{
+    color:#515365;
+}
+
+.makepost-icon{
+    color: #12b886;
+}
+
+.form-group.with-icon .makepost-icon svg {
+    font-size: 15px;
+}
+
+/* account dash */
+.pl-36{
+    padding-left: 1.36rem!important;
+}

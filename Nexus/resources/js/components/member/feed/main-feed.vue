@@ -53,37 +53,82 @@
                 <textarea class="form-control" v-model="itemContent"></textarea>
                 <span class="material-input"></span>
               </div>
-              <div class="row">
-                <div class="col p-0">
-                  <div class="form-group with-icon label-floating is-empty">
-                    <label class="control-label">Price</label>
-                    <input type="text" class="form-control" v-model="itemPrice">
-                    <span class="material-input"></span>
+              <div class="container">
+                <div class="row">
+                  <div class="col px-0">
+                    <div class="form-group with-icon label-floating is-empty">
+                      <label class="control-label">Price</label>
+                      <input type="text" class="form-control" v-model="itemPrice">
+                      <span class="makepost-icon">
+                        <i class="fas fa-rupee-sign"></i>
+                      </span>
+                      <span class="material-input"></span>
+                    </div>
+                  </div>
+                  <div class="col px-0">
+                    <div class="form-group with-icon label-floating is-empty">
+                      <label class="control-label">Quantity</label>
+                      <input type="text" class="form-control" v-model="itemQuantity">
+                      <span class="makepost-icon">
+                        <i class="fas fa-shopping-bag"></i>
+                      </span>
+                      <span class="material-input"></span>
+                    </div>
                   </div>
                 </div>
-                <div class="col p-0">
-                  <div class="form-group with-icon label-floating is-empty">
-                    <label class="control-label">Quantity</label>
-                    <input type="text" class="form-control" v-model="itemQuantity">
-                    <span class="material-input"></span>
+                <div class="row">
+                  <div class="col px-0">
+                    <div class="form-group with-icon label-floating is-empty">
+                      <label class="control-label">Search for Location</label>
+                      <v-autocomplete
+                        :items="items"
+                        v-model="item"
+                        :get-label="getLabel"
+                        :component-item="template"
+                        @update-items="updateItems"
+                        :wait="300"
+                        :value="item"
+                        :input-attrs="inputAttrs"
+                      ></v-autocomplete>
+                      <span class="makepost-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                      </span>
+                      <span class="material-input"></span>
+                    </div>
+                    <div class="form-group with-icon label-floating is-empty">
+                      <label class="control-label">Add Tags</label>
+                      <v-autocomplete
+                        :items="tags"
+                        v-model="tag"
+                        :get-label="getTagLabel"
+                        :component-item="tagTemplate"
+                        @update-items="updateTags"
+                        :wait="300"
+                        :value="tag"
+                        :input-attrs="inputAttrs"
+                        @item-selected="tagSelected"
+                      ></v-autocomplete>
+                      <span class="makepost-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                      </span>
+                      <span class="material-input"></span>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="row">
-                <div class="col p-0">
-                  <div class="form-group with-icon label-floating is-empty">
-                    <label class="control-label">Search for Location</label>
-                  <v-autocomplete
-                    :items="items"
-                    v-model="item"
-                    :get-label="getLabel"
-                    :component-item="template"
-                    @update-items="updateItems"
-                    :wait="300"
-                    :value="item"
-                    :input-attrs="inputAttrs"
-                  ></v-autocomplete>
-                     <span class="material-input"></span>
+                <div class="row">
+                  <div class="col p-3">
+                    <span
+                      @click="removeTag(tag.id)"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      data-original-title="Remove"
+                      v-for="tag in selectedTags"
+                      :key="tag.id"
+                      class="badge badge-success p-2 tags m-1"
+                    >
+                      {{ tag.name }}
+                      <i class="fa fa-times"></i>
+                    </span>
                   </div>
                 </div>
               </div>
@@ -184,7 +229,7 @@
       <div class="ui-block" v-for="story in stories" v-bind:key="story.item_id">
         <article class="hentry post has-post-thumbnail">
           <div class="post__author author vcard inline-items">
-            <img :src="story.avatar" alt="author">
+            <img :src="'storage/'+story.avatar" alt="author">
             <div class="author-date">
               <a
                 :href="$root.encr(story.xid)"
@@ -195,7 +240,21 @@
               </div>
             </div>
           </div>
-          <p>{{ story.contents }}</p>
+
+          <pre class="font-weight-light">{{ story.contents }}</pre>
+          <p>
+            <i class="fas fa-rupee-sign"></i>
+            <span class="font-weight-bold pr-3">{{ story.price }}</span>
+            <i class="fas fa-map-marker-alt"></i>
+            <span
+              class="font-weight-bold"
+            >{{ story.city_name }}, {{ story.state_name }}, {{ story.country_name }}</span>
+          </p>
+          <span
+            v-for="tag in story.tags"
+            :key="tag.interest_id"
+            class="badge badge-success p-2 tags mr-1"
+          >{{ tag.name }}</span>
           <div class="post-thumb">
             <div class="row">
               <div class="col p-1" v-for="imgPath in story.itemImages" v-bind:key="imgPath.path">
@@ -272,19 +331,12 @@
       </div>
     </div>
 
-   
     <div class="text-center" v-show="loading">
-   loading..
-     <span class="fa btn-more fa-spin fa-circle-notch">
-    </span>
-    </div>
-    
-    
-    <div class="text-center" v-show="!loading">
-    no more stories for now!
+      loading..
+      <span class="fa btn-more fa-spin fa-circle-notch"></span>
     </div>
 
-    
+    <div class="text-center" v-show="!loading">no more stories for now!</div>
 
     <!-- //modal -->
     <div class="modal-backdrop" v-show="dropZoneActive">
@@ -327,10 +379,8 @@
   </main>
 </template>
 <script>
-import Autocomplete from "v-autocomplete";
 import ItemTemplate from "./ItemTemplate.vue";
-Vue.use(Autocomplete);
-
+import TagTemplate from "./TagTemplate.vue";
 //modal buy
 import ModalBuy from "../../utils/modal-buy.vue";
 //vue dropzone
@@ -348,19 +398,23 @@ export default {
   data: function() {
     return {
       //infinite scroll
-      next_url:"",
-      scrollPages:"",
-      currentPage:0,
-      loading:true,
+      next_url: "",
+      scrollPages: "",
+      currentPage: 0,
+      loading: true,
       //infinite scroll end
       //autocomplete
       item: "",
       items: [],
       template: ItemTemplate,
-      inputAttrs:{
+      inputAttrs: {
         // placeholder:"search for location",
-        class:"form-control"
+        class: "form-control"
       },
+      tagTemplate: TagTemplate,
+      tag: "",
+      tags: [],
+      selectedTags: [],
       //auto-complete-end
       stories: [],
       numberOnlyPattern: /^\d+(,\d{1,2})?$/,
@@ -412,25 +466,27 @@ export default {
   },
   methods: {
     //infinite scroll
-    scroll:function(){
+    scroll: function() {
       window.onscroll = () => {
-        let bottomOfWindow = Math.floor(document.documentElement.scrollTop) + window.innerHeight >= document.documentElement.offsetHeight - 100 && Math.floor(document.documentElement.scrollTop) + window.innerHeight <= document.documentElement.offsetHeight + 100;
+        let bottomOfWindow =
+          Math.floor(document.documentElement.scrollTop) + window.innerHeight ==
+          document.documentElement.offsetHeight;
 
-        if(bottomOfWindow){
-            if(this.currentPage < this.scrollPages){
-              this.currentPage++;
-              var url = "/feed?page="+(this.currentPage);
-              this.loading = true;
-                axios.get(url).then(res => {
-                  var data = res.data.data;
-                  this.loading = false;
-                  data.forEach(story => {
-                    this.stories.push(story);
-                  });
-                  this.next_url = res.data.next_page_url;
-                  // this.currentPage++;
+        if (bottomOfWindow) {
+          if (this.currentPage < this.scrollPages) {
+            this.currentPage++;
+            var url = "/feed?page=" + this.currentPage;
+            this.loading = true;
+            axios.get(url).then(res => {
+              var data = res.data.data;
+              this.loading = false;
+              data.forEach(story => {
+                this.stories.push(story);
               });
-            }
+              this.next_url = res.data.next_page_url;
+              // this.currentPage++;
+            });
+          }
         }
       };
     },
@@ -443,6 +499,25 @@ export default {
       axios.get("location/search/" + text).then(response => {
         this.items = response.data;
       });
+    },
+    getTagLabel(item) {
+      return item.name;
+    },
+    updateTags(text) {
+      axios.get("tags/search/" + text).then(response => {
+        this.tags = response.data;
+      });
+    },
+    tagSelected(item) {
+      if (this.selectedTags.findIndex(tag => tag.id == item.id) == -1) {
+        this.selectedTags.push(item);
+      }
+    },
+    removeTag(id) {
+      this.selectedTags.splice(
+        this.selectedTags.findIndex(item => item.id == id),
+        1
+      );
     },
     //auto complete end
     dropZoneUpload: function() {
@@ -464,18 +539,20 @@ export default {
             quantity: this.itemQuantity,
             privacy: "1",
             status: "1",
-            loc_id: this.item.id
+            loc_id: this.item.id,
+            tags: this.selectedTags
           })
-          .then(res => this.afterPostingItem(res));
+          .then(res => this.afterPostingItem(res))
+          .catch(this.notify("Err! Try Later"));
       }
     },
     afterPostingItem: function(res) {
       if (res) {
         this.item = "";
-        this.itemContent = "",
-        this.itemQuantity = "",
-        this.itemPrice = "",
-        this.notify("Updated");
+        (this.itemContent = ""),
+          (this.itemQuantity = ""),
+          (this.itemPrice = ""),
+          this.notify("Updated");
         this.dropZoneClearAll();
         this.imgCount = 0;
       } else {
@@ -492,6 +569,10 @@ export default {
     validate: function(type) {
       switch (type) {
         case "item":
+          if (this.itemContent.length < 150) {
+            this.notify("Min:150 characters for the content");
+            return false;
+          }
           if (
             this.itemContent == "" ||
             this.itemQuantity == "" ||
@@ -501,8 +582,8 @@ export default {
             return false;
           }
 
-          if(this.item == null || this.item == ""){
-             this.notify("Choose Location");
+          if (this.item == null || this.item == "") {
+            this.notify("Choose Location");
             return false;
           }
           break;

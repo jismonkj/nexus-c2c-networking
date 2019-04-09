@@ -82,16 +82,15 @@
                                                 <span>Profile Settings</span>
                                             </router-link>
                                         </li>
-                                        <!-- <li>
-                                    <a href="36-FavPage-SettingsAndCreatePopup.html">
-                                        <svg class="olymp-star-icon left-menu-icon" data-toggle="tooltip"
-                                            data-placement="right" data-original-title="FAV PAGE">
-                                            <use xlink:href="{{ asset('theme/svg-icons/sprites/icons.svg#olymp-star-icon') }}"></use>
-                                        </svg>
+                                        <li>
+                                            <a href="#" @click.prevent="isWalletModalVisible=true">
+                                                <svg class="olymp-star-icon left-menu-icon" data-toggle="tooltip" data-placement="right" data-original-title="FAV PAGE">
+                                                    <use xlink:href="{{ asset('theme/svg-icons/sprites/icons.svg#olymp-star-icon') }}"></use>
+                                                </svg>
 
-                                        <span>Create Fav Page</span>
-                                    </a>
-                                </li> -->
+                                                <span>Wallet</span>
+                                            </a>
+                                        </li>
                                         <li>
                                             <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -561,6 +560,12 @@
         <a class="back-to-top" href="#">
             <img src="{{ asset('theme/svg-icons/back-to-top.svg') }}" alt="arrow" class="back-icon">
         </a>
+
+
+        <transition leave-active-class="animate fade" enter-active-class="animate fade">
+            <modal-wallet v-show="isWalletModalVisible" ref="modalWallet"></modal-wallet>
+        </transition>
+        
     </div>
     <!-- JS Scripts -->
     <script src="{{ asset('theme/js/jquery-3.2.1.js') }}"></script>
@@ -607,4 +612,4 @@
     <script src="{{ asset('js/member.js') }}"></script>
 </body>
 
-</html> 
+</html>

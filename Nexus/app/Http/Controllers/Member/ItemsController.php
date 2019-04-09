@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\FileStore;
+use App\Member\Tags;
 
 class ItemsController extends Controller
 {
@@ -46,6 +47,12 @@ class ItemsController extends Controller
         $imageToken = $request->x_token;
         $data['uid'] = Auth::id();
         $itemId = Items::create($data)->item_id;
+
+        $tags = $data['tags'];
+        foreach($tags as $tag){
+            Tags::create(['item_id'=>$itemId, 'interest_id'=>$tag['id']]);
+        }
+        
 
         FileStore::where('refid', 'x-'.$imageToken)->where('type', 'items')->update(['refid'=>$itemId]);
 

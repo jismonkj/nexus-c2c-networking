@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class NexusDistribCenters extends Migration
+class CreateTagsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,10 @@ class NexusDistribCenters extends Migration
      */
     public function up()
     {
-        Schema::create('nexus_distrib_centers', function (Blueprint $table) {
-        $table->increments('dcid');
-        $table->string('landmark');
-        $table->integer('distrib_id');
-        $table->integer('city_id');
-    });
+        Schema::create('tags', function (Blueprint $table) {
+            $table->integer('item_id');
+            $table->integer('interest_id');
+        });
     }
 
     /**
@@ -28,6 +26,6 @@ class NexusDistribCenters extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('tags');
     }
 }

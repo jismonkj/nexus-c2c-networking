@@ -52,6 +52,16 @@ Route::resource('items', 'Member\ItemsController');
 Route::get('feed/', 'HomeController@fetchMemberFeed');
 Route::get('item/like/{itemId}', 'HomeController@addLikes');
 Route::get('location/search/{query}', 'Member\MemberController@locationSearch');
+Route::get('tags/search/{query}', 'Member\MemberController@tagSearch');
+Route::get('find/distributor/{to}/{from}', 'Member\MemberController@findDistributors');
+# -- wallet
+Route::get('my/wallet', 'Member\MemberController@fetchBalance');
+Route::post('my/wallet/{type}', 'Member\MemberController@walletTransaction');
+# -- orders
+Route::post("place/order", "Member\MemberController@placeOrder");
+Route::get("order/history/{type}", "Member\MemberController@orderHistory");
+# -- addresses
+Route::get('stored/addresses/{cityid}', 'Member\MemberController@fetchAddresses');
 
 /* DISTRIBUTOR
 _____________________________________________________________________________
