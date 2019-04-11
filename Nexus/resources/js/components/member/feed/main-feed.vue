@@ -109,7 +109,7 @@
                         @item-selected="tagSelected"
                       ></v-autocomplete>
                       <span class="makepost-icon">
-                        <i class="fas fa-map-marker-alt"></i>
+                        <i class="fas fa-hashtag"></i>
                       </span>
                       <span class="material-input"></span>
                     </div>
@@ -240,8 +240,8 @@
               </div>
             </div>
           </div>
-
-          <pre class="font-weight-light">{{ story.contents }}</pre>
+          <h6>{{ story.contents.split('\n')[0] }}</h6>
+          <pre class="font-weight-light">{{ story.contents.replace(story.contents.split('\n')[0], "") }}</pre>
           <p>
             <i class="fas fa-rupee-sign"></i>
             <span class="font-weight-bold pr-3">{{ story.price }}</span>

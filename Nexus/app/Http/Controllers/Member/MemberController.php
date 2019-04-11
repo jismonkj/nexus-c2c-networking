@@ -16,6 +16,7 @@ use App\ItemOrders;
 use App\Member\Items;
 use App\Member\Tags;
 use App\FileStore;
+use App\Tokens;
 
 class MemberController extends Controller
 {
@@ -139,54 +140,53 @@ class MemberController extends Controller
 
     public function orderHistory($type)
     {
+        $orders = [];
         switch ($type) {
             case 'sent':
-                $orders = ItemOrders::where('nexus_item_orders.uid', Auth::id())->join('items', 'nexus_item_orders.item_id', 'items.item_id')->join('nexus_member_profile', 'nexus_member_profile.uid', 'items.uid')->join('nexus_distrib_profile', 'nexus_distrib_profile.uid', 'nexus_item_orders.distrib_id')->join('cities', 'items.loc_id', 'cities.id')->join('states', 'cities.sid', 'states.id')->join('nexus_member_addresses', 'nexus_item_orders.addr_id', 'nexus_member_addresses.addid')->join('cities as dcity', 'nexus_member_addresses.city_id', 'dcity.id')->join('states as dstate', 'dcity.sid', 'dstate.id')->select('nexus_item_orders.quantity', 'nexus_item_orders.o_id', 'nexus_item_orders.item_id', 'nexus_item_orders.amount', 'nexus_item_orders.distrib_id', 'nexus_item_orders.service_charge', 'nexus_item_orders.addr_id', 'nexus_member_profile.fname', 'nexus_member_profile.lname', 'nexus_distrib_profile.distrib_name', 'items.contents', 'cities.city_name as ucity', 'states.state_name as ustate', 'dcity.city_name as dcity', 'dstate.state_name as dstate', 'items.uid', 'nexus_item_orders.status', 'nexus_item_orders.created_at')->paginate(6)->toArray();
-
-                $data = $orders['data'];
-                $i = 0;
-                foreach ($data as $order) {
-                    $avatar = FileStore::where('refid', $order['uid'])->where('type', 'avatar')->get();
-
-                    if (sizeof($avatar) == 0) {
-                        $avatar = "img/avatar5-sm.jpg";
-                    } else {
-                        $avatar = $avatar['0']->path;
-                    }
-
-                    $data[$i]['uavatar'] = $avatar;
-                    $i++;
-                }
-
-                $orders['data'] = $data;
-                return $orders;
+                $orders = ItemOrders::where('nexus_item_orders.uid', Auth::id())->join('items', 'nexus_item_orders.item_id', 'items.item_id')->join('nexus_member_profile', 'nexus_member_profile.uid', 'items.uid')->join('nexus_distrib_profile', 'nexus_distrib_profile.uid', 'nexus_item_orders.distrib_id')->join('cities', 'items.loc_id', 'cities.id')->join('states', 'cities.sid', 'states.id')->join('nexus_member_addresses', 'nexus_item_orders.addr_id', 'nexus_member_addresses.addid')->join('cities as dcity', 'nexus_member_addresses.city_id', 'dcity.id')->join('states as dstate', 'dcity.sid', 'dstate.id')->where('nexus_item_orders.distrib_id', '!=', '0')->select('nexus_item_orders.quantity', 'nexus_item_orders.o_id', 'nexus_item_orders.item_id', 'nexus_item_orders.amount', 'nexus_item_orders.distrib_id', 'nexus_item_orders.service_charge', 'nexus_item_orders.addr_id', 'nexus_member_profile.fname', 'nexus_member_profile.lname', 'nexus_distrib_profile.distrib_name', 'items.contents', 'cities.city_name as ucity', 'states.state_name as ustate', 'dcity.city_name as dcity', 'dstate.state_name as dstate', 'items.uid', 'nexus_item_orders.status', 'nexus_item_orders.created_at')->paginate(6)->toArray();
                 break;
 
             case 'recieved':
-                $orders = Items::where('items.uid', Auth::id())->join('nexus_item_orders', 'nexus_item_orders.item_id', 'items.item_id')->join('nexus_member_profile', 'nexus_member_profile.uid', 'nexus_item_orders.uid')->join('nexus_member_addresses', 'nexus_item_orders.addr_id', 'nexus_member_addresses.addid')->join('cities as ucity', 'nexus_member_addresses.city_id', 'ucity.id')->join('states as ustate', 'ucity.sid', 'ustate.id')->join('nexus_distrib_profile', 'nexus_distrib_profile.uid', 'nexus_item_orders.distrib_id')->join('cities', 'items.loc_id', 'cities.id')->join('states', 'cities.sid', 'states.id')->select('nexus_item_orders.quantity', 'nexus_item_orders.o_id', 'nexus_item_orders.item_id', 'nexus_item_orders.amount', 'nexus_item_orders.distrib_id', 'nexus_item_orders.service_charge', 'nexus_item_orders.addr_id', 'nexus_member_profile.fname', 'nexus_member_profile.lname', 'nexus_distrib_profile.distrib_name', 'items.contents', 'cities.city_name as dcity', 'states.state_name as dstate', 'ucity.city_name as ucity', 'ustate.state_name as ustate', 'nexus_item_orders.uid', 'nexus_item_orders.status', 'nexus_item_orders.created_at')->paginate(6)->toArray();
-
-                $data = $orders['data'];
-                $i = 0;
-                foreach ($data as $order) {
-                    $avatar = FileStore::where('refid', $order['uid'])->where('type', 'avatar')->get();
-
-                    if (sizeof($avatar) == 0) {
-                        $avatar = "img/avatar5-sm.jpg";
-                    } else {
-                        $avatar = $avatar['0']->path;
-                    }
-
-                    $data[$i]['uavatar'] = $avatar;
-                    $i++;
-                }
-
-                $orders['data'] = $data;
-                return $orders;
+                $orders = Items::where('items.uid', Auth::id())->join('nexus_item_orders', 'nexus_item_orders.item_id', 'items.item_id')->join('nexus_member_profile', 'nexus_member_profile.uid', 'nexus_item_orders.uid')->join('nexus_member_addresses', 'nexus_item_orders.addr_id', 'nexus_member_addresses.addid')->join('cities as ucity', 'nexus_member_addresses.city_id', 'ucity.id')->join('states as ustate', 'ucity.sid', 'ustate.id')->join('nexus_distrib_profile', 'nexus_distrib_profile.uid', 'nexus_item_orders.distrib_id')->join('cities', 'items.loc_id', 'cities.id')->join('states', 'cities.sid', 'states.id')->where('nexus_item_orders.distrib_id', '!=', '0')->select('nexus_item_orders.quantity', 'nexus_item_orders.o_id', 'nexus_item_orders.item_id', 'nexus_item_orders.amount', 'nexus_item_orders.distrib_id', 'nexus_item_orders.service_charge', 'nexus_item_orders.addr_id', 'nexus_member_profile.fname', 'nexus_member_profile.lname', 'nexus_distrib_profile.distrib_name', 'items.contents', 'cities.city_name as dcity', 'states.state_name as dstate', 'ucity.city_name as ucity', 'ustate.state_name as ustate', 'nexus_item_orders.uid', 'nexus_item_orders.status', 'nexus_item_orders.created_at')->paginate(6)->toArray();
                 break;
+
+            case 'myself-r':
+                $orders = Items::where('items.uid', Auth::id())->join('nexus_item_orders', 'nexus_item_orders.item_id', 'items.item_id')->where('nexus_item_orders.distrib_id', '0')->join('nexus_member_profile', 'nexus_member_profile.uid', 'nexus_item_orders.uid')->join('nexus_member_addresses', 'nexus_item_orders.addr_id', 'nexus_member_addresses.addid')->join('cities as ucity', 'nexus_member_addresses.city_id', 'ucity.id')->join('states as ustate', 'ucity.sid', 'ustate.id')->join('cities', 'items.loc_id', 'cities.id')->join('states', 'cities.sid', 'states.id')->select('nexus_item_orders.quantity', 'nexus_item_orders.o_id', 'nexus_item_orders.item_id', 'nexus_item_orders.amount', 'nexus_item_orders.service_charge', 'nexus_item_orders.addr_id', 'nexus_member_profile.fname', 'nexus_member_profile.lname', 'items.contents', 'cities.city_name as dcity', 'states.state_name as dstate', 'ucity.city_name as ucity', 'ustate.state_name as ustate', 'nexus_item_orders.uid', 'nexus_item_orders.status', 'nexus_item_orders.created_at')->paginate(6)->toArray();
+                break;
+
+            case 'myself-s':
+                $orders = ItemOrders::where('nexus_item_orders.uid', Auth::id())->where('nexus_item_orders.distrib_id', '0')->join('items', 'nexus_item_orders.item_id', 'items.item_id')->join('nexus_member_profile', 'nexus_member_profile.uid', 'items.uid')->join('cities', 'items.loc_id', 'cities.id')->join('states', 'cities.sid', 'states.id')->join('nexus_member_addresses', 'nexus_item_orders.addr_id', 'nexus_member_addresses.addid')->join('cities as dcity', 'nexus_member_addresses.city_id', 'dcity.id')->join('states as dstate', 'dcity.sid', 'dstate.id')->select('nexus_item_orders.quantity', 'nexus_item_orders.o_id', 'nexus_item_orders.item_id', 'nexus_item_orders.amount', 'nexus_item_orders.service_charge', 'nexus_item_orders.addr_id', 'nexus_member_profile.fname', 'nexus_member_profile.lname', 'items.contents', 'cities.city_name as ucity', 'states.state_name as ustate', 'dcity.city_name as dcity', 'dstate.state_name as dstate', 'items.uid', 'nexus_item_orders.status', 'nexus_item_orders.created_at')->paginate(6)->toArray();
+                break;
+
             default:
                 break;
         }
+
+        if (sizeof($orders)) {
+            $data = $orders['data'];
+            $i = 0;
+            foreach ($data as $order) {
+                $avatar = FileStore::where('refid', $order['uid'])->where('type', 'avatar')->get();
+
+                if (sizeof($avatar) == 0) {
+                    $avatar = "img/avatar5-sm.jpg";
+                } else {
+                    $avatar = $avatar['0']->path;
+                }
+
+                $data[$i]['uavatar'] = $avatar;
+                $i++;
+            }
+
+            $orders['data'] = $data;
+        }
+        return $orders;
     }
+
+    public function cancelOrder(Request $request){
+        return ItemOrders::where('o_id', $request->o_id)->update(['status'=>'cancelled']);
+    }
+
     /* ADDRESSES______________________________________________________________________________________*/
     public function fetchAddresses($cityid)
     {

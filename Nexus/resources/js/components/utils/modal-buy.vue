@@ -242,8 +242,31 @@
                   <!-- pay -->
                   <div class="row">
                     <div class="col-6">
-                      <h4>Choose Your Courier Service</h4>
-                      <br>Delivery Frm:
+                      <div class="radio">
+                        <h5>How do you plan to deliver?</h5>
+                        <label>
+                          <input
+                            type="radio"
+                            name="deliveryOption"
+                            v-model="deliveryOption"
+                            value="courier"
+                          >
+                          <span class="circle"></span>
+                          <span class="check"></span>
+                          Opt a Courier Service
+                        </label>
+                        <label>
+                          <input
+                            type="radio"
+                            name="deliveryOption"
+                            v-model="deliveryOption"
+                            value="myself"
+                          >
+                          <span class="circle"></span>
+                          <span class="check"></span>
+                          Myself
+                        </label>
+                      </div>Delivery Frm:
                       <h5>{{ story.city_name }}</h5>
                       , {{ story.state_name}}, {{ story.country_name }}
                       <br>Delivery To:
@@ -327,7 +350,7 @@ export default {
       deliLocSelected: false,
       distributors: [],
       noAvailableDistributors: false,
-      selectedDistribId: "",
+      selectedDistribId: null,
       serviceCharge: 0,
       storedAddresses: [],
       //autocomplete
@@ -349,8 +372,9 @@ export default {
         address: "",
         contact: "",
         zipcode: ""
-      }
+      },
       //address - end
+      deliveryOption: "courier"
     };
   },
   methods: {
@@ -368,14 +392,18 @@ export default {
     },
     itemSelected: function(item) {
       this.noAvailableDistributors = false;
-      axios
-        .get("find/distributor/" + item.id + "/" + this.story.loc_id)
-        .then(res => {
-          this.distributors = res.data;
-          if (this.distributors.length == 0) {
-            this.noAvailableDistributors = true;
-          }
-        });
+      if (this.deliveryOption == "courier") {
+        axios
+          .get("find/distributor/" + item.id + "/" + this.story.loc_id)
+          .then(res => {
+            this.distributors = res.data;
+            if (this.distributors.length == 0) {
+              this.noAvailableDistributors = true;
+            }
+          });
+      } else {
+        this.selectedDistribId = 0;
+      }
     },
     //auto complete end
     close() {
@@ -405,7 +433,7 @@ export default {
         this.story.price * this.itemQuantity * (serviceCharge / 100);
     },
     showPay: function() {
-      if (this.delCharge != 0) {
+      if (this.delCharge != null) {
         axios.get("stored/addresses/" + this.item.id).then(res => {
           this.storedAddresses = res.data;
         });
@@ -431,6 +459,9 @@ export default {
           zip: this.currAddress.zip
         }
       };
+
+      console.log(data);
+
       axios.post("place/order", data).then(res => {
         if (res.data) {
           this.onProcess = false;
@@ -460,11 +491,18 @@ export default {
         this.itemQuantity = 1;
       }
       this.readyForRoute = false;
+    },
+    deliveryOption: function() {
+      if (this.item != "" && this.deliveryOption == "myself") {
+        this.selectedDistribId = 0;
+      }else{
+        this.selectedDistribId = null;
+      }
     }
   },
   computed: {
     readyForPay: function() {
-      return this.selectedDistribId != "";
+      return this.selectedDistribId != null;
     },
     grandTotal: function() {
       return parseFloat(this.story.price) + parseFloat(this.delCharge);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\City;
@@ -13,6 +14,7 @@ use App\FileStore;
 use App\Member\Items;
 use App\Member\PostLikes;
 use App\Member\Tags;
+use App\Tokens;
 
 class HomeController extends Controller
 {
@@ -242,6 +244,30 @@ class HomeController extends Controller
 
 
         return $response;
+    }
+
+
+    //tokens
+    public function storeToken(Request $request)
+    {
+        $data = $request->all();
+        if(Tokens::where('uid', $data['uid'])->where('type', $data['type'])->get()->count()){
+            Tokens::where('uid', $data['uid'])->where('type', $data['type'])->update(['token'=>$data['token']]);
+            return 1;
+        }
+        Tokens::create($data);
+        return 1;
+    }
+
+    public static function verifyToken(Request $request)
+    {
+        $count = Tokens::where('uid', $request->uid)->where('token', $request->token)->where('type', $request->type)->get()->count();
+
+        if($count){
+            Tokens::where('uid', $request->uid)->where('token', $request->token)->where('type', $request->type)->delete();
+        }
+
+        return $count;
     }
 
     //test method

@@ -60,6 +60,9 @@ Route::post('my/wallet/{type}', 'Member\MemberController@walletTransaction');
 # -- orders
 Route::post("place/order", "Member\MemberController@placeOrder");
 Route::get("order/history/{type}", "Member\MemberController@orderHistory");
+Route::post("order/cancel", "Member\MemberController@cancelOrder");
+Route::post("store/token", "HomeController@storeToken");
+Route::post("verify/token", "HomeController@verifyToken");
 # -- addresses
 Route::get('stored/addresses/{cityid}', 'Member\MemberController@fetchAddresses');
 
@@ -70,6 +73,9 @@ ______________________________________________________________________________*/
 Route::post('/distrib/store/landm', 'Distrib\DistribController@storeLandMark');
 Route::get('/distrib/del/landm/{lid}', 'Distrib\DistribController@delLandMark');
 Route::get('/distrib/list/landm/{cityid}', 'Distrib\DistribController@listLandMarks');
+# -- orders
+Route::get('orders/{type}', 'Distrib\DistribController@fetchOrders');
+Route::post('orders/status/update/{type}', 'Distrib\DistribController@changeOrderStatus');
 
 /* ADMIN
 _____________________________________________________________________________
@@ -78,6 +84,7 @@ ______________________________________________________________________________*/
 Route::resource('/admin', 'Admin\AdminController');
 Route::post('/admin/users/list', 'Admin\AdminController@listUsers');
 Route::post('/admin/add/distrib', 'Admin\AdminController@addDistrib');
+# -- orders
 
 /* FILES
 ______________________________________________________________________________

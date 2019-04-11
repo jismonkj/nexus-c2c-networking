@@ -86,6 +86,324 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/distrib/Orders.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/distrib/Orders.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  mounted: function mounted() {
+    var _this = this;
+
+    //fresh
+    axios.get("orders/fresh").then(function (res) {
+      _this.freshOrders = res.data.data;
+      _this.freshTotalPages = res.data.data.total;
+      _this.freshNextUrl = res.data.data.next_page_url;
+    }); //collected
+
+    axios.get("orders/ontheway").then(function (res) {
+      _this.collectedOrders = res.data.data;
+      _this.collectedTotalPages = res.data.data.total;
+      _this.collectedhNextUrl = res.data.data.next_page_url;
+    }); //delivered
+
+    axios.get("orders/delivered").then(function (res) {
+      _this.deliveredOrders = res.data.data;
+      _this.deliveredTotalPages = res.data.data.total;
+      _this.deliveredNextUrl = res.data.data.next_page_url;
+    });
+  },
+  data: function data() {
+    return {
+      freshOrders: null,
+      collectedOrders: null,
+      deliveredOrders: null,
+      deliveryPin: "",
+      delAddress: {
+        tfname: "",
+        tlname: "",
+        tcontact: "",
+        taddress: "",
+        tzip: "",
+        tcity_name: "",
+        tstate_name: "",
+        tcountry_name: "",
+        fcity_name: "",
+        fstate_name: "",
+        fcountry_name: "",
+        contents: "",
+        amount: "",
+        quantity: "",
+        service_charge: ""
+      }
+    };
+  },
+  methods: {
+    showMore: function showMore($oid, $type) {
+      switch ($type) {
+        case "fresh":
+          //find index
+          var index = this.freshOrders.findIndex(function (item) {
+            return item.o_id == $oid;
+          }); //set address data
+
+          this.delAddress = this.freshOrders[index];
+          break;
+
+        case "del":
+          //find index
+          var index = this.deliveredOrders.findIndex(function (item) {
+            return item.o_id == $oid;
+          }); //set address data
+
+          this.delAddress = this.deliveredOrders[index];
+          break;
+
+        case "coll":
+          //find index
+          var index = this.collectedOrders.findIndex(function (item) {
+            return item.o_id == $oid;
+          }); //set address data
+
+          this.delAddress = this.collectedOrders[index];
+          break;
+
+        default:
+          break;
+      }
+    },
+    collectForDelivery: function collectForDelivery(oid) {
+      var _this2 = this;
+
+      axios.post("orders/status/update/ontheway", {
+        o_id: oid
+      }).then(function (res) {
+        //find index
+        var index = _this2.freshOrders.findIndex(function (item) {
+          return item.o_id == oid;
+        }); //set status
+
+
+        _this2.freshOrders[index].status = "ontheway";
+      });
+    },
+    itemDelivered: function itemDelivered(oid) {
+      //find index
+      var index = this.collectedOrders.findIndex(function (item) {
+        return item.o_id == oid;
+      }); //set status
+
+      this.collectedOrders[index].status = "delivery";
+    },
+    verifySecret: function verifySecret(oid) {
+      var _this3 = this;
+
+      if (this.deliveryPin != "") {
+        axios.post("orders/status/update/delivered", {
+          o_id: oid,
+          uid: oid,
+          token: this.deliveryPin,
+          type: "delivery"
+        }).then(function (res) {
+          //find index
+          var index = _this3.collectedOrders.findIndex(function (item) {
+            return item.o_id == oid;
+          }); //set status
+
+
+          _this3.collectedOrders[index].status = "delivered";
+        });
+      }
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/distrib/Places.vue?vue&type=script&lang=js&":
 /*!*************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/distrib/Places.vue?vue&type=script&lang=js& ***!
@@ -399,6 +717,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   methods: {
     setBreadCumb: function setBreadCumb(title) {
@@ -412,6 +738,650 @@ __webpack_require__.r(__webpack_exports__);
     };
   }
 });
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/distrib/Orders.vue?vue&type=template&id=0e2a8b8c&":
+/*!*****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/distrib/Orders.vue?vue&type=template&id=0e2a8b8c& ***!
+  \*****************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "row" }, [
+    _c("div", { staticClass: "col-md-7" }, [
+      _c("div", { staticClass: "panel panel-default" }, [
+        _c("div", { staticClass: "panel-body tabs" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _c("div", { staticClass: "tab-content distrib" }, [
+            _c(
+              "div",
+              {
+                staticClass: "tab-pane fade in active",
+                attrs: { id: "pilltab1" }
+              },
+              [
+                _c(
+                  "ul",
+                  { staticClass: "dist-order-list" },
+                  _vm._l(_vm.freshOrders, function(order) {
+                    return _c(
+                      "li",
+                      { key: order.o_id, staticClass: "left clearfix more" },
+                      [
+                        _c("div", { staticClass: "chat-body clearfix" }, [
+                          _c("div", { staticClass: "header" }, [
+                            _c("strong", { staticClass: "primary-font" }, [
+                              _vm._v(
+                                "\n                      " +
+                                  _vm._s(order.ffname) +
+                                  " " +
+                                  _vm._s(order.flname) +
+                                  "\n                      >>\n                      " +
+                                  _vm._s(order.tfname) +
+                                  " " +
+                                  _vm._s(order.tlname) +
+                                  "\n                    "
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("small", { staticClass: "text-muted" }, [
+                              _vm._v(_vm._s(order.created_at))
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("p", [
+                            _vm._v(
+                              "From: " +
+                                _vm._s(order.fcity_name) +
+                                ", " +
+                                _vm._s(order.fstate_name) +
+                                ", " +
+                                _vm._s(order.fcountry_name)
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            {
+                              directives: [
+                                {
+                                  name: "show",
+                                  rawName: "v-show",
+                                  value: order.status == "fresh",
+                                  expression: "order.status=='fresh'"
+                                }
+                              ],
+                              staticClass: "btn btn-primary",
+                              on: {
+                                click: function($event) {
+                                  return _vm.collectForDelivery(order.o_id)
+                                }
+                              }
+                            },
+                            [_vm._v("Collect")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-primary",
+                              on: {
+                                click: function($event) {
+                                  return _vm.showMore(order.o_id, "fresh")
+                                }
+                              }
+                            },
+                            [_vm._v("More")]
+                          )
+                        ])
+                      ]
+                    )
+                  }),
+                  0
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "tab-pane fade", attrs: { id: "pilltab2" } },
+              [
+                _c(
+                  "ul",
+                  { staticClass: "dist-order-list" },
+                  _vm._l(_vm.collectedOrders, function(order) {
+                    return _c(
+                      "li",
+                      { key: order.o_id, staticClass: "left clearfix more" },
+                      [
+                        _c("div", { staticClass: "chat-body clearfix" }, [
+                          _c("div", { staticClass: "header" }, [
+                            _c("strong", { staticClass: "primary-font" }, [
+                              _vm._v(
+                                "\n                      " +
+                                  _vm._s(order.ffname) +
+                                  " " +
+                                  _vm._s(order.flname) +
+                                  "\n                      >>\n                      " +
+                                  _vm._s(order.tfname) +
+                                  " " +
+                                  _vm._s(order.tlname) +
+                                  "\n                    "
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("small", { staticClass: "text-muted" }, [
+                              _vm._v(_vm._s(order.created_at))
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("p", [
+                            _vm._v(
+                              "From: " +
+                                _vm._s(order.fcity_name) +
+                                ", " +
+                                _vm._s(order.fstate_name) +
+                                ", " +
+                                _vm._s(order.fcountry_name)
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            {
+                              directives: [
+                                {
+                                  name: "show",
+                                  rawName: "v-show",
+                                  value: order.status == "ontheway",
+                                  expression: "order.status=='ontheway'"
+                                }
+                              ],
+                              staticClass: "btn btn-primary",
+                              on: {
+                                click: function($event) {
+                                  return _vm.itemDelivered(order.o_id)
+                                }
+                              }
+                            },
+                            [_vm._v("Deliver")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              directives: [
+                                {
+                                  name: "show",
+                                  rawName: "v-show",
+                                  value: order.status == "delivery",
+                                  expression: "order.status=='delivery'"
+                                }
+                              ],
+                              staticClass: "alert bg-danger",
+                              attrs: { role: "alert" }
+                            },
+                            [
+                              _c("div", { staticClass: "row" }, [
+                                _vm._m(1, true),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "col-md-4" }, [
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.deliveryPin,
+                                        expression: "deliveryPin"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    attrs: {
+                                      type: "number",
+                                      name: "deliveryPin"
+                                    },
+                                    domProps: { value: _vm.deliveryPin },
+                                    on: {
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.deliveryPin = $event.target.value
+                                      }
+                                    }
+                                  })
+                                ]),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "col-md-4" }, [
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass: "btn btn-primary btn-lg",
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.verifySecret(order.o_id)
+                                        }
+                                      }
+                                    },
+                                    [_vm._v("Verify")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("em", {
+                                    staticClass:
+                                      "fa fa-lg fa-close distrib-close",
+                                    on: {
+                                      click: function($event) {
+                                        order.status = "ontheway"
+                                      }
+                                    }
+                                  })
+                                ])
+                              ])
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            {
+                              directives: [
+                                {
+                                  name: "show",
+                                  rawName: "v-show",
+                                  value: order.status == "delivered",
+                                  expression: "order.status=='delivered'"
+                                }
+                              ],
+                              staticClass: "btn btn-success"
+                            },
+                            [_c("i", { staticClass: "fa fa-check" })]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-primary",
+                              on: {
+                                click: function($event) {
+                                  return _vm.showMore(order.o_id, "coll")
+                                }
+                              }
+                            },
+                            [_vm._v("More")]
+                          )
+                        ])
+                      ]
+                    )
+                  }),
+                  0
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "tab-pane fade", attrs: { id: "pilltab3" } },
+              [
+                _c(
+                  "ul",
+                  { staticClass: "dist-order-list" },
+                  _vm._l(_vm.deliveredOrders, function(order) {
+                    return _c(
+                      "li",
+                      { key: order.o_id, staticClass: "left clearfix more" },
+                      [
+                        _c("div", { staticClass: "chat-body clearfix" }, [
+                          _c("div", { staticClass: "header" }, [
+                            _c("strong", { staticClass: "primary-font" }, [
+                              _vm._v(
+                                "\n                      " +
+                                  _vm._s(order.ffname) +
+                                  " " +
+                                  _vm._s(order.flname) +
+                                  "\n                      >>\n                      " +
+                                  _vm._s(order.tfname) +
+                                  " " +
+                                  _vm._s(order.tlname) +
+                                  "\n                    "
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("small", { staticClass: "text-muted" }, [
+                              _vm._v(_vm._s(order.created_at))
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("p", [
+                            _vm._v(
+                              "From: " +
+                                _vm._s(order.fcity_name) +
+                                ", " +
+                                _vm._s(order.fstate_name) +
+                                ", " +
+                                _vm._s(order.fcountry_name)
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-primary",
+                              on: {
+                                click: function($event) {
+                                  return _vm.showMore(order.o_id, "del")
+                                }
+                              }
+                            },
+                            [_vm._v("More")]
+                          )
+                        ])
+                      ]
+                    )
+                  }),
+                  0
+                )
+              ]
+            )
+          ])
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "col-md-5" }, [
+      _c("div", { staticClass: "panel distrib panel-default" }, [
+        _c("div", { staticClass: "panel-heading" }, [_vm._v("Order Details")]),
+        _vm._v(" "),
+        _c("div", { staticClass: "panel-body" }, [
+          _c("div", { staticClass: "col-md-6" }, [
+            _c("strong", [_vm._v("Collection Address")]),
+            _vm._v(" "),
+            _c("address", [
+              _vm._v(
+                "\n            " +
+                  _vm._s(_vm.delAddress.ffname) +
+                  " " +
+                  _vm._s(_vm.delAddress.flname) +
+                  "\n            "
+              ),
+              _c("br"),
+              _vm._v(
+                "\n            " +
+                  _vm._s(_vm.delAddress.fcontact) +
+                  "\n            "
+              ),
+              _c("br"),
+              _vm._v(" "),
+              _c(
+                "span",
+                {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: _vm.delAddress.fcity_name != "",
+                      expression: "delAddress.fcity_name!=''"
+                    }
+                  ]
+                },
+                [_vm._v(_vm._s(_vm.delAddress.fcity_name))]
+              ),
+              _vm._v(" "),
+              _c(
+                "span",
+                {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: _vm.delAddress.fstate_name != "",
+                      expression: "delAddress.fstate_name!=''"
+                    }
+                  ]
+                },
+                [_vm._v(_vm._s("," + _vm.delAddress.fstate_name))]
+              ),
+              _vm._v(" "),
+              _c(
+                "span",
+                {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: _vm.delAddress.fcountry_name != "",
+                      expression: "delAddress.fcountry_name!=''"
+                    }
+                  ]
+                },
+                [_vm._v(_vm._s("," + _vm.delAddress.fcountry_name))]
+              )
+            ]),
+            _vm._v(" "),
+            _c("strong", [_vm._v("Delivery Address")]),
+            _vm._v(" "),
+            _c("address", [
+              _vm._v(
+                "\n            " +
+                  _vm._s(_vm.delAddress.tfname) +
+                  " " +
+                  _vm._s(_vm.delAddress.tlname) +
+                  "\n            "
+              ),
+              _c("br"),
+              _vm._v(
+                "\n            " +
+                  _vm._s(_vm.delAddress.taddress) +
+                  "\n            "
+              ),
+              _c("br"),
+              _vm._v(
+                "\n            " +
+                  _vm._s(_vm.delAddress.tcontact) +
+                  "\n            "
+              ),
+              _c("br"),
+              _vm._v(" "),
+              _c(
+                "span",
+                {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: _vm.delAddress.tcity_name != "",
+                      expression: "delAddress.tcity_name!=''"
+                    }
+                  ]
+                },
+                [_vm._v(_vm._s(_vm.delAddress.tcity_name))]
+              ),
+              _vm._v(" "),
+              _c(
+                "span",
+                {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: _vm.delAddress.tstate_name != "",
+                      expression: "delAddress.tstate_name!=''"
+                    }
+                  ]
+                },
+                [_vm._v(_vm._s("," + _vm.delAddress.tstate_name))]
+              ),
+              _vm._v(" "),
+              _c(
+                "span",
+                {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: _vm.delAddress.tcountry_name != "",
+                      expression: "delAddress.tcountry_name!=''"
+                    }
+                  ]
+                },
+                [_vm._v(_vm._s("," + _vm.delAddress.tcountry_name))]
+              ),
+              _vm._v(" "),
+              _c("br"),
+              _vm._v(
+                "\n            " + _vm._s(_vm.delAddress.tzip) + "\n          "
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-md-6" }, [
+            _c("strong", [_vm._v("Order Summary")]),
+            _vm._v(" "),
+            _c("br"),
+            _vm._v(
+              "\n          " +
+                _vm._s(
+                  _vm.delAddress.contents != " "
+                    ? _vm.delAddress.contents.split("\n")[0]
+                    : ""
+                ) +
+                "\n          "
+            ),
+            _c("br"),
+            _vm._v(" "),
+            _c(
+              "span",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.delAddress.quantity != "",
+                    expression: "delAddress.quantity!=''"
+                  }
+                ]
+              },
+              [_vm._v(_vm._s(_vm.delAddress.quantity) + " Nos.")]
+            ),
+            _vm._v(" "),
+            _c(
+              "span",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.delAddress.amount != "",
+                    expression: "delAddress.amount!=''"
+                  }
+                ]
+              },
+              [
+                _vm._v(
+                  _vm._s(_vm.delAddress.amount * _vm.delAddress.quantity) +
+                    " Rs."
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "span",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.delAddress.service_charge != "",
+                    expression: "delAddress.service_charge!=''"
+                  }
+                ]
+              },
+              [
+                _vm._v(
+                  _vm._s(
+                    _vm.delAddress.amount *
+                      _vm.delAddress.quantity *
+                      (_vm.delAddress.service_charge / 100)
+                  ) + " Rs."
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c("br"),
+            _vm._v(" "),
+            _c("br"),
+            _vm._v(" "),
+            _c("br"),
+            _vm._v(" "),
+            _c("strong", [_vm._v("Grand Total")]),
+            _vm._v(
+              "\n          : " +
+                _vm._s(
+                  _vm.delAddress.amount * _vm.delAddress.quantity +
+                    _vm.delAddress.amount *
+                      _vm.delAddress.quantity *
+                      (_vm.delAddress.service_charge / 100)
+                ) +
+                "\n        "
+            )
+          ]),
+          _vm._v(" "),
+          _c("button", { staticClass: "btn btn-primary d-bottom" }, [
+            _vm._v("Print")
+          ])
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("ul", { staticClass: "nav nav-pills" }, [
+      _c("li", { staticClass: "active" }, [
+        _c("a", { attrs: { href: "#pilltab1", "data-toggle": "tab" } }, [
+          _vm._v("Fresh")
+        ])
+      ]),
+      _vm._v(" "),
+      _c("li", [
+        _c("a", { attrs: { href: "#pilltab2", "data-toggle": "tab" } }, [
+          _vm._v("Collected")
+        ])
+      ]),
+      _vm._v(" "),
+      _c("li", [
+        _c("a", { attrs: { href: "#pilltab3", "data-toggle": "tab" } }, [
+          _vm._v("Delivered")
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-md-4" }, [
+      _c("em", { staticClass: "fa fa-md fa-warning" }, [_vm._v(" ")]),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v("Enter Delivery PIN:\n                      ")
+    ])
+  }
+]
+render._withStripped = true
+
+
 
 /***/ }),
 
@@ -886,6 +1856,27 @@ var render = function() {
               _c("a", { attrs: { href: "" } }, [
                 _c("em", { staticClass: "fa fa-dashboard" }, [_vm._v(" ")]),
                 _vm._v("\n          Places\n        ")
+              ])
+            ])
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c(
+          "li",
+          {
+            class: { active: _vm.activeTab == "Orders" },
+            on: {
+              click: function($event) {
+                return _vm.setBreadCumb("Orders")
+              }
+            }
+          },
+          [
+            _c("router-link", { attrs: { to: "/orders" } }, [
+              _c("a", { attrs: { href: "" } }, [
+                _c("em", { staticClass: "fa fa-dashboard" }, [_vm._v(" ")]),
+                _vm._v("\n          Orders\n        ")
               ])
             ])
           ],
@@ -3680,6 +4671,75 @@ if (inBrowser && window.Vue) {
 
 /***/ }),
 
+/***/ "./resources/js/components/distrib/Orders.vue":
+/*!****************************************************!*\
+  !*** ./resources/js/components/distrib/Orders.vue ***!
+  \****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Orders_vue_vue_type_template_id_0e2a8b8c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Orders.vue?vue&type=template&id=0e2a8b8c& */ "./resources/js/components/distrib/Orders.vue?vue&type=template&id=0e2a8b8c&");
+/* harmony import */ var _Orders_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Orders.vue?vue&type=script&lang=js& */ "./resources/js/components/distrib/Orders.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Orders_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Orders_vue_vue_type_template_id_0e2a8b8c___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Orders_vue_vue_type_template_id_0e2a8b8c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/distrib/Orders.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/distrib/Orders.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************!*\
+  !*** ./resources/js/components/distrib/Orders.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Orders_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Orders.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/distrib/Orders.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Orders_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/distrib/Orders.vue?vue&type=template&id=0e2a8b8c&":
+/*!***********************************************************************************!*\
+  !*** ./resources/js/components/distrib/Orders.vue?vue&type=template&id=0e2a8b8c& ***!
+  \***********************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Orders_vue_vue_type_template_id_0e2a8b8c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./Orders.vue?vue&type=template&id=0e2a8b8c& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/distrib/Orders.vue?vue&type=template&id=0e2a8b8c&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Orders_vue_vue_type_template_id_0e2a8b8c___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Orders_vue_vue_type_template_id_0e2a8b8c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/distrib/Places.vue":
 /*!****************************************************!*\
   !*** ./resources/js/components/distrib/Places.vue ***!
@@ -3830,11 +4890,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
 /* harmony import */ var _components_distrib_SideBar_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/distrib/SideBar.vue */ "./resources/js/components/distrib/SideBar.vue");
 /* harmony import */ var _components_distrib_Places_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/distrib/Places.vue */ "./resources/js/components/distrib/Places.vue");
+/* harmony import */ var _components_distrib_Orders_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/distrib/Orders.vue */ "./resources/js/components/distrib/Orders.vue");
 // vue router
 // ________________________
 
 Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]); // components
 // _____________________
+
 
 
 
@@ -3849,6 +4911,9 @@ var routes = [{
 }, {
   path: '/places',
   component: _components_distrib_Places_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
+}, {
+  path: '/orders',
+  component: _components_distrib_Orders_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
 }];
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
   routes: routes // short for `routes: routes`

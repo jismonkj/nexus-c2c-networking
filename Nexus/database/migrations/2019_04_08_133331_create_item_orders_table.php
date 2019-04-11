@@ -19,10 +19,10 @@ class CreateItemOrdersTable extends Migration
             $table->integer('item_id');
             $table->string('quantity', 5);
             $table->string('amount', 8);
-            $table->integer('distrib_id');
+            $table->integer('distrib_id')->nullable();
             $table->string('service_charge');
             $table->integer('addr_id');
-            $table->enum('status', ['fresh', 'ontheway', 'delivered', 'err'])->default("fresh");
+            $table->enum('status', ['fresh', 'ontheway', 'delivered', 'rejected', 'cancelled', 'err'])->default("fresh");
             $table->timestamps();
         });
     }

@@ -26,6 +26,8 @@ import SentRequests from './components/member/dash/sent-requests.vue'
 import FriendCircle from './components/member/dash/friend-circle.vue'
 import OrdersSent from './components/member/dash/orders-sent.vue'
 import OrdersRecieved from './components/member/dash/orders-recieved.vue'
+import MyOrdersSent from './components/member/dash/my-orders-sent.vue'
+import MyOrdersRecieved from './components/member/dash/my-orders-recieved.vue'
 
 // 
 import EducationEmployment from './components/member/dash/education-employment.vue'
@@ -105,6 +107,14 @@ let routes = [{
             {
                 path:'/account/orders-recieved',
                 component:OrdersRecieved
+            },
+            {
+                path:'/account/orders-sent-m',
+                component:MyOrdersSent
+            },
+            {
+                path:'/account/orders-recieved-m',
+                component:MyOrdersRecieved
             }
         ]
     },

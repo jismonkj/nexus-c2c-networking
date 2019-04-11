@@ -73,28 +73,22 @@
                 >
                   <ul class="your-profile-menu">
                     <li>
-                      <router-link to="/account/personal-info">
-                        Personal Information
-                      </router-link>
+                      <router-link to="/account/personal-info">Personal Information</router-link>
                     </li>
                     <li>
                       <a href="29-YourAccount-AccountSettings.html">Account Settings</a>
                     </li>
                     <li>
-                      <router-link to="/account/change-password">
-                          Change Password
-                        </router-link>
+                      <router-link to="/account/change-password">Change Password</router-link>
                     </li>
                     <li>
-                       <router-link to="/account/my-interests">
-                          My Interests
-                        </router-link>
+                      <router-link to="/account/my-interests">My Interests</router-link>
                     </li>
                     <!-- <li>
                       <router-link to="/account/education-employment">
                           Education and Employment
                         </router-link>
-                    </li> -->
+                    </li>-->
                   </ul>
                 </div>
               </div>
@@ -108,15 +102,11 @@
               <a href="34-YourAccount-ChatMessages.html" class="h6 title">Chat / Messages</a>
             </div>
             <div class="ui-block-title">
-              <router-link  class="h6 title" to="/account/friend-requests">
-                Friend Requests
-                </router-link>
+              <router-link class="h6 title" to="/account/friend-requests">Friend Requests</router-link>
               <a href="#" class="items-round-little bg-blue">4</a>
             </div>
             <div class="ui-block-title">
-              <router-link  class="h6 title" to="/account/friend-circle">
-                Friend Circle
-                </router-link>
+              <router-link class="h6 title" to="/account/friend-circle">Friend Circle</router-link>
               <a href="#" class="items-round-little bg-blue">4</a>
             </div>
             <div class="ui-block-title ui-block-title-small">
@@ -173,11 +163,12 @@
               <div class="ui-block-title ui-block-title-small">
                 <h6 class="title">Your PROFILE</h6>
               </div>
-<!-- profile settings -->
-              <div id="accordion" role="tablist" aria-multiselectable="true">
-                <div class="card">
+              <!-- profile settings -->
+
+              <div class="card">
+                <div id="accordion" role="tablist" aria-multiselectable="true">
                   <div class="card-header" role="tab" id="headingOne">
-                    <h6 class="mb-0">
+                    <h6 class="mb-0 py-1">
                       <a
                         data-toggle="collapse"
                         data-parent="#accordion"
@@ -187,7 +178,9 @@
                       >
                         Profile Settings
                         <svg class="olymp-dropdown-arrow-icon">
-                          <use xlink:href="theme/svg-icons/sprites/icons.svg#olymp-dropdown-arrow-icon"></use>
+                          <use
+                            xlink:href="theme/svg-icons/sprites/icons.svg#olymp-dropdown-arrow-icon"
+                          ></use>
                         </svg>
                       </a>
                     </h6>
@@ -201,20 +194,13 @@
                   >
                     <ul class="your-profile-menu">
                       <li>
-                        <router-link to="/account/personal-info">
-                          Personal Information
-                        </router-link>
+                        <router-link to="/account/personal-info">Personal Information</router-link>
                       </li>
                       <li>
-                        <router-link to="/account/change-password">
-                          Change Password
-                        </router-link>
+                        <router-link to="/account/change-password">Change Password</router-link>
                       </li>
                       <li>
-                        <router-link to="/account/my-interests">
-                          My Interests
-                        </router-link>
-
+                        <router-link to="/account/my-interests">My Interests</router-link>
                       </li>
                     </ul>
                   </div>
@@ -222,10 +208,11 @@
               </div>
 
               <!-- orders -->
-              <div id="accordionOrders" role="tablist" aria-multiselectable="true">
-                <div class="card">
+
+              <div class="card">
+                <div id="accordionOrders" role="tablist" aria-multiselectable="true">
                   <div class="card-header" role="tab" id="headingOrders">
-                    <h6 class="mb-0">
+                    <h6 class="mb-0 py-1">
                       <a
                         data-toggle="collapse"
                         data-parent="#accordionOrders"
@@ -233,9 +220,11 @@
                         aria-expanded="true"
                         aria-controls="collapseOrders"
                       >
-                        Your Orders
+                        Orders Through Courier
                         <svg class="olymp-dropdown-arrow-icon">
-                          <use xlink:href="theme/svg-icons/sprites/icons.svg#olymp-dropdown-arrow-icon"></use>
+                          <use
+                            xlink:href="theme/svg-icons/sprites/icons.svg#olymp-dropdown-arrow-icon"
+                          ></use>
                         </svg>
                       </a>
                     </h6>
@@ -249,56 +238,87 @@
                   >
                     <ul class="your-profile-menu">
                       <li>
-                        <router-link to="/account/orders-recieved">
-                          Orders Recieved
-                        </router-link>
+                        <router-link to="/account/orders-recieved">Orders Recieved</router-link>
                       </li>
                       <li>
-                        <router-link to="/account/orders-sent">
-                          Purchased Items
-                        </router-link>
+                        <router-link to="/account/orders-sent">Purchased Items</router-link>
                       </li>
                     </ul>
                   </div>
                 </div>
               </div>
+
+              <!-- orders offline -->
+
+              <div class="card">
+                <div id="accordionOrders2" role="tablist" aria-multiselectable="true">
+                  <div class="card-header" role="tab" id="headingOrders2">
+                    <h6 class="mb-0 py-1">
+                      <a
+                        data-toggle="collapse"
+                        data-parent="#accordionOrders2"
+                        href="#collapseOrders2"
+                        aria-expanded="true"
+                        aria-controls="collapseOrders2"
+                      >
+                        My Orders
+                        <svg class="olymp-dropdown-arrow-icon">
+                          <use
+                            xlink:href="theme/svg-icons/sprites/icons.svg#olymp-dropdown-arrow-icon"
+                          ></use>
+                        </svg>
+                      </a>
+                    </h6>
+                  </div>
+
+                  <div
+                    id="collapseOrders2"
+                    class="collapse"
+                    role="tabpanel"
+                    aria-labelledby="headingOrders2"
+                  >
+                    <ul class="your-profile-menu">
+                      <li>
+                        <router-link to="/account/orders-sent-m">Orderes Recieved</router-link>
+                      </li>
+                      <li>
+                        <router-link to="/account/orders-recieved-m">Purchased Items</router-link>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
               <div class="ui-block-title pl-36 py-3">
-                <router-link  class="h6 title" to="/account/friend-requests">
-                Friend Requests
-                </router-link>
+                <router-link class="h6 title" to="/account/friend-requests">Friend Requests</router-link>
                 <a href="#" class="items-round-little bg-blue">4</a>
               </div>
               <div class="ui-block-title pl-36 py-3">
-                <router-link  class="h6 title" to="/account/friend-circle">
-                Friend Circle
-                </router-link>
+                <router-link class="h6 title" to="/account/friend-circle">Friend Circle</router-link>
               </div>
               <div class="ui-block-title pl-36 py-3">
-                <router-link  class="h6 title" to="/account/sent-requests">
-                Sent Friend Requests
-                </router-link>
+                <router-link class="h6 title" to="/account/sent-requests">Sent Friend Requests</router-link>
               </div>
             </div>
 
             <!-- ... end Your Profile  -->
           </div>
         </div>
-        <router-view>
-        </router-view>
+        <router-view></router-view>
       </div>
     </div>
   </div>
 </template>
-<script>  
-    export default {
-      mounted(){
-        // this.csrftoken = $("#csrf-token").attr('content');
-      },
-      data:function(){
-        return {
-          // csrftoken: this.$parent.$data.csrftoken,
-        }
-      }
-    }
+<script>
+export default {
+  mounted() {
+    // this.csrftoken = $("#csrf-token").attr('content');
+  },
+  data: function() {
+    return {
+      // csrftoken: this.$parent.$data.csrftoken,
+    };
+  }
+};
 </script>
 

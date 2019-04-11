@@ -2,20 +2,19 @@
   <div class="col col-xl-9 order-xl-2 col-lg-9 order-lg-2 col-md-12 order-md-1 col-sm-12 col-12">
     <div class="ui-block">
       <div class="ui-block-title">
-        <h6 class="title">Purchased Items</h6>
+        <h6 class="title">Recieved Orders</h6>
         <a href="#" class="more">
           <svg class="olymp-three-dots-icon">
             <use xlink:href="theme/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use>
           </svg>
         </a>
       </div>
-
       <!-- Notification List Frien Requests -->
       <ul class="notification-list friend-requests">
-        <li v-if="sentOrders == ''">
-          <div class="notification-event">No purchase history</div>
+        <li v-if="recievedOrders == ''">
+          <div class="notification-event">No Recieved Orders</div>
         </li>
-        <li v-for="order in sentOrders" v-bind:key="order.id">
+        <li v-for="order in recievedOrders" v-bind:key="order.o_id">
           <div class="author-thumb">
             <img :src="'storage/'+order.uavatar" alt="author">
           </div>
@@ -37,10 +36,9 @@
             <b>{{ (order.quantity * order.amount) * (order.service_charge/100) + (order.quantity * order.amount) }}</b>
           </div>
           <div class="notification-event">
-            {{ order.distrib_name }}
-            <br>
             {{ order.ucity}}, {{ order.ustate}}
             <i class="fas fa-angle-double-right"></i>
+            <br/>
             {{ order.dcity}}, {{ order.dstate}}
           </div>
           <span class="notification-icon">
@@ -50,7 +48,9 @@
               data-toggle="tooltip"
               data-placement="left"
               data-original-title="Cancel"
+              @click="cancelOrder(order.o_id)"
             >
+            C
               <i class="far fa-stop-circle"></i>
             </button>
             <button
@@ -59,16 +59,9 @@
               data-toggle="tooltip"
               data-placement="left"
               data-original-title="On The Way"
-              @click="getDeliSecret(order.o_id)"
             >
               <i class="fas fa-truck"></i>
             </button>
-            <button v-show="order.status=='token'" 
-            data-toggle="tooltip"
-              data-placement="right"
-              data-original-title="Click to Refresh"
-              @click="getDeliSecret(order.o_id)"
-            class="btn bg-breez">{{ deliToken }}</button>
             <button
               v-show="order.status=='delivered'"
               class="btn bg-green"
@@ -88,8 +81,8 @@
 <script>
 export default {
   mounted() {
-    axios.get("order/history/sent").then(res => {
-      this.sentOrders = res.data.data;
+    axios.get("order/history/myself-r").then(res => {
+      this.recievedOrders = res.data.data;
       this.totalPages = res.data.data.total;
       this.nextPageUrl = res.data.data.next_page_url;
     });
@@ -98,32 +91,13 @@ export default {
     return {
       totalPages: 0,
       nextPageUrl: "",
-      sentOrders: [],
-      deliToken: ""
+      recievedOrders: []
     };
   },
-  methods: {
-    getDeliSecret: function(o_id) {
-      //generate token
-      var digits = "0123456789";
-      let token = "";
-      for (let i = 0; i < 6; i++) {
-        token += digits[Math.floor(Math.random() * 10)];
-      }
-      var index = this.sentOrders.findIndex(order => order.o_id == o_id);
-      this.deliToken = "Token: "+token;
-      this.sentOrders[index].status = "token";
-
-      //update server
-      axios
-        .post("store/token", { 'uid': o_id, 'token': token, 'type': "delivery" })
-        .then(res => {
-          console.log(res.data);
-          
-          if (res.data) {
-            //
-          }
-        });
+  methods:{
+    cancelOrder:function(o_id){
+      var index = this.recievedOrders.findIndex(order => order.o_id == o_id);
+      this.recievedOrders[index].status = "cancelled";
     }
   }
 };
