@@ -65,6 +65,8 @@ Route::post("store/token", "HomeController@storeToken");
 Route::post("verify/token", "HomeController@verifyToken");
 # -- addresses
 Route::get('stored/addresses/{cityid}', 'Member\MemberController@fetchAddresses');
+# -- auctions
+Route::resource('m/auction/', 'Member\AuctionController');
 
 /* DISTRIBUTOR
 _____________________________________________________________________________
@@ -92,7 +94,9 @@ _______________________________________________________________________________*
 # -- images
 Route::post('images/upload', 'FileController@imageCollect');
 Route::post('images/url', 'FileController@getImageUrl');
-Route::post('images/items', 'FileController@itemImagesCollect');
+// Route::post('images/items', 'FileController@itemImagesCollect');
+// Route::post('images/auctions', 'FileController@itemImagesCollect');
+Route::post('store/files', 'FileController@collectFiles');
 
 /* testing routes
 ___________________________________ _________________________________________

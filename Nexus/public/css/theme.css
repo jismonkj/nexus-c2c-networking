@@ -49,8 +49,13 @@ ____________________________________________*/
     padding-top: 10%;
 }
 
-.modal.buy{
-    padding:4%;
+.modal.buy, .modal.auction{
+    padding:0;
+    overflow-y: scroll;
+}
+
+.modal .create-auction{
+    width: 600px;
 }
 
 .modal-header,
@@ -192,4 +197,8 @@ pre{
 
 .color-red{
     color:red;
+}
+
+.header .page-title {
+    padding: 0px 50px 26px 100px;
 }

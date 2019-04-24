@@ -24,7 +24,10 @@
                     <div class="header">
                       <strong class="primary-font">
                         {{ order.ffname }} {{ order.flname }}
-                        >>
+                        <i
+                          class="fa fa-angle-double-right"
+                          aria-hidden="true"
+                        ></i>
                         {{ order.tfname }} {{ order.tlname }}
                       </strong>
                       <small class="text-muted">{{ order.created_at}}</small>
@@ -49,7 +52,10 @@
                     <div class="header">
                       <strong class="primary-font">
                         {{ order.ffname }} {{ order.flname }}
-                        >>
+                        <i
+                          class="fa fa-angle-double-right"
+                          aria-hidden="true"
+                        ></i>
                         {{ order.tfname }} {{ order.tlname }}
                       </strong>
                       <small class="text-muted">{{ order.created_at}}</small>
@@ -89,8 +95,7 @@
                     </div>
 
                     <button class="btn btn-success" v-show="order.status=='delivered'">
-                      <i class="fa fa-check">
-                      </i>
+                      <i class="fa fa-check"></i>
                     </button>
                     <button class="btn btn-primary" @click="showMore(order.o_id, 'coll')">More</button>
                   </div>
@@ -106,7 +111,10 @@
                     <div class="header">
                       <strong class="primary-font">
                         {{ order.ffname }} {{ order.flname }}
-                        >>
+                        <i
+                          class="fa fa-angle-double-right"
+                          aria-hidden="true"
+                        ></i>
                         {{ order.tfname }} {{ order.tlname }}
                       </strong>
                       <small class="text-muted">{{ order.created_at}}</small>
@@ -152,6 +160,11 @@
               <br>
               {{ delAddress.tzip }}
             </address>
+
+            <br>
+            <strong>Updated On:</strong>
+            <br>
+            {{ delAddress.updated_at }}
           </div>
           <div class="col-md-6">
             <strong>Order Summary</strong>
@@ -168,6 +181,7 @@
             <br>
 
             <strong>Grand Total</strong>
+
             : {{ (delAddress.amount * delAddress.quantity) + (delAddress.amount * delAddress.quantity) * (delAddress.service_charge/100)}}
           </div>
           <button class="btn btn-primary d-bottom">Print</button>

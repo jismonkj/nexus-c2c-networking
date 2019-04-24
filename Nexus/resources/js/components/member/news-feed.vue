@@ -5,7 +5,7 @@
     <div class="container">
       <div class="row">
         <!-- Main Content -->
-        <main-feed></main-feed>
+        <main-feed ref="mainFeed"></main-feed>
         <!-- ... end Main Content -->
         <!-- Left Sidebar -->
         <left-side-bar></left-side-bar>

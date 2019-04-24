@@ -274,6 +274,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     var _this = this;
@@ -786,7 +800,14 @@ var render = function() {
                                   _vm._s(order.ffname) +
                                   " " +
                                   _vm._s(order.flname) +
-                                  "\n                      >>\n                      " +
+                                  "\n                      "
+                              ),
+                              _c("i", {
+                                staticClass: "fa fa-angle-double-right",
+                                attrs: { "aria-hidden": "true" }
+                              }),
+                              _vm._v(
+                                "\n                      " +
                                   _vm._s(order.tfname) +
                                   " " +
                                   _vm._s(order.tlname) +
@@ -872,7 +893,14 @@ var render = function() {
                                   _vm._s(order.ffname) +
                                   " " +
                                   _vm._s(order.flname) +
-                                  "\n                      >>\n                      " +
+                                  "\n                      "
+                              ),
+                              _c("i", {
+                                staticClass: "fa fa-angle-double-right",
+                                attrs: { "aria-hidden": "true" }
+                              }),
+                              _vm._v(
+                                "\n                      " +
                                   _vm._s(order.tfname) +
                                   " " +
                                   _vm._s(order.tlname) +
@@ -1047,7 +1075,14 @@ var render = function() {
                                   _vm._s(order.ffname) +
                                   " " +
                                   _vm._s(order.flname) +
-                                  "\n                      >>\n                      " +
+                                  "\n                      "
+                              ),
+                              _c("i", {
+                                staticClass: "fa fa-angle-double-right",
+                                attrs: { "aria-hidden": "true" }
+                              }),
+                              _vm._v(
+                                "\n                      " +
                                   _vm._s(order.tfname) +
                                   " " +
                                   _vm._s(order.tlname) +
@@ -1239,7 +1274,16 @@ var render = function() {
               _vm._v(
                 "\n            " + _vm._s(_vm.delAddress.tzip) + "\n          "
               )
-            ])
+            ]),
+            _vm._v(" "),
+            _c("br"),
+            _vm._v(" "),
+            _c("strong", [_vm._v("Updated On:")]),
+            _vm._v(" "),
+            _c("br"),
+            _vm._v(
+              "\n          " + _vm._s(_vm.delAddress.updated_at) + "\n        "
+            )
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "col-md-6" }, [
@@ -1323,7 +1367,7 @@ var render = function() {
             _vm._v(" "),
             _c("strong", [_vm._v("Grand Total")]),
             _vm._v(
-              "\n          : " +
+              "\n\n          : " +
                 _vm._s(
                   _vm.delAddress.amount * _vm.delAddress.quantity +
                     _vm.delAddress.amount *

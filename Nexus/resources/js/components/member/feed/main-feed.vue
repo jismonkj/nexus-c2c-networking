@@ -220,7 +220,6 @@
           </div>
         </div>
       </div>
-
       <!-- ... end News Feed Form  -->
     </div>
 
@@ -373,8 +372,14 @@
       </div>
     </div>
 
+    <!-- //modal buy -->
     <transition leave-active-class="animate fade" enter-active-class="animate fade">
       <modal-buy v-show="isBuyModalVisible" ref="modalBuy"></modal-buy>
+    </transition>
+
+    <!-- modal auctions -->
+    <transition leave-active-class="animate fade" enter-active-class="animate fade">
+      <modal-auction  ref="modalAuc" v-show="showAuctionModal"></modal-auction>
     </transition>
   </main>
 </template>
@@ -383,6 +388,8 @@ import ItemTemplate from "./ItemTemplate.vue";
 import TagTemplate from "./TagTemplate.vue";
 //modal buy
 import ModalBuy from "../../utils/modal-buy.vue";
+//modal auction
+import ModalAuction from "../../utils/create-auction.vue";
 //vue dropzone
 import vue2Dropzone from "vue2-dropzone";
 export default {
@@ -422,14 +429,17 @@ export default {
       imgCount: 0,
       dropZoneActive: false,
       dropzoneOptions: {
-        url: "images/items",
-        paramName: "image",
+        url: "store/files",
+        paramName: "file",
         maxFiles: 4,
         thumbnailWidth: 140,
         thumbnailHeight: 120,
         maxFilesize: 0.5,
         acceptedFiles: "image/*",
-        params: { x_token: Math.ceil(Math.random() * 100000) },
+        params: { 
+          x_token: Math.ceil(Math.random() * 100000),
+          type:"items"
+         },
         autoProcessQueue: false
       },
       itemContent: "",
@@ -437,12 +447,14 @@ export default {
       itemPrice: "",
       //buy modal
       buyItemId: "",
-      isBuyModalVisible: false
+      isBuyModalVisible: false,
+      showAuctionModal:false
     };
   },
   components: {
     "vue-dropzone": vue2Dropzone,
-    "modal-buy": ModalBuy
+    "modal-buy": ModalBuy,
+    "modal-auction":ModalAuction
   },
   watch: {
     itemPrice: function() {
@@ -469,8 +481,9 @@ export default {
     scroll: function() {
       window.onscroll = () => {
         let bottomOfWindow =
-          Math.floor(document.documentElement.scrollTop) + window.innerHeight ==
-          document.documentElement.offsetHeight;
+          Math.floor(document.documentElement.scrollTop) + window.innerHeight >=
+          document.documentElement.offsetHeight - 100 || Math.floor(document.documentElement.scrollTop) + window.innerHeight <=
+          document.documentElement.offsetHeight + 50;
 
         if (bottomOfWindow) {
           if (this.currentPage < this.scrollPages) {

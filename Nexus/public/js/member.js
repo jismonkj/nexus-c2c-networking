@@ -2012,8 +2012,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ItemTemplate_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ItemTemplate.vue */ "./resources/js/components/member/feed/ItemTemplate.vue");
 /* harmony import */ var _TagTemplate_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TagTemplate.vue */ "./resources/js/components/member/feed/TagTemplate.vue");
 /* harmony import */ var _utils_modal_buy_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../utils/modal-buy.vue */ "./resources/js/components/utils/modal-buy.vue");
-/* harmony import */ var vue2_dropzone__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue2-dropzone */ "./node_modules/vue2-dropzone/dist/vue2Dropzone.js");
-/* harmony import */ var vue2_dropzone__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(vue2_dropzone__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _utils_create_auction_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../utils/create-auction.vue */ "./resources/js/components/utils/create-auction.vue");
+/* harmony import */ var vue2_dropzone__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue2-dropzone */ "./node_modules/vue2-dropzone/dist/vue2Dropzone.js");
+/* harmony import */ var vue2_dropzone__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(vue2_dropzone__WEBPACK_IMPORTED_MODULE_4__);
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2397,6 +2403,8 @@ __webpack_require__.r(__webpack_exports__);
 
  //modal buy
 
+ //modal auction
+
  //vue dropzone
 
 
@@ -2439,15 +2447,16 @@ __webpack_require__.r(__webpack_exports__);
       imgCount: 0,
       dropZoneActive: false,
       dropzoneOptions: {
-        url: "images/items",
-        paramName: "image",
+        url: "store/files",
+        paramName: "file",
         maxFiles: 4,
         thumbnailWidth: 140,
         thumbnailHeight: 120,
         maxFilesize: 0.5,
         acceptedFiles: "image/*",
         params: {
-          x_token: Math.ceil(Math.random() * 100000)
+          x_token: Math.ceil(Math.random() * 100000),
+          type: "items"
         },
         autoProcessQueue: false
       },
@@ -2456,12 +2465,14 @@ __webpack_require__.r(__webpack_exports__);
       itemPrice: "",
       //buy modal
       buyItemId: "",
-      isBuyModalVisible: false
+      isBuyModalVisible: false,
+      showAuctionModal: false
     };
   },
   components: {
-    "vue-dropzone": vue2_dropzone__WEBPACK_IMPORTED_MODULE_3___default.a,
-    "modal-buy": _utils_modal_buy_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
+    "vue-dropzone": vue2_dropzone__WEBPACK_IMPORTED_MODULE_4___default.a,
+    "modal-buy": _utils_modal_buy_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
+    "modal-auction": _utils_create_auction_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
   watch: {
     itemPrice: function itemPrice() {
@@ -2489,7 +2500,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       window.onscroll = function () {
-        var bottomOfWindow = Math.floor(document.documentElement.scrollTop) + window.innerHeight == document.documentElement.offsetHeight;
+        var bottomOfWindow = Math.floor(document.documentElement.scrollTop) + window.innerHeight >= document.documentElement.offsetHeight - 100 || Math.floor(document.documentElement.scrollTop) + window.innerHeight <= document.documentElement.offsetHeight + 50;
 
         if (bottomOfWindow) {
           if (_this2.currentPage < _this2.scrollPages) {
@@ -2652,16 +2663,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -3597,6 +3598,209 @@ __webpack_require__.r(__webpack_exports__);
     axios.get("/member/interest").then(function (response) {
       _this.userInterests = response.data;
     });
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/utils/create-auction.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/utils/create-auction.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue2_dropzone__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue2-dropzone */ "./node_modules/vue2-dropzone/dist/vue2Dropzone.js");
+/* harmony import */ var vue2_dropzone__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue2_dropzone__WEBPACK_IMPORTED_MODULE_0__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//vue dropzone
+
+var date = new Date();
+var month = date.getMonth().toString();
+var day = date.getDate().toString();
+var currDate = date.getFullYear() + "-" + (month.length > 1 ? month : "0" + month) + "-" + (day.length > 1 ? day : "0" + day);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  mounted: function mounted() {
+    this.afterEventCreation = false;
+  },
+  data: function data() {
+    return {
+      auction: {
+        title: "",
+        privacy: "private",
+        date: currDate,
+        time: "09:00",
+        amOrPm: "pm",
+        hours: "01:00",
+        description: "",
+        refid: ""
+      },
+      dropzoneOptions: {
+        url: "store/files",
+        paramName: "file",
+        maxFiles: 4,
+        thumbnailWidth: 140,
+        thumbnailHeight: 120,
+        maxFilesize: 0.5,
+        acceptedFiles: "image/*",
+        params: {
+          _token: $("#csrf-token").attr("content"),
+          x_token: Math.ceil(Math.random() * 100000),
+          type: "auctions"
+        },
+        autoProcessQueue: false
+      },
+      afterEventCreation: false
+    };
+  },
+  components: {
+    "vue-dropzone": vue2_dropzone__WEBPACK_IMPORTED_MODULE_0___default.a
+  },
+  methods: {
+    close: function close() {
+      this.$parent.showAuctionModal = false;
+    },
+    createEvent: function createEvent() {
+      var _this = this;
+
+      console.log(this.$refs.myVueDropzoneX.processQueue()); // if (this.$refs.myVueDropzoneX.processQueue()) {
+
+      this.auction.refid = this.dropzoneOptions.params.x_token; //ajax
+
+      axios.post("m/auction/", this.auction).then(function (res) {
+        if (res.data) {
+          _this.afterEventCreation = true;
+        }
+      }); // }
+    }
   }
 });
 
@@ -25229,6 +25433,30 @@ var render = function() {
           })
         ],
         1
+      ),
+      _vm._v(" "),
+      _c(
+        "transition",
+        {
+          attrs: {
+            "leave-active-class": "animate fade",
+            "enter-active-class": "animate fade"
+          }
+        },
+        [
+          _c("modal-auction", {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.showAuctionModal,
+                expression: "showAuctionModal"
+              }
+            ],
+            ref: "modalAuc"
+          })
+        ],
+        1
       )
     ],
     1
@@ -25343,29 +25571,30 @@ var render = function() {
           [
             _c("div", { staticClass: "ui-block" }, [
               _c("div", { staticClass: "widget w-birthday-alert" }, [
-                _c("div", { staticClass: "icons-block" }, [
-                  _c("svg", { staticClass: "olymp-cupcake-icon" }, [
-                    _c("use", {
-                      attrs: {
-                        "xlink:href":
-                          "theme/svg-icons/sprites/icons.svg#olymp-cupcake-icon"
-                      }
-                    })
+                _c("div", { staticClass: "content" }, [
+                  _c("a", { staticClass: "h4 title", attrs: { href: "#" } }, [
+                    _vm._v("Start An Auction")
                   ]),
                   _vm._v(" "),
-                  _c("a", { staticClass: "more", attrs: { href: "#" } }, [
-                    _c("svg", { staticClass: "olymp-three-dots-icon" }, [
-                      _c("use", {
-                        attrs: {
-                          "xlink:href":
-                            "theme/svg-icons/sprites/icons.svg#olymp-three-dots-icon"
+                  _c("p", [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        on: {
+                          click: function($event) {
+                            _vm.$parent.$refs.mainFeed.showAuctionModal = true
+                          }
                         }
-                      })
-                    ])
+                      },
+                      [
+                        _vm._v(
+                          "\n                Create Auction\n              "
+                        )
+                      ]
+                    )
                   ])
-                ]),
-                _vm._v(" "),
-                _vm._m(0)
+                ])
               ])
             ]),
             _vm._v(" "),
@@ -25566,10 +25795,10 @@ var render = function() {
                 ])
               ]),
               _vm._v(" "),
-              _vm._m(1)
+              _vm._m(0)
             ]),
             _vm._v(" "),
-            _vm._m(2)
+            _vm._m(1)
           ]
         )
       ])
@@ -25577,28 +25806,6 @@ var render = function() {
   )
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "content" }, [
-      _c("div", { staticClass: "author-thumb" }, [
-        _c("img", {
-          attrs: { src: "theme/img/avatar48-sm.jpg", alt: "author" }
-        })
-      ]),
-      _vm._v(" "),
-      _c("span", [_vm._v("Today is")]),
-      _vm._v(" "),
-      _c("a", { staticClass: "h4 title", attrs: { href: "#" } }, [
-        _vm._v("Marina Valentine’s Birthday!")
-      ]),
-      _vm._v(" "),
-      _c("p", [
-        _vm._v("Leave her a message with your best wishes on her profile page!")
-      ])
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -25961,7 +26168,7 @@ var render = function() {
         "div",
         { staticClass: "row" },
         [
-          _c("main-feed"),
+          _c("main-feed", { ref: "mainFeed" }),
           _vm._v(" "),
           _c("left-side-bar"),
           _vm._v(" "),
@@ -27378,6 +27585,505 @@ var staticRenderFns = [
     ])
   }
 ]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/utils/create-auction.vue?vue&type=template&id=714ef74a&":
+/*!***********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/utils/create-auction.vue?vue&type=template&id=714ef74a& ***!
+  \***********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "modal-backdrop" }, [
+    _c("div", { staticClass: "modal auction" }, [
+      _c(
+        "div",
+        {
+          staticClass: "modal-dialog window-popup create-auction",
+          attrs: { role: "document" }
+        },
+        [
+          _c("div", { staticClass: "modal-content" }, [
+            _c("div", { staticClass: "modal-header" }, [
+              _c("h6", { staticClass: "title" }, [_vm._v("Start an Auction")]),
+              _vm._v(" "),
+              _c(
+                "a",
+                {
+                  staticClass: "p-2",
+                  attrs: {
+                    href: "#",
+                    "data-toggle": "tooltip",
+                    "data-placement": "left",
+                    title: "Close"
+                  },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.close($event)
+                    }
+                  }
+                },
+                [_c("span", { staticClass: "fa fa-times" })]
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "modal-body" }, [
+              _c(
+                "section",
+                {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: !_vm.afterEventCreation,
+                      expression: "!afterEventCreation"
+                    }
+                  ]
+                },
+                [
+                  _c("div", { staticClass: "form-group label-floating" }, [
+                    _c("label", { staticClass: "control-label" }, [
+                      _vm._v("Auction Title")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.auction.title,
+                          expression: "auction.title"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        placeholder: "",
+                        value: "Take Querty to the Veterinarian",
+                        type: "text"
+                      },
+                      domProps: { value: _vm.auction.title },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.auction, "title", $event.target.value)
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "material-input" })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "row" }, [
+                    _c(
+                      "div",
+                      { staticClass: "col col-lg-6 col-md-6 col-sm-12 col-12" },
+                      [
+                        _c(
+                          "div",
+                          { staticClass: "form-group label-floating" },
+                          [
+                            _c("label", { staticClass: "control-label" }, [
+                              _vm._v("Set Event Reach")
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "select",
+                              {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.auction.privacy,
+                                    expression: "auction.privacy"
+                                  }
+                                ],
+                                on: {
+                                  change: function($event) {
+                                    var $$selectedVal = Array.prototype.filter
+                                      .call($event.target.options, function(o) {
+                                        return o.selected
+                                      })
+                                      .map(function(o) {
+                                        var val =
+                                          "_value" in o ? o._value : o.value
+                                        return val
+                                      })
+                                    _vm.$set(
+                                      _vm.auction,
+                                      "privacy",
+                                      $event.target.multiple
+                                        ? $$selectedVal
+                                        : $$selectedVal[0]
+                                    )
+                                  }
+                                }
+                              },
+                              [
+                                _c("option", { attrs: { value: "private" } }, [
+                                  _vm._v("Friends' Event")
+                                ]),
+                                _vm._v(" "),
+                                _c("option", { attrs: { value: "public" } }, [
+                                  _vm._v("Public Event")
+                                ])
+                              ]
+                            )
+                          ]
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "col col-lg-6 col-md-6 col-sm-12 col-12" },
+                      [
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "form-group date-time-picker label-floating"
+                          },
+                          [
+                            _c("label", { staticClass: "control-label" }, [
+                              _vm._v("Auction Date")
+                            ]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.auction.date,
+                                  expression: "auction.date"
+                                }
+                              ],
+                              attrs: {
+                                name: "date",
+                                value: "26/03/2016",
+                                type: "date"
+                              },
+                              domProps: { value: _vm.auction.date },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.auction,
+                                    "date",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("span", { staticClass: "input-group-addon" }, [
+                              _c(
+                                "svg",
+                                { staticClass: "olymp-calendar-icon icon" },
+                                [
+                                  _c("use", {
+                                    attrs: {
+                                      "xlink:href":
+                                        "theme/svg-icons/sprites/icons.svg#olymp-calendar-icon"
+                                    }
+                                  })
+                                ]
+                              )
+                            ])
+                          ]
+                        )
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "row" }, [
+                    _c(
+                      "div",
+                      { staticClass: "col col-lg-3 col-md-3 col-sm-12 col-12" },
+                      [
+                        _c(
+                          "div",
+                          { staticClass: "form-group label-floating" },
+                          [
+                            _c("label", { staticClass: "control-label" }, [
+                              _vm._v("Event Time")
+                            ]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.auction.time,
+                                  expression: "auction.time"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                placeholder: "",
+                                value: "09:00",
+                                type: "time"
+                              },
+                              domProps: { value: _vm.auction.time },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.auction,
+                                    "time",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ]
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "col col-lg-3 col-md-3 col-sm-12 col-12" },
+                      [
+                        _c(
+                          "div",
+                          { staticClass: "form-group label-floating" },
+                          [
+                            _c("label", { staticClass: "control-label" }, [
+                              _vm._v("AM-PM")
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "select",
+                              {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.auction.amOrPm,
+                                    expression: "auction.amOrPm"
+                                  }
+                                ],
+                                on: {
+                                  change: function($event) {
+                                    var $$selectedVal = Array.prototype.filter
+                                      .call($event.target.options, function(o) {
+                                        return o.selected
+                                      })
+                                      .map(function(o) {
+                                        var val =
+                                          "_value" in o ? o._value : o.value
+                                        return val
+                                      })
+                                    _vm.$set(
+                                      _vm.auction,
+                                      "amOrPm",
+                                      $event.target.multiple
+                                        ? $$selectedVal
+                                        : $$selectedVal[0]
+                                    )
+                                  }
+                                }
+                              },
+                              [
+                                _c("option", { attrs: { value: "am" } }, [
+                                  _vm._v("AM")
+                                ]),
+                                _vm._v(" "),
+                                _c("option", { attrs: { value: "pm" } }, [
+                                  _vm._v("PM")
+                                ])
+                              ]
+                            )
+                          ]
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "col col-lg-6 col-md-6 col-sm-12 col-12" },
+                      [
+                        _c(
+                          "div",
+                          { staticClass: "form-group label-floating" },
+                          [
+                            _c("label", { staticClass: "control-label" }, [
+                              _vm._v("Auction Hours")
+                            ]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.auction.hours,
+                                  expression: "auction.hours"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                placeholder: "",
+                                value: "09:00",
+                                type: "time"
+                              },
+                              domProps: { value: _vm.auction.hours },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.auction,
+                                    "hours",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ]
+                        )
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group label-floating" }, [
+                    _c("label", { staticClass: "control-label" }, [
+                      _vm._v("Event Details")
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "textarea",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.auction.description,
+                            expression: "auction.description"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { placeholder: "" },
+                        domProps: { value: _vm.auction.description },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.auction,
+                              "description",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "I need to take Querty for a check up and ask the doctor if he needs a new tank.\n\t\t\t\t\t    "
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "material-input" })
+                  ])
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "section",
+                {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: _vm.afterEventCreation,
+                      expression: "afterEventCreation"
+                    }
+                  ]
+                },
+                [
+                  _c("div", { staticClass: "alert alert-success" }, [
+                    _vm._v(_vm._s(_vm.auction.title))
+                  ]),
+                  _vm._v(" "),
+                  _c("time", [
+                    _vm._v(
+                      _vm._s(_vm.auction.date) +
+                        " | " +
+                        _vm._s(_vm.auction.time) +
+                        " " +
+                        _vm._s(_vm.auction.amOrPm)
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _vm.auction.privacy == "private"
+                    ? _c("span", [_vm._v("Friends' Event")])
+                    : _c("span", [_vm._v("Public Event")]),
+                  _vm._v(" "),
+                  _c("span", [_vm._v(_vm._s(_vm.auction.hours))]),
+                  _vm._v(" "),
+                  _c("pre", [_vm._v(_vm._s(_vm.auction.description))])
+                ]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "row" }, [
+                _c(
+                  "div",
+                  { staticClass: "col" },
+                  [
+                    _c(
+                      "vue-dropzone",
+                      {
+                        ref: "myVueDropzoneX",
+                        attrs: {
+                          id: "dropzoneX",
+                          options: _vm.dropzoneOptions,
+                          "vdropzone-error": _vm.error
+                        }
+                      },
+                      [_vm._v("//")]
+                    )
+                  ],
+                  1
+                )
+              ]),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-breez btn-lg full-width my-4",
+                  on: { click: _vm.createEvent }
+                },
+                [_vm._v("Create Event")]
+              )
+            ])
+          ])
+        ]
+      )
+    ])
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -32739,6 +33445,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_about_page_vue_vue_type_template_id_be60a462___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_about_page_vue_vue_type_template_id_be60a462___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/utils/create-auction.vue":
+/*!**********************************************************!*\
+  !*** ./resources/js/components/utils/create-auction.vue ***!
+  \**********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _create_auction_vue_vue_type_template_id_714ef74a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./create-auction.vue?vue&type=template&id=714ef74a& */ "./resources/js/components/utils/create-auction.vue?vue&type=template&id=714ef74a&");
+/* harmony import */ var _create_auction_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./create-auction.vue?vue&type=script&lang=js& */ "./resources/js/components/utils/create-auction.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _create_auction_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _create_auction_vue_vue_type_template_id_714ef74a___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _create_auction_vue_vue_type_template_id_714ef74a___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/utils/create-auction.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/utils/create-auction.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************!*\
+  !*** ./resources/js/components/utils/create-auction.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_create_auction_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./create-auction.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/utils/create-auction.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_create_auction_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/utils/create-auction.vue?vue&type=template&id=714ef74a&":
+/*!*****************************************************************************************!*\
+  !*** ./resources/js/components/utils/create-auction.vue?vue&type=template&id=714ef74a& ***!
+  \*****************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_create_auction_vue_vue_type_template_id_714ef74a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./create-auction.vue?vue&type=template&id=714ef74a& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/utils/create-auction.vue?vue&type=template&id=714ef74a&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_create_auction_vue_vue_type_template_id_714ef74a___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_create_auction_vue_vue_type_template_id_714ef74a___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

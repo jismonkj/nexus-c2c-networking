@@ -64,6 +64,7 @@ class HomeController extends Controller
 
         return $data[0];
     }
+
     public function getUserBasicInfo()
     {
         $data = "";
@@ -93,7 +94,6 @@ class HomeController extends Controller
     }
 
     //feeds
-    //
     public function fetchMemberFeed()
     {
         //get friends set 1
