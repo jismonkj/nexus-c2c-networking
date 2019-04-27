@@ -113,7 +113,6 @@
                 ref="myVueDropzoneX"
                 id="dropzoneX"
                 :options="dropzoneOptions"
-                :vdropzone-error="error"
               >//</vue-dropzone>
             </div>
           </div>

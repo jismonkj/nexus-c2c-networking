@@ -5,7 +5,7 @@
       <div class="news-feed-form">
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
-          <li class="nav-item">
+          <li class="nav-item" style="width: 100%; border-bottom: 1px solid #edeaea;">
             <a
               class="nav-link active inline-items"
               data-toggle="tab"
@@ -18,21 +18,6 @@
               </svg>
 
               <span>Sell Item</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a
-              class="nav-link inline-items"
-              data-toggle="tab"
-              href="#profile-1"
-              role="tab"
-              aria-expanded="false"
-            >
-              <svg class="olymp-multimedia-icon">
-                <use xlink:href="theme/svg-icons/sprites/icons.svg#olymp-multimedia-icon"></use>
-              </svg>
-
-              <span>You need something?</span>
             </a>
           </li>
         </ul>
@@ -49,7 +34,7 @@
                 >
               </div>
               <div class="form-group with-icon label-floating is-empty">
-                <label class="control-label">Share what you are thinking here...</label>
+                <label class="control-label">Tell your people about what you offer to sell not less than 150 characters..</label>
                 <textarea class="form-control" v-model="itemContent"></textarea>
                 <span class="material-input"></span>
               </div>
@@ -163,61 +148,6 @@
             </form>
           </div>
 
-          <div class="tab-pane" id="profile-1" role="tabpanel" aria-expanded="true">
-            <form>
-              <div class="author-thumb">
-                <img src="theme/img/author-page.jpg" alt="author">
-              </div>
-              <div class="form-group with-icon label-floating is-empty">
-                <label class="control-label">Share what you are thinking here...</label>
-                <textarea class="form-control" placeholder></textarea>
-                <span class="material-input"></span>
-              </div>
-              <div class="add-options-message">
-                <a
-                  href="#"
-                  class="options-message"
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  data-original-title="ADD PHOTOS"
-                >
-                  <svg
-                    class="olymp-camera-icon"
-                    data-toggle="modal"
-                    data-target="#update-header-photo"
-                  >
-                    <use xlink:href="theme/svg-icons/sprites/icons.svg#olymp-camera-icon"></use>
-                  </svg>
-                </a>
-                <a
-                  href="#"
-                  class="options-message"
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  data-original-title="TAG YOUR FRIENDS"
-                >
-                  <svg class="olymp-computer-icon">
-                    <use xlink:href="theme/svg-icons/sprites/icons.svg#olymp-computer-icon"></use>
-                  </svg>
-                </a>
-
-                <a
-                  href="#"
-                  class="options-message"
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  data-original-title="ADD LOCATION"
-                >
-                  <svg class="olymp-small-pin-icon">
-                    <use xlink:href="theme/svg-icons/sprites/icons.svg#olymp-small-pin-icon"></use>
-                  </svg>
-                </a>
-
-                <button class="btn btn-primary btn-md-2">Post Status</button>
-                <button class="btn btn-md-2 btn-border-think btn-transparent c-grey">Preview</button>
-              </div>
-            </form>
-          </div>
         </div>
       </div>
       <!-- ... end News Feed Form  -->

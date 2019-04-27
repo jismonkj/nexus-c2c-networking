@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -55,4 +56,18 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->friendListPrimary->merge($this->friendListSecondary);
     }
 
+    public function friendsOne()
+    {
+        return $this->hasMany('App\Member\Friends', 'uid')->join('users', 'nexus_friends_circle.fid', 'users.id')->where('nexus_friends_circle.status', 'active')->select('users.id', 'users.email');    
+    }
+
+    public function friendsTwo()
+    {
+        return $this->hasMany('App\Member\Friends', 'fid')->join('users', 'nexus_friends_circle.uid', 'users.id')->where('nexus_friends_circle.status', 'active')->select('users.id', 'users.email');    
+    }
+
+    public function receivesBroadcastNotificationsOn()
+    {
+        return 'user'.$this->id;
+    }
 }

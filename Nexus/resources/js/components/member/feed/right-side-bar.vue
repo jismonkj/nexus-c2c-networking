@@ -5,212 +5,60 @@
         <div class="ui-block">
           <!-- W-Birthsday-Alert -->
           <div class="widget w-birthday-alert">
-
             <div class="content">
               <a href="#" class="h4 title">Start An Auction</a>
               <p>
-                <button class="btn btn-primary" @click="$parent.$refs.mainFeed.showAuctionModal=true">
-                  Create Auction
-                </button>
+                <button
+                  class="btn btn-primary"
+                  @click="$parent.$refs.mainFeed.showAuctionModal=true"
+                >Create Auction</button>
               </p>
             </div>
           </div>
 
           <!-- ... end W-Birthsday-Alert -->
         </div>
-
-        <!-- //friend Suggestions -->
+        
         <div class="ui-block">
           <div class="ui-block-title">
-            <h6 class="title">Friend Suggestions</h6>
-            <a href="#" class="more">
-              <svg class="olymp-three-dots-icon">
-                <use xlink:href="theme/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use>
-              </svg>
-            </a>
+            <h6 class="title">Auctions Live!</h6>
           </div>
-
-          <!-- W-Action -->
-          <ul class="widget w-friend-pages-added notification-list friend-requests">
-            <transition-group leave-active-class="animate fade">
-              <li class="inline-items" v-for="people in peopleYouMayKnow" v-bind:key="people.uid">
-                <div class="author-thumb">
-                  <img :src="'storage/'+people.avatar" alt="author" class="smaller avatar">
-                </div>
-                <div class="notification-event">
-                  <a :href="$root.encr(people.uid)" class="h6 notification-friend">{{ people.name }}</a>
-                  <span class="chat-message-item">8 Friends in Common</span>
-                </div>
-                <span
-                  class="notification-icon"
-                  v-show="!people.invited"
-                  data-toggle="tooltip"
-                  data-placement="bottom"
-                  title="Send Request"
+          <!-- Today Events -->
+          <div class="today-events calendar">
+            <div class="today-events-thumb">
+              <div class="date">
+                <div class="day-number">26</div>
+                <div class="day-week">Saturday</div>
+                <div class="month-year">March, 2016</div>
+              </div>
+            </div>
+            <div class="list">
+              <div class="control-block-button">
+                <a
+                  href="#"
+                  class="btn btn-control bg-breez"
+                  data-toggle="modal"
+                  data-target="#create-event"
                 >
-                  <a href="#" class="accept-request" @click.prevent="sendFriendReq(people.uid)">
-                    <span class="without-text icon-add">
-                      <svg class="olymp-happy-face-icon">
-                        <use xlink:href="theme/svg-icons/sprites/icons.svg#olymp-happy-face-icon"></use>
-                      </svg>
-                    </span>
-                  </a>
-                </span>
-                <span
-                  class="notification-icon"
-                  v-show="people.invited"
-                  data-toggle="tooltip"
-                  data-placement="bottom"
-                  title="Cancel Request"
-                >
-                  <a
-                    href="#"
-                    class="accept-request bg-secondary"
-                    @click.prevent="delFriendReq(people.uid)"
-                  >
-                    <span class="without-text icon-minus">
-                      <svg class="olymp-happy-face-icon">
-                        <use xlink:href="theme/svg-icons/sprites/icons.svg#olymp-happy-face-icon"></use>
-                      </svg>
-                    </span>
-                  </a>
-                </span>
-              </li>
-            </transition-group>
-          </ul>
-
-          <!-- ... end W-Action -->
-        </div>
-
-        <div class="ui-block">
-          <div class="ui-block-title">
-            <h6 class="title">Activity Feed</h6>
-            <a href="#" class="more">
-              <svg class="olymp-three-dots-icon">
-                <use xlink:href="theme/svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use>
-              </svg>
-            </a>
+                  <svg class="olymp-plus-icon">
+                    <use xlink:href="svg-icons/sprites/icons.svg#olymp-plus-icon"></use>
+                  </svg>
+                </a>
+              </div>
+              <div class="card">
+                <div class="card-header text-left" role="tab" id="headingOne-1">
+                  <div class="event-time">
+                    <time datetime="2004-07-24T18:18">9:00am</time>
+                  </div>
+                  <h5 class="mb-0 title">Breakfast at the Agency</h5>
+                </div>
+                <div
+                  class="card-body text-left"
+                >Hi Guys! I propose to go a litle earlier at the agency to have breakfast and talk a little more about the new design project we have been working on. Cheers!</div>
+              </div>
+            </div>
           </div>
-
-          <!-- W-Activity-Feed -->
-          <ul class="widget w-activity-feed notification-list">
-            <li>
-              <div class="author-thumb">
-                <img src="theme/img/avatar49-sm.jpg" alt="author">
-              </div>
-              <div class="notification-event">
-                <a href="#" class="h6 notification-friend">Marina Polson</a> commented on Jason Mark’s
-                <a href="#" class="notification-link">photo.</a>.
-                <span class="notification-date">
-                  <time class="entry-date updated" datetime="2004-07-24T18:18">2 mins ago</time>
-                </span>
-              </div>
-            </li>
-
-            <li>
-              <div class="author-thumb">
-                <img src="theme/img/avatar9-sm.jpg" alt="author">
-              </div>
-              <div class="notification-event">
-                <a href="#" class="h6 notification-friend">Jake Parker</a> liked Nicholas Grissom’s
-                <a href="#" class="notification-link">status update.</a>.
-                <span class="notification-date">
-                  <time class="entry-date updated" datetime="2004-07-24T18:18">5 mins ago</time>
-                </span>
-              </div>
-            </li>
-
-            <li>
-              <div class="author-thumb">
-                <img src="theme/img/avatar50-sm.jpg" alt="author">
-              </div>
-              <div class="notification-event">
-                <a href="#" class="h6 notification-friend">Mary Jane Stark</a> added 20 new photos to her
-                <a href="#" class="notification-link">gallery album.</a>.
-                <span class="notification-date">
-                  <time class="entry-date updated" datetime="2004-07-24T18:18">12 mins ago</time>
-                </span>
-              </div>
-            </li>
-
-            <li>
-              <div class="author-thumb">
-                <img src="theme/img/avatar51-sm.jpg" alt="author">
-              </div>
-              <div class="notification-event">
-                <a href="#" class="h6 notification-friend">Nicholas Grissom</a> updated his profile
-                <a href="#" class="notification-link">photo</a>.
-                <span class="notification-date">
-                  <time class="entry-date updated" datetime="2004-07-24T18:18">1 hour ago</time>
-                </span>
-              </div>
-            </li>
-            <li>
-              <div class="author-thumb">
-                <img src="theme/img/avatar48-sm.jpg" alt="author">
-              </div>
-              <div class="notification-event">
-                <a href="#" class="h6 notification-friend">Marina Valentine</a> commented on Chris Greyson’s
-                <a href="#" class="notification-link">status update</a>.
-                <span class="notification-date">
-                  <time class="entry-date updated" datetime="2004-07-24T18:18">1 hour ago</time>
-                </span>
-              </div>
-            </li>
-
-            <li>
-              <div class="author-thumb">
-                <img src="theme/img/avatar52-sm.jpg" alt="author">
-              </div>
-              <div class="notification-event">
-                <a href="#" class="h6 notification-friend">Green Goo Rock</a> posted a
-                <a href="#" class="notification-link">status update</a>.
-                <span class="notification-date">
-                  <time class="entry-date updated" datetime="2004-07-24T18:18">1 hour ago</time>
-                </span>
-              </div>
-            </li>
-            <li>
-              <div class="author-thumb">
-                <img src="theme/img/avatar10-sm.jpg" alt="author">
-              </div>
-              <div class="notification-event">
-                <a href="#" class="h6 notification-friend">Elaine Dreyfuss</a> liked your
-                <a href="#" class="notification-link">blog post</a>.
-                <span class="notification-date">
-                  <time class="entry-date updated" datetime="2004-07-24T18:18">2 hours ago</time>
-                </span>
-              </div>
-            </li>
-
-            <li>
-              <div class="author-thumb">
-                <img src="theme/img/avatar10-sm.jpg" alt="author">
-              </div>
-              <div class="notification-event">
-                <a href="#" class="h6 notification-friend">Elaine Dreyfuss</a> commented on your
-                <a href="#" class="notification-link">blog post</a>.
-                <span class="notification-date">
-                  <time class="entry-date updated" datetime="2004-07-24T18:18">2 hours ago</time>
-                </span>
-              </div>
-            </li>
-
-            <li>
-              <div class="author-thumb">
-                <img src="theme/img/avatar53-sm.jpg" alt="author">
-              </div>
-              <div class="notification-event">
-                <a href="#" class="h6 notification-friend">Bruce Peterson</a> changed his
-                <a href="#" class="notification-link">profile picture</a>.
-                <span class="notification-date">
-                  <time class="entry-date updated" datetime="2004-07-24T18:18">15 hours ago</time>
-                </span>
-              </div>
-            </li>
-          </ul>
-
-          <!-- .. end W-Activity-Feed -->
+          <!-- ... end Today Events -->
         </div>
 
         <div class="ui-block">
@@ -231,46 +79,5 @@
   </div>
 </template>
 <script>
-export default {
-  data: function() {
-    return {
-      peopleYouMayKnow: {}
-    };
-  },
-  mounted() {
-    axios.get("member/fsuggestions").then(response => {
-      if (response.data) {
-        this.peopleYouMayKnow = response.data;
-      }
-    });
-  },
-  methods: {
-    sendFriendReq: function($mid) {
-      //move the person to bottom
-      var index = this.peopleYouMayKnow.findIndex(item => item.uid == $mid);
-      this.peopleYouMayKnow[index].invited = true;
-      //push server update
-      axios.post("member/friends", { 'fid': $mid }).then(response => {
-        this.pushBottom(index);
-      });
-      
-    },
-    delFriendReq: function($mid) {
-      //push server update
-      axios.delete("member/friends/" + $mid ).then(response => {
-        console.log(response.data);
-        
-        //move the person to bottom
-        var index = this.peopleYouMayKnow.findIndex(item => item.uid == $mid);
-        this.peopleYouMayKnow[index].invited = false;
-        this.pushBottom(index);
-      });
-    },
-    pushBottom: _.debounce(function(index) {
-      //push the user to bottom
-      var user = this.peopleYouMayKnow.splice(index, 1);
-      this.peopleYouMayKnow.push(user[0]);
-    }, 150)
-  }
-};
+export default {};
 </script>

@@ -15,6 +15,9 @@ use App\Member\Items;
 use App\Member\PostLikes;
 use App\Member\Tags;
 use App\Tokens;
+use App\Member\Auction;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\AuctionNotification;
 
 class HomeController extends Controller
 {
@@ -273,6 +276,22 @@ class HomeController extends Controller
     //test method
     public function test()
     {
-        return $this->fetchMemberFeed();
+        // return User::all();
+        $auction = Auction::where('auid', 1)->get()[0];
+        $username = "jismon";
+
+        // return $auction;
+        foreach (Auth::user()->friendsOne()->get() as $friend) {
+            $user = User::find($friend->id);
+             Notification::send($user, new AuctionNotification($auction, $username));
+        }
+        foreach (Auth::user()->friendsTwo()->get() as $friend) {
+            $user = User::find($friend->id);
+             Notification::send($user, new AuctionNotification($auction, $username));
+        }
+        return 'x';
+        // Notification::send($users, new AuctionNotification($auction));
+
+        
     }
 }

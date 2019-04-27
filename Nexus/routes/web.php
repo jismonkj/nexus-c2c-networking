@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Broadcast;
 
 /*
 |--------------------------------------------------------------------------
@@ -105,3 +106,5 @@ Route::get('/test', 'HomeController@test');
 Route::get('/te', 'GuestController@checkIfMailExists');
 
 // end testing routes ________________________
+
+// Broadcast::routes();

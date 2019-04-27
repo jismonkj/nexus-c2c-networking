@@ -1,18 +1,25 @@
+// # -- Dependencies
 import "babel-polyfill"; // es6 shim
-// vue router
-// ________________________
+/* vue router________________________ */
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
-//VueBootstrapTypeahead
 
-// bootstrap-vue
+// laravel echo  && pusher____________________
+import Pusher from 'pusher-js';
+// Pusher.logToConsole = true;
+import Echo from 'laravel-echo';
+var echo = new Echo({
+    broadcaster: 'pusher',
+    key: '929d330424cab924b358',
+    cluster: 'ap2'
+});
 
-
-// components
-// _____________________
+// # -- Components
 import Autocomplete from "v-autocomplete"
 Vue.use(Autocomplete);
 import Wallet from "./components/utils/wallet";
+import NotifyBar from "./components/utils/notify.vue";
+
 // import SBar from './components/admin/SideBar.vue'
 // import Places from './components/admin/Places.vue'
 
@@ -70,84 +77,84 @@ Vue.component('RightSideBar', RightSideBar);
 // routes
 // __________________
 let routes = [{
-        path: '/account',
-        component: AccountDash,
-        children: [{
-                path: '/account/personal-info',
-                component: PersonalInfo
-            },
-            {
-                path: '/account/change-password',
-                component: ChangePassword
-            },
-            {
-                path: '/account/friend-requests',
-                component: FriendRequests
-            },
-            {
-                path: '/account/sent-requests',
-                component: SentRequests
-            },
-            {
-                path: '/account/friend-circle',
-                component: FriendCircle
-            },
-            {
-                path: '/account/my-interests',
-                component: MyInterests
-            },
-            {
-                path: '/account/education-employment',
-                component: EducationEmployment
-            },
-            {
-                path:'/account/orders-sent',
-                component:OrdersSent
-            },
-            {
-                path:'/account/orders-recieved',
-                component:OrdersRecieved
-            },
-            {
-                path:'/account/orders-sent-m',
-                component:MyOrdersSent
-            },
-            {
-                path:'/account/orders-recieved-m',
-                component:MyOrdersRecieved
-            }
-        ]
+    path: '/account',
+    component: AccountDash,
+    children: [{
+        path: '/account/personal-info',
+        component: PersonalInfo
     },
     {
-        path: '/profile', //PROFILE
-        component: ProfilePage,
-        children: [{
-                path: '/profile/about',
-                component: AboutPage
-            },
-            {
-                path: '/profile/timeline',
-                // component: AboutPage
-            },
-        ]
+        path: '/account/change-password',
+        component: ChangePassword
     },
     {
-        path: '/',
-        component: NewsFeed
+        path: '/account/friend-requests',
+        component: FriendRequests
     },
     {
-        path: '/user/:id',
-        component: ProfileOther,
-        children: [{
-                path: '/user/:id/friends',
-                component: MemberFriends
-            },
-            {
-                path: '/user/:id/about',
-                component: MemberAbout
-            }
-        ]
+        path: '/account/sent-requests',
+        component: SentRequests
     },
+    {
+        path: '/account/friend-circle',
+        component: FriendCircle
+    },
+    {
+        path: '/account/my-interests',
+        component: MyInterests
+    },
+    {
+        path: '/account/education-employment',
+        component: EducationEmployment
+    },
+    {
+        path: '/account/orders-sent',
+        component: OrdersSent
+    },
+    {
+        path: '/account/orders-recieved',
+        component: OrdersRecieved
+    },
+    {
+        path: '/account/orders-sent-m',
+        component: MyOrdersSent
+    },
+    {
+        path: '/account/orders-recieved-m',
+        component: MyOrdersRecieved
+    }
+    ]
+},
+{
+    path: '/profile', //PROFILE
+    component: ProfilePage,
+    children: [{
+        path: '/profile/about',
+        component: AboutPage
+    },
+    {
+        path: '/profile/timeline',
+        // component: AboutPage
+    },
+    ]
+},
+{
+    path: '/',
+    component: NewsFeed
+},
+{
+    path: '/user/:id',
+    component: ProfileOther,
+    children: [{
+        path: '/user/:id/friends',
+        component: MemberFriends
+    },
+    {
+        path: '/user/:id/about',
+        component: MemberAbout
+    }
+    ]
+},
 ];
 const router = new VueRouter({
     routes // short for `routes: routes`
@@ -166,13 +173,21 @@ const app = new Vue({
                 this.user = response.data;
                 this.newUserStatus = this.user.status_text;
                 if (this.user.myAvatar == "") {
-                    this.user.myAvatar= "img/author-main2.jpg"
+                    this.user.myAvatar = "img/author-main2.jpg"
                 }
                 if (this.user.myCover == "") {
-                    this.user.myAvatar= "img/top-header2.jpg"
+                    this.user.myAvatar = "img/top-header2.jpg"
                 }
+
+                //subscribe to notification channel
+                echo.private('user' + this.user.id)
+                    .notification((notification) => {
+                      //notification pop up
+                      this.$refs.notify.$data.notifications.push(notification);
+                    });
             }
         );
+
     },
     data: {
         user: {},
@@ -180,7 +195,7 @@ const app = new Vue({
         data: '',
         breadCumbPath: "Dashboard",
         newUserStatus: '',
-        isWalletModalVisible:false,
+        isWalletModalVisible: false,
     },
     router,
     methods: {
@@ -202,8 +217,9 @@ const app = new Vue({
 
         }
     },
-    components:{
-        "modal-wallet":Wallet
+    components: {
+        "modal-wallet": Wallet,
+        NotifyBar
     }
 
 });

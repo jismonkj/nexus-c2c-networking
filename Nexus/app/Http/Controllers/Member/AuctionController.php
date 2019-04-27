@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Member\Auction;
 use App\FileStore;
+use Illuminate\Support\Facades\Auth;
 
 class AuctionController extends Controller
 {
@@ -15,9 +16,7 @@ class AuctionController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-
-    }
+    { }
 
     /**
      * Show the form for creating a new resource.
@@ -38,11 +37,26 @@ class AuctionController extends Controller
     public function store(Request $request)
     {
         $data = $request->except('refid');
-        ($data['amOrPm'] == "am")?$data['amOrPm'] = true: $data['amOrPm'] = false;
+        ($data['amOrPm'] == "am") ? $data['amOrPm'] = true : $data['amOrPm'] = false;
         $auction = Auction::create($data);
         //reset file refid
-        $fileToken = "auctions-".$request->refid;
-        FileStore::where('refid', 'x-'.$fileToken)->where('type', 'items')->update(['refid'=>$auction->auid]);
+        $fileToken = "auctions-" . $request->refid;
+        FileStore::where('refid', 'x-' . $fileToken)->where('type', 'items')->update(['refid' => $auction->auid]);
+
+        $profile = Auth::user()->profile;
+        $username =  $profile->fname." ".$profile->lname; 
+
+        // return $auction;
+        foreach (Auth::user()->friendsOne()->get() as $friend) {
+            $user = User::find($friend->id);
+            Notification::send($user, new AuctionNotification($auction, $username));
+        }
+        foreach (Auth::user()->friendsTwo()->get() as $friend) {
+            $user = User::find($friend->id);
+            Notification::send($user, new AuctionNotification($auction, $username));
+        }
+
+
         return $auction;
     }
 

@@ -590,6 +590,9 @@
         <transition leave-active-class="animate fade" enter-active-class="animate fade">
             <modal-wallet v-show="isWalletModalVisible" ref="modalWallet"></modal-wallet>
         </transition>
+        <transition leave-active-class="animate fade" enter-active-class="animate fade">
+            <notify-bar ref="notify"></notify-bar>
+        </transition>
 
     </div>
     <!-- JS Scripts -->
@@ -632,7 +635,6 @@
     <script defer src="{{ asset('theme/fonts/fontawesome-all.js') }}"></script>
 
     <script src="{{ asset('theme/Bootstrap/dist/js/bootstrap.bundle.js') }}"></script>
-
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ asset('js/member.js') }}"></script>
 </body>

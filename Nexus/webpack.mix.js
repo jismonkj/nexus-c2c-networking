@@ -10,6 +10,7 @@ const mix = require('laravel-mix');
  | file for the application as well as bundling up all the JS files.
  |
  */
+// let whiteListedModules = ['vue', 'vuetify'];
 
 mix.js('resources/js/app.js', 'public/js')
    .js('resources/js/guest.js', 'public/js')
