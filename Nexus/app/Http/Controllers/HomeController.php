@@ -18,6 +18,10 @@ use App\Tokens;
 use App\Member\Auction;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\AuctionNotification;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use App\Events\BiddingPlaced;
+
 
 class HomeController extends Controller
 {
@@ -137,7 +141,7 @@ class HomeController extends Controller
 
         //get friends set 2
         //get friends set 2
-        $fSetTwo = Friends::where('nexus_friends_circle.fid', Auth::id())->join('items', 'items.uid', 'nexus_friends_circle.uid')->join('nexus_member_profile', 'nexus_member_profile.uid', 'nexus_friends_circle.uid')->join('cities', 'items.loc_id', 'cities.id')->join('states', 'states.id', 'cities.sid')->join('countries', 'countries.id', 'states.cid')->select('nexus_friends_circle.fid as xid', 'items.*', 'nexus_member_profile.fname', 'nexus_member_profile.lname', 'cities.city_name', 'states.state_name', 'countries.country_name')->orderBy('items.updated_at', 'desc')->paginate(5)->toArray();
+        $fSetTwo = Friends::where('nexus_friends_circle.fid', Auth::id())->join('items', 'items.uid', 'nexus_friends_circle.uid')->join('nexus_member_profile', 'nexus_member_profile.uid', 'nexus_friends_circle.uid')->join('cities', 'items.loc_id', 'cities.id')->join('states', 'states.id', 'cities.sid')->join('countries', 'countries.id', 'states.cid')->select('nexus_friends_circle.uid as xid', 'items.*', 'nexus_member_profile.fname', 'nexus_member_profile.lname', 'cities.city_name', 'states.state_name', 'countries.country_name')->orderBy('items.updated_at', 'desc')->paginate(5)->toArray();
 
         //images for set 2
         $i = 0;
@@ -254,8 +258,8 @@ class HomeController extends Controller
     public function storeToken(Request $request)
     {
         $data = $request->all();
-        if(Tokens::where('uid', $data['uid'])->where('type', $data['type'])->get()->count()){
-            Tokens::where('uid', $data['uid'])->where('type', $data['type'])->update(['token'=>$data['token']]);
+        if (Tokens::where('uid', $data['uid'])->where('type', $data['type'])->get()->count()) {
+            Tokens::where('uid', $data['uid'])->where('type', $data['type'])->update(['token' => $data['token']]);
             return 1;
         }
         Tokens::create($data);
@@ -266,7 +270,7 @@ class HomeController extends Controller
     {
         $count = Tokens::where('uid', $request->uid)->where('token', $request->token)->where('type', $request->type)->get()->count();
 
-        if($count){
+        if ($count) {
             Tokens::where('uid', $request->uid)->where('token', $request->token)->where('type', $request->type)->delete();
         }
 
@@ -276,22 +280,39 @@ class HomeController extends Controller
     //test method
     public function test()
     {
-        // return User::all();
-        $auction = Auction::where('auid', 1)->get()[0];
-        $username = "jismon";
+        //check for auctions that goes live on current time
+        // $tz = 'Asia/Kolkata';
+        // $timestamp = time();
+        // $dt = new \DateTime("now", new \DateTimeZone($tz)); //first argument "must" be a string
+        // $dt->setTimestamp($timestamp); //adjust the object to correct timestamp
+        // $time = (string)$dt->format('g:i');
+        // $amOrPm = $dt->format('a') == 'am' ? true : false;
 
-        // return $auction;
-        foreach (Auth::user()->friendsOne()->get() as $friend) {
-            $user = User::find($friend->id);
-             Notification::send($user, new AuctionNotification($auction, $username));
-        }
-        foreach (Auth::user()->friendsTwo()->get() as $friend) {
-            $user = User::find($friend->id);
-             Notification::send($user, new AuctionNotification($auction, $username));
-        }
-        return 'x';
-        // Notification::send($users, new AuctionNotification($auction));
+        // // return $dt->format('a');
+        // $auction = Auction::where('date', date('Y-m-d'))->where('time', DB::raw("time_format(CURRENT_TIME, '%h:%i')"))->get();
 
-        
+        // // return $auction[0]->u_id;
+        // $auction->count();
+        // if ($auction->count() > 0) {
+        //     Log::debug($auction[0]->title);
+
+        //     //find owner and notify friends
+        //     $profile = User::find($auction[0]->u_id)->profile;
+        //     $username =  $profile->fname . " " . $profile->lname;
+
+        //     foreach (User::find($auction[0]->u_id)->friendsOne()->get() as $friend) {
+        //         $user = User::find($friend->id);
+        //         Notification::send($user, new AuctionNotification($auction[0], $username, 'active'));
+        //     }
+        //     foreach (User::find($auction[0]->u_id)->friendsTwo()->get() as $friend) {
+        //         $user = User::find($friend->id);
+        //         Notification::send($user, new AuctionNotification($auction[0], $username, 'active'));
+        //     }
+        // }
+
+        $data['auid'] = 123;
+        $highestbid = '123';
+        $username = 'some';
+        return event(new BiddingPlaced($data, $username, $highestbid));
     }
 }

@@ -17,6 +17,7 @@ use App\Member\Items;
 use App\Member\Tags;
 use App\FileStore;
 use App\Tokens;
+use Illuminate\Support\Facades\DB;
 
 class MemberController extends Controller
 {
@@ -24,6 +25,7 @@ class MemberController extends Controller
     {
         $this->middleware('auth');
     }
+
     /* MEMBER INTERESTS
     ________________________________________________________________ */
 
@@ -53,6 +55,7 @@ class MemberController extends Controller
     {
         return Interest::where('name', 'like', $query . '%')->get();
     }
+
     /* WALLET
     __________________________________________________________________________________ */
 
@@ -183,14 +186,24 @@ class MemberController extends Controller
         return $orders;
     }
 
-    public function cancelOrder(Request $request){
-        return ItemOrders::where('o_id', $request->o_id)->update(['status'=>'cancelled']);
+    public function cancelOrder(Request $request)
+    {
+        return ItemOrders::where('o_id', $request->o_id)->update(['status' => 'cancelled']);
     }
 
     /* ADDRESSES______________________________________________________________________________________*/
     public function fetchAddresses($cityid)
     {
         return Address::where('uid', Auth::id())->where('city_id', $cityid)->select('addid', 'fname', 'lname', 'address', 'contact', 'zip')->get();
+    }
+
+    /* NOTIFICATIONS__________________________________________________________________________________ */
+    public function fetchNotifications($limit = 0)
+    {
+        if ($limit) { 
+            return Auth::user()->notifications()->take($limit)->get();
+        }
+        return Auth::user()->notifications;
     }
 
     /* VARIOUS

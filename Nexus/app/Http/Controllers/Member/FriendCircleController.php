@@ -13,6 +13,9 @@ use App\City;
 use App\State;
 use App\Country;
 use App\Http\Controllers\FileController;
+use App\Notifications\FriendCircleNotification;
+use App\User;
+use Illuminate\Support\Facades\Notification;
 
 class FriendCircleController extends Controller
 {
@@ -99,6 +102,14 @@ class FriendCircleController extends Controller
         $data['uid'] = Auth::id();
         $data['status'] = 'request';
         Friends::create($data);
+
+
+        $profile = Auth::user()->profile;
+        $username =  $profile->fname." ".$profile->lname;
+        $user = User::find($data['fid']);
+        $message = "<b>".$username."</b> has sent you a friend request!";
+        Notification::send($user, new FriendCircleNotification($message));
+
         return 1;
     }
 
@@ -119,7 +130,14 @@ class FriendCircleController extends Controller
     public function update(Request $request, $status)
     {
         if($status == 'active'){
-            return Friends::where('uid', $request->uid)->where('fid', Auth::id())->update(['status' => $status, 'date_accepted'=>now()]);
+            $fcircle = Friends::where('uid', $request->uid)->where('fid', Auth::id())->update(['status' => $status, 'date_accepted'=>now()]);
+
+            $profile = Auth::user()->profile;
+            $username =  $profile->fname." ".$profile->lname;
+            $user = User::find($request->uid);
+            $message = "You and <b>".$username."</b>became friends!";
+            Notification::send($user, new FriendCircleNotification($message));
+            return $fcircle;
         }
         return Friends::where('uid', $request->uid)->where('fid', Auth::id())->update(['status' => $status]);
     }

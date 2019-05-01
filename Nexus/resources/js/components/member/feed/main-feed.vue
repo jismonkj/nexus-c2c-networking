@@ -16,7 +16,6 @@
               <svg class="olymp-status-icon">
                 <use xlink:href="theme/svg-icons/sprites/icons.svg#olymp-status-icon"></use>
               </svg>
-
               <span>Sell Item</span>
             </a>
           </li>

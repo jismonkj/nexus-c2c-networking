@@ -8,7 +8,7 @@ Vue.use(VueRouter)
 import Pusher from 'pusher-js';
 // Pusher.logToConsole = true;
 import Echo from 'laravel-echo';
-var echo = new Echo({
+window.echo = new Echo({
     broadcaster: 'pusher',
     key: '929d330424cab924b358',
     cluster: 'ap2'
@@ -19,13 +19,13 @@ import Autocomplete from "v-autocomplete"
 Vue.use(Autocomplete);
 import Wallet from "./components/utils/wallet";
 import NotifyBar from "./components/utils/notify.vue";
-
 // import SBar from './components/admin/SideBar.vue'
 // import Places from './components/admin/Places.vue'
 
 //dash board
 import AccountDash from './components/member/account-dash.vue'
 import PersonalInfo from './components/member/dash/personal-info.vue'
+import NotificationHistory from './components/member/dash/notification-history.vue'
 import ChangePassword from './components/member/dash/change-password.vue'
 import MyInterests from './components/member/dash/my-interests.vue'
 import FriendRequests from './components/member/dash/friend-requests.vue'
@@ -42,6 +42,7 @@ import NewsFeed from './components/member/news-feed.vue'
 import MainFeed from './components/member/feed/main-feed.vue'
 import LeftSideBar from './components/member/feed/left-side-bar.vue'
 import RightSideBar from './components/member/feed/right-side-bar.vue'
+import Auctions from './components/member/auctions/auctions-all.vue'
 //
 import ProfilePage from './components/member/profile-page.vue'
 import AboutPage from './components/member/profile/about-page.vue'
@@ -86,6 +87,10 @@ let routes = [{
     {
         path: '/account/change-password',
         component: ChangePassword
+    },
+    {
+        path: '/account/notifications',
+        component: NotificationHistory
     },
     {
         path: '/account/friend-requests',
@@ -143,6 +148,10 @@ let routes = [{
     component: NewsFeed
 },
 {
+    path: '/auctions',
+    component: Auctions
+},
+{
     path: '/user/:id',
     component: ProfileOther,
     children: [{
@@ -180,11 +189,19 @@ const app = new Vue({
                 }
 
                 //subscribe to notification channel
-                echo.private('user' + this.user.id)
+                window.echo.private('user' + this.user.id)
                     .notification((notification) => {
-                      //notification pop up
-                      this.$refs.notify.$data.notifications.push(notification);
+                        //notification pop up
+                        this.$refs.notify.$data.notifications.push(notification);
+                        var notify = { id:notification.id, data:{ message:notification.message } };
+                        this.notifications.unshift(notify);
                     });
+            }
+        );
+
+        axios.get('m/notifications/6').then(
+            response => {
+                this.notifications = response.data
             }
         );
 
@@ -196,6 +213,8 @@ const app = new Vue({
         breadCumbPath: "Dashboard",
         newUserStatus: '',
         isWalletModalVisible: false,
+        notifications: [
+        ]
     },
     router,
     methods: {

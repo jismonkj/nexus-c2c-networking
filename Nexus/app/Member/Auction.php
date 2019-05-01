@@ -8,5 +8,10 @@ class Auction extends Model
 {
     protected $primaryKey = "auid";
     protected $table = "nexus_auctions";
-    protected $fillable = ["title", "privacy", "date", "time", "amOrPm", "hours", "description"];
+    protected $fillable = ["title", "u_id", "privacy", "date", "time", "amOrPm", "hours", "b_price", "description"];
+
+    // public function receivesBroadcastNotificationsOn()
+    // {
+    //     return 'auction'.$this->id;
+    // }
 }

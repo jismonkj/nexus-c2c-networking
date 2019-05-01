@@ -68,6 +68,9 @@ Route::post("verify/token", "HomeController@verifyToken");
 Route::get('stored/addresses/{cityid}', 'Member\MemberController@fetchAddresses');
 # -- auctions
 Route::resource('m/auction/', 'Member\AuctionController');
+Route::post('m/auction/bid', 'Member\AuctionController@bidAuction');
+# -- notifications
+Route::get('m/notifications/{limit?}', 'Member\MemberController@fetchNotifications');
 
 /* DISTRIBUTOR
 _____________________________________________________________________________

@@ -1,0 +1,147 @@
+<template>
+  <div class="today-events calendar">
+    <div class="today-events-thumb">
+      <div class="date">
+        <div
+          class="day-number"
+          data-toggle="tooltip"
+          data-placement="bottom"
+          title="Current Highest Bid"
+        >
+          <i class="fas fa-rupee-sign"></i>
+          {{ auction.b_price }}
+        </div>
+        <div class="day-week">{{ auction.title }}</div>
+        <div class="month-year">
+          <a :href="$root.encr(auction.u_id)">{{ auction.fname }} {{ auction.lname }}</a>
+        </div>
+        <div class="month-year">Ends In: {{ timer }}</div>
+      </div>
+    </div>
+    <div class="list">
+      <div class="control-block-button">
+        <a
+          href="#"
+          class="btn btn-control bg-breez"
+          data-toggle="modal"
+          data-target="#create-event"
+        >
+          <svg class="olymp-plus-icon">
+            <use xlink:href="theme/svg-icons/sprites/icons.svg#olymp-plus-icon"></use>
+          </svg>
+        </a>
+      </div>
+      <div class="list-events">
+        <auction-events v-bind:auid="auction.auid" :events="auction.events"></auction-events>
+        <div class="card">
+          <div class="card-header text-left" role="tab" id="headingOne-1">
+            <div class="event-time">
+              <time datetime="2004-07-24T18:18">{{ auction.time }} {{ setTime(auction.amOrPm) }}</time>
+            </div>
+            <h6 class="mb-0 title">Auction Has Just Started</h6>
+          </div>
+        </div>
+      </div>
+      <!-- //bidding button -->
+      <div class="form-group label-floating">
+        <label class="control-label">
+          Bid Here: Starting From
+          <i class="fas fa-rupee-sign"></i>
+          {{ auction.b_price }}
+        </label>
+        <input
+          class="form-control"
+          placeholder
+          type="number"
+          @keyup.enter="bidAuction(auction.auid)"
+          v-model="bidPrice"
+          :disabled="expired"
+        >
+        <span></span>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+import AuctionEvents from "./auction-events.vue";
+export default {
+  mounted() {
+    var time = this.auction.time;
+    var hours = this.auction.hours.split(":");
+    var date = this.auction.date;
+    var end = new Date(date + time);
+    var setHours = end.getHours() + parseInt(hours[0]);
+    var setMinutes = end.getMinutes() + parseInt(hours[1]);
+    end.setHours(setHours);
+
+    let intervelId = setInterval(() => {
+      var start = new Date();
+      var val = this.timeDifference(start, end);
+      if (!val) {
+          this.timer = "Expired";
+          clearInterval(intervelId);
+      }
+      this.timer = val;
+    }, 1000);
+  },
+  props: ["auction"],
+  data: function() {
+    return {
+      bidPrice: "",
+      timer: "__:__:__s",
+      expired:false
+    };
+  },
+  components: {
+    AuctionEvents
+  },
+  methods: {
+    setTime: function(amOrPm) {
+      return amOrPm ? " am" : " pm";
+    },
+    bidAuction(auid) {
+      //price check
+      axios
+        .post("m/auction/bid", { auid: auid, bidprice: this.bidPrice })
+        .then(res => {
+          console.log(res.data);
+        });
+    },
+    timeDifference(start, end) {
+      var startHours = start.getHours();
+      var startMinutes = start.getMinutes();
+      var startSeconds = start.getSeconds();
+
+      var endHours = end.getHours();
+      var endMinutes = end.getMinutes();
+      var endSeconds = end.getSeconds();
+      var ampm = startHours >= 12 ? "pm" : "am";
+      startHours = startHours % 12;
+      startHours = startHours ? startHours : 12; // the hour '0' should be '12'
+      startMinutes = startMinutes < 10 ? "0" + startMinutes : startMinutes;
+
+      if (startHours != endHours) {
+        startHours += 1;
+      }
+
+      var hours = endHours - startHours;
+      if (endMinutes == 0) {
+        var minutes = endMinutes - startMinutes + 60;
+      } else if (startMinutes == 0) {
+        var minutes = endMinutes - startMinutes - 60;
+      } else {
+        var minutes = endMinutes - startMinutes;
+      }
+
+      var seconds = endSeconds - startSeconds + 60;
+
+      if (hours == 0 && minutes == 0 && seconds == 0) {
+        return false;
+      }
+
+      var strTime = hours + ":" + minutes + ":" + seconds + "s";
+      return strTime;
+    }
+  }
+};
+</script>

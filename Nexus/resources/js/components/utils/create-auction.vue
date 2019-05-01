@@ -36,7 +36,7 @@
                     <label class="control-label">Set Event Reach</label>
                     <select class v-model="auction.privacy">
                       <option value="private">Friends' Event</option>
-                      <option value="public">Public Event</option>
+                      <!-- <option value="public">Public Event</option> -->
                     </select>
                   </div>
                 </div>
@@ -75,15 +75,30 @@
                     </select>
                   </div>
                 </div>
-                <div class="col col-lg-6 col-md-6 col-sm-12 col-12">
+                <div class="col col-lg-3 col-md-3 col-sm-12 col-12">
                   <div class="form-group label-floating">
                     <label class="control-label">Auction Hours</label>
-                    <input
+                    <select
                       class="form-control"
                       placeholder
                       value="09:00"
                       type="time"
                       v-model="auction.hours"
+                    >
+                    <option value="01:00">1 Hour</option>
+                    <option value="02:00">2 Hours</option>
+
+                    </select>
+                  </div>
+                </div>
+                 <div class="col col-lg-3 col-md-3 col-sm-12 col-12">
+                  <div class="form-group label-floating">
+                    <label class="control-label">Base Price</label>
+                    <input
+                      class="form-control"
+                      placeholder
+                      type="number"
+                      v-model="auction.b_price"
                     >
                   </div>
                 </div>
@@ -151,6 +166,7 @@ export default {
         time: "09:00",
         amOrPm: "pm",
         hours: "01:00",
+        b_price:"100",
         description: "",
         refid: ""
       },

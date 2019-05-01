@@ -13,15 +13,17 @@ class AuctionNotification extends Notification implements ShouldQueue
 
     public $auction = [];
     public $username = "";
+    public $type = [];
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($auction, $username)
+    public function __construct($auction, $username, $type)
     {
         $this->auction  = $auction;
         $this->username = $username;
+        $this->type = $type;
     }
 
     /**
@@ -44,9 +46,9 @@ class AuctionNotification extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+            ->line('The introduction to the notification.')
+            ->action('Notification Action', url('/'))
+            ->line('Thank you for using our application!');
     }
 
     /**
@@ -57,10 +59,24 @@ class AuctionNotification extends Notification implements ShouldQueue
      */
     public function toArray($notifiable)
     {
+
+        switch ($this->type) {
+            case 'born':
+                $message = $this->username . ' created a new auction of "' . $this->auction->title . '"';
+                break;
+            case 'active':
+                $message = $this->username . "'s ".$this->auction->title." auction has just started! JOIN";
+                break;
+
+            default:
+                # code...
+                break;
+        }
+
         return [
-            'auid' => $this->auction->auid,
+            'auction' => $this->auction,
             'username' => $this->username,
-            'message'=>$this->username.' started a new auction of "'.$this->auction->title.'"'
+            'message' => $message
         ];
     }
 }

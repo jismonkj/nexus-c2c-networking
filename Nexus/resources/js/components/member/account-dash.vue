@@ -299,6 +299,9 @@
               <div class="ui-block-title pl-36 py-3">
                 <router-link class="h6 title" to="/account/sent-requests">Sent Friend Requests</router-link>
               </div>
+              <div class="ui-block-title pl-36 py-3">
+                <router-link class="h6 title" to="/account/notifications">Notification History</router-link>
+              </div>
             </div>
 
             <!-- ... end Your Profile  -->

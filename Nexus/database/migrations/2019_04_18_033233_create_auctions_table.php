@@ -15,12 +15,13 @@ class CreateAuctionsTable extends Migration
     {
         Schema::create('nexus_auctions', function (Blueprint $table) {
             $table->increments('auid');
-            $table->string("title");
+            $table->integer("u_id");
             $table->enum("privacy", ["private", "public"]);
             $table->string("date", 60);
             $table->string("time", 20);
             $table->boolean("amOrPm");
             $table->string("hours", 15);
+            $table->string("b_price", 15);
             $table->string("description");
             $table->timestamps();
         });

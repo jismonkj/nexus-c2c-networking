@@ -71,7 +71,7 @@
             </div>
 
             <div class="header-content-wrapper">
-                <form class="search-bar w-search notification-list friend-requests">
+                <!-- <form class="search-bar w-search notification-list friend-requests">
                     <div class="form-group with-button">
                         <input class="form-control js-user-search" placeholder="Search here people or pages..." type="text">
                         <button>
@@ -80,11 +80,56 @@
                             </svg>
                         </button>
                     </div>
-                </form>
+                </form> -->
 
-                <a href="#" class="link-find-friend">Find Friends</a>
+                <!-- <a href="#" class="link-find-friend">Find Friends</a> -->
 
                 <div class="control-block">
+                    <!-- event notification -->
+                    <div class="control-icon more has-items">
+                        <svg class="olymp-thunder-icon">
+                            <use xlink:href="theme/svg-icons/sprites/icons.svg#olymp-thunder-icon"></use>
+                        </svg>
+
+                        <div class="label-avatar bg-primary">8</div>
+
+                        <div class="more-dropdown more-with-triangle triangle-top-center">
+                            <div class="ui-block-title ui-block-title-small">
+                                <h6 class="title">Notifications</h6>
+                            </div>
+
+                            <div class="mCustomScrollbar" data-mcs-theme="dark">
+                                <ul class="notification-list">
+                                    <li :class="{ 'un-read':(notify.read_at == null) }" v-for="notify in notifications" :key="notify.id">
+                                        <div class="author-thumb">
+                                            <img src="theme/img/avatar63-sm.jpg" alt="author">
+                                        </div>
+                                        <div class="notification-event">
+                                            <div v-html="notify.data.message"></div>
+                                            <span class="notification-date"><time class="entry-date updated" datetime="2004-07-24T18:18">9 hours ago</time></span>
+                                        </div>
+                                        <span class="notification-icon">
+                                            <svg class="olymp-happy-face-icon">
+                                                <use xlink:href="svg-icons/sprites/icons.svg#olymp-happy-face-icon"></use>
+                                            </svg>
+                                        </span>
+
+                                        <div class="more">
+                                            <svg class="olymp-three-dots-icon">
+                                                <use xlink:href="svg-icons/sprites/icons.svg#olymp-three-dots-icon"></use>
+                                            </svg>
+                                            <svg class="olymp-little-delete">
+                                                <use xlink:href="svg-icons/sprites/icons.svg#olymp-little-delete"></use>
+                                            </svg>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <a href="#/account/notifications" class="view-all bg-primary">View All Notifications</a>
+                        </div>
+                    </div>
+                    <!-- end event notifications -->
 
                     <div class="author-page author vcard inline-items more">
                         <div class="author-thumb">

@@ -99,7 +99,7 @@ ____________________________________________*/
 }
 
 .author-thumb img.small {
-    max-width: 55px
+    max-width: 42px
 }
 
 .author-thumb img.smaller {
@@ -234,4 +234,24 @@ ______________________________________________*/
 
 .notify span.notify-close:hover {
     font-size: 15px;
+}
+
+
+/* auctions home page */
+.today-events-thumb {
+    padding: 15px;
+}
+
+.today-events-thumb .day-number {
+    font-size: 50px;
+    letter-spacing: -4px;
+}
+
+.today-events-thumb .day-number svg{
+    font-size: 40px;
+}
+
+.today-events-thumb .day-week {
+    font-size: 22px;
+    margin-bottom: 0;
 }
