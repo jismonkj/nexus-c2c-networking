@@ -33,7 +33,9 @@
                 >
               </div>
               <div class="form-group with-icon label-floating is-empty">
-                <label class="control-label">Tell your people about what you offer to sell not less than 150 characters..</label>
+                <label
+                  class="control-label"
+                >Tell your people about what you offer to sell not less than 150 characters..</label>
                 <textarea class="form-control" v-model="itemContent"></textarea>
                 <span class="material-input"></span>
               </div>
@@ -146,7 +148,6 @@
               </div>
             </form>
           </div>
-
         </div>
       </div>
       <!-- ... end News Feed Form  -->
@@ -169,7 +170,7 @@
             </div>
           </div>
           <h6>{{ story.contents.split('\n')[0] }}</h6>
-          <pre class="font-weight-light">{{ story.contents.replace(story.contents.split('\n')[0], "") }}</pre>
+          <pre class="font-weight-light">{{ story.contents.replace(story.contents.split('\n')[0], "").trim() }}</pre>
           <p>
             <i class="fas fa-rupee-sign"></i>
             <span class="font-weight-bold pr-3">{{ story.price }}</span>
@@ -308,7 +309,7 @@
 
     <!-- modal auctions -->
     <transition leave-active-class="animate fade" enter-active-class="animate fade">
-      <modal-auction  ref="modalAuc" v-show="showAuctionModal"></modal-auction>
+      <modal-auction ref="modalAuc" v-show="showAuctionModal"></modal-auction>
     </transition>
   </main>
 </template>
@@ -365,10 +366,11 @@ export default {
         thumbnailHeight: 120,
         maxFilesize: 0.5,
         acceptedFiles: "image/*",
-        params: { 
+        params: {
+          _token: $("#csrf-token").attr("content"),
           x_token: Math.ceil(Math.random() * 100000),
-          type:"items"
-         },
+          type: "items"
+        },
         autoProcessQueue: false
       },
       itemContent: "",
@@ -377,13 +379,13 @@ export default {
       //buy modal
       buyItemId: "",
       isBuyModalVisible: false,
-      showAuctionModal:false
+      showAuctionModal: false
     };
   },
   components: {
     "vue-dropzone": vue2Dropzone,
     "modal-buy": ModalBuy,
-    "modal-auction":ModalAuction
+    "modal-auction": ModalAuction
   },
   watch: {
     itemPrice: function() {
@@ -411,23 +413,29 @@ export default {
       window.onscroll = () => {
         let bottomOfWindow =
           Math.floor(document.documentElement.scrollTop) + window.innerHeight >=
-          document.documentElement.offsetHeight - 100 || Math.floor(document.documentElement.scrollTop) + window.innerHeight <=
-          document.documentElement.offsetHeight + 50;
+            document.documentElement.offsetHeight - 100 ||
+          Math.floor(document.documentElement.scrollTop) + window.innerHeight <=
+            document.documentElement.offsetHeight + 50;
 
         if (bottomOfWindow) {
           if (this.currentPage < this.scrollPages) {
             this.currentPage++;
             var url = "/feed?page=" + this.currentPage;
             this.loading = true;
-            axios.get(url).then(res => {
-              var data = res.data.data;
-              this.loading = false;
-              data.forEach(story => {
-                this.stories.push(story);
+            axios
+              .get(url)
+              .then(res => {
+                var data = res.data.data;
+                this.loading = false;
+                data.forEach(story => {
+                  this.stories.push(story);
+                });
+                this.next_url = res.data.next_page_url;
+                // this.currentPage++;
+              })
+              .catch(function() {
+                this.currentPage--;
               });
-              this.next_url = res.data.next_page_url;
-              // this.currentPage++;
-            });
           }
         }
       };
@@ -537,7 +545,7 @@ export default {
       this.itemSubmitBtn = text;
       setTimeout(() => {
         this.itemSubmitBtn = "Post Item";
-      }, 5000);
+      }, 3000);
     },
     loveOnItem: function(id) {
       var pos = this.stories.findIndex(item => item.item_id == id);

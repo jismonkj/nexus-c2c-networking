@@ -181,6 +181,8 @@ ____________________________________________*/
 /* main feed */
 pre {
     color: #515365;
+    line-height: 1.5em;
+    font-family: inherit;
 }
 
 .makepost-icon {

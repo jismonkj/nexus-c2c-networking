@@ -54,7 +54,7 @@ class ItemsController extends Controller
         }
         
 
-        FileStore::where('refid', 'x-'.$imageToken)->where('type', 'items')->update(['refid'=>$itemId]);
+        FileStore::where('refid', 'item-'.$imageToken)->where('type', 'items')->update(['refid'=>$itemId]);
 
         return 1;
     }

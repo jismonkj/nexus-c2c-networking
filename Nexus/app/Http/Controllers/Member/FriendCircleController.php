@@ -107,7 +107,7 @@ class FriendCircleController extends Controller
         $profile = Auth::user()->profile;
         $username =  $profile->fname." ".$profile->lname;
         $user = User::find($data['fid']);
-        $message = "<b>".$username."</b> has sent you a friend request!";
+        $message = "<b>".$username."</b> has sent you a friend request! <a href='#/account/friend-requests'>VIEW</a>";
         Notification::send($user, new FriendCircleNotification($message));
 
         return 1;
@@ -135,7 +135,7 @@ class FriendCircleController extends Controller
             $profile = Auth::user()->profile;
             $username =  $profile->fname." ".$profile->lname;
             $user = User::find($request->uid);
-            $message = "You and <b>".$username."</b>became friends!";
+            $message = "<b>".$username."</b> accepted your friend request!";
             Notification::send($user, new FriendCircleNotification($message));
             return $fcircle;
         }

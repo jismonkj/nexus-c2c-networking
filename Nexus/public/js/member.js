@@ -1122,6 +1122,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     var _this = this;
@@ -1160,9 +1161,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this3 = this;
 
       //   server update
-      axios.put("member/friends/removed", {
-        uid: uid
-      }).then(function (response) {
+      axios["delete"]("member/friends/" + uid).then(function (response) {
         //   console.log(response.data);
         //	ui update
         var index = _this3.requests.findIndex(function (item) {
@@ -3783,6 +3782,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
  //modal buy
 
@@ -3838,6 +3838,7 @@ __webpack_require__.r(__webpack_exports__);
         maxFilesize: 0.5,
         acceptedFiles: "image/*",
         params: {
+          _token: $("#csrf-token").attr("content"),
           x_token: Math.ceil(Math.random() * 100000),
           type: "items"
         },
@@ -3897,6 +3898,8 @@ __webpack_require__.r(__webpack_exports__);
                 _this2.stories.push(story);
               });
               _this2.next_url = res.data.next_page_url; // this.currentPage++;
+            })["catch"](function () {
+              this.currentPage--;
             });
           }
         }
@@ -4010,7 +4013,7 @@ __webpack_require__.r(__webpack_exports__);
       this.itemSubmitBtn = text;
       setTimeout(function () {
         _this6.itemSubmitBtn = "Post Item";
-      }, 5000);
+      }, 3000);
     },
     loveOnItem: function loveOnItem(id) {
       var _this7 = this;
@@ -5463,7 +5466,6 @@ __webpack_require__.r(__webpack_exports__);
           zip: this.currAddress.zip
         }
       };
-      console.log(data);
       axios.post("place/order", data).then(function (res) {
         if (res.data) {
           _this6.onProcess = false;
@@ -31795,7 +31797,7 @@ var render = function() {
             _vm.requests == ""
               ? _c("li", [
                   _c("div", { staticClass: "notification-event" }, [
-                    _vm._v("\n\t\t\t  No Pending Friend Requests\n\t\t  ")
+                    _vm._v("No Pending Friend Requests")
                   ])
                 ])
               : _vm._e(),
@@ -31843,9 +31845,7 @@ var render = function() {
                           })
                         ])
                       ]),
-                      _vm._v(
-                        "\n              Accept Friend Request\n            "
-                      )
+                      _vm._v("\n            Accept Friend Request\n          ")
                     ]
                   ),
                   _vm._v(" "),
@@ -31890,7 +31890,7 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "notification-event" }, [
-                    _vm._v("\n              You and\n              "),
+                    _vm._v("\n            You and\n            "),
                     _c(
                       "a",
                       {
@@ -31899,7 +31899,7 @@ var render = function() {
                       },
                       [_vm._v(_vm._s(user.fname + " " + user.lname))]
                     ),
-                    _vm._v(" just became friends. Write on\n              "),
+                    _vm._v(" just became friends. Write on\n            "),
                     _c(
                       "a",
                       {
@@ -31914,10 +31914,10 @@ var render = function() {
                         user.gender == "female"
                           ? _c("span", [_vm._v("her")])
                           : _vm._e(),
-                        _vm._v(" wall\n              ")
+                        _vm._v(" wall\n            ")
                       ]
                     ),
-                    _vm._v(".\n            ")
+                    _vm._v(".\n          ")
                   ]),
                   _vm._v(" "),
                   _c("span", { staticClass: "notification-icon" }, [
@@ -31947,7 +31947,7 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "notification-event" }, [
-                    _vm._v("\n              You removed\n              "),
+                    _vm._v("\n            You removed\n            "),
                     _c(
                       "a",
                       {
@@ -31956,7 +31956,7 @@ var render = function() {
                       },
                       [_vm._v(_vm._s(user.fname + " " + user.lname))]
                     ),
-                    _vm._v("'s friend request.\n            ")
+                    _vm._v("'s friend request.\n          ")
                   ])
                 ])
               }),
@@ -36986,7 +36986,9 @@ var render = function() {
                 _c("pre", { staticClass: "font-weight-light" }, [
                   _vm._v(
                     _vm._s(
-                      story.contents.replace(story.contents.split("\n")[0], "")
+                      story.contents
+                        .replace(story.contents.split("\n")[0], "")
+                        .trim()
                     )
                   )
                 ]),
@@ -40098,7 +40100,10 @@ var render = function() {
                                         " |\n                          Delivery:\n                          "
                                       ),
                                       _c("b", [
-                                        _vm._v(_vm._s(_vm.delCharge) + " Rs.")
+                                        _vm._v(
+                                          _vm._s(Math.round(_vm.delCharge)) +
+                                            " Rs."
+                                        )
                                       ]),
                                       _vm._v(
                                         " |\n                          Grand Total:\n                          "
@@ -40188,7 +40193,10 @@ var render = function() {
                                       "\n                          Delivery:\n                          "
                                     ),
                                     _c("b", [
-                                      _vm._v(_vm._s(_vm.delCharge) + " Rs.")
+                                      _vm._v(
+                                        _vm._s(Math.round(_vm.delCharge)) +
+                                          " Rs."
+                                      )
                                     ])
                                   ]),
                                   _vm._v(" "),
@@ -40463,10 +40471,12 @@ var render = function() {
                                             _vm._v(
                                               "Service Charge: " +
                                                 _vm._s(
-                                                  _vm.story.price *
-                                                    _vm.itemQuantity *
-                                                    (distributor.service_charge /
-                                                      100)
+                                                  Math.round(
+                                                    _vm.story.price *
+                                                      _vm.itemQuantity *
+                                                      (distributor.service_charge /
+                                                        100)
+                                                  )
                                                 )
                                             )
                                           ])
@@ -40534,7 +40544,7 @@ var staticRenderFns = [
     return _c("div", { staticClass: "col text-right" }, [
       _c("span", { staticClass: "alert alert-danger" }, [
         _c("i", { staticClass: "fas fa-exclamation-triangle" }),
-        _vm._v("\n                      Out of Stock\n                    ")
+        _vm._v("\n                      Sold Out\n                    ")
       ])
     ])
   },

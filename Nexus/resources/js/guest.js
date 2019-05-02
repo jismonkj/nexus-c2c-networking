@@ -76,13 +76,13 @@ const app = new Vue({
             this.chngLoginBtnTitle = text;
             setTimeout(() => {
                 this.chngLoginBtnTitle = "Login";
-            }, 4000);
+            }, 3000);
         },
         notifyR: function (text) {
             this.chngRegBtnTitle = text;
             setTimeout(() => {
                 this.chngRegBtnTitle = "Complete Registration";
-            }, 4000);
+            }, 3000);
         },
         validate: _.debounce(function (type) {
             switch (type) {
@@ -176,7 +176,7 @@ const app = new Vue({
             } else {
                 delete this.errors.email;
             }
-        }, 500),
+        }, 200),
         password: _.debounce(
             function () {
                 if (!this.rules.password.test(this.password)) {
@@ -185,7 +185,7 @@ const app = new Vue({
                 } else {
                     delete this.errors.password;
                 }
-            }, 500
+            }, 200
         )
     }
 });

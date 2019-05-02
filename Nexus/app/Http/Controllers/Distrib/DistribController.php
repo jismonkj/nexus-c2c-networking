@@ -16,7 +16,7 @@ class DistribController extends Controller
     public function storeLandMark(Request $request)
     {
         $data = $request->all();
-        $data['distirib_id'] = Auth::id();
+        $data['distrib_id'] = Auth::id();
 
         // return $data;
         return DistribCenter::create($data);
@@ -24,7 +24,7 @@ class DistribController extends Controller
 
     public function listLandMarks($cityid)
     {
-        return DistribCenter::where('city_id', $cityid)->get();
+        return DistribCenter::where('city_id', $cityid)->where('distrib_id', Auth::id())->get();
     }
 
     public function delLandMark($lid)

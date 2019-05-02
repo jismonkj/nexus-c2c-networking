@@ -174,7 +174,7 @@ var app = new Vue({
       this.chngLoginBtnTitle = text;
       setTimeout(function () {
         _this2.chngLoginBtnTitle = "Login";
-      }, 4000);
+      }, 3000);
     },
     notifyR: function notifyR(text) {
       var _this3 = this;
@@ -182,7 +182,7 @@ var app = new Vue({
       this.chngRegBtnTitle = text;
       setTimeout(function () {
         _this3.chngRegBtnTitle = "Complete Registration";
-      }, 4000);
+      }, 3000);
     },
     validate: _.debounce(function (type) {
       var _this4 = this;
@@ -293,7 +293,7 @@ var app = new Vue({
       } else {
         delete this.errors.email;
       }
-    }, 500),
+    }, 200),
     password: _.debounce(function () {
       if (!this.rules.password.test(this.password)) {
         this.errors.password = true;
@@ -301,7 +301,7 @@ var app = new Vue({
       } else {
         delete this.errors.password;
       }
-    }, 500)
+    }, 200)
   }
 });
 

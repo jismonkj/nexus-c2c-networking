@@ -67,7 +67,7 @@
                     <div class="col text-right">
                       <span class="alert alert-danger">
                         <i class="fas fa-exclamation-triangle"></i>
-                        Out of Stock
+                        Sold Out
                       </span>
                     </div>
                   </div>
@@ -161,7 +161,7 @@
                             Price:
                             <b>{{ parseFloat(story.price) * itemQuantity }} Rs.</b> |
                             Delivery:
-                            <b>{{ delCharge }} Rs.</b> |
+                            <b>{{ Math.round(delCharge) }} Rs.</b> |
                             Grand Total:
                             <h5>{{ grandTotal }} Rs.</h5>
                           </li>
@@ -208,7 +208,7 @@
                           </li>
                           <li>
                             Delivery:
-                            <b>{{ delCharge }} Rs.</b>
+                            <b>{{ Math.round(delCharge) }} Rs.</b>
                           </li>
                           <li>Grand Total: {{ grandTotal }} Rs.</li>
                         </ul>
@@ -306,7 +306,7 @@
                         >
                           {{ distributor.distrib_name }}
                           <br>
-                          <small>Service Charge: {{ (story.price * itemQuantity) * (distributor.service_charge / 100)}}</small>
+                          <small>Service Charge: {{ Math.round((story.price * itemQuantity) * (distributor.service_charge / 100)) }}</small>
                         </span>
                       </h4>
                     </div>
@@ -460,8 +460,6 @@ export default {
         }
       };
 
-      console.log(data);
-
       axios.post("place/order", data).then(res => {
         if (res.data) {
           this.onProcess = false;
@@ -495,7 +493,7 @@ export default {
     deliveryOption: function() {
       if (this.item != "" && this.deliveryOption == "myself") {
         this.selectedDistribId = 0;
-      }else{
+      } else {
         this.selectedDistribId = null;
       }
     }

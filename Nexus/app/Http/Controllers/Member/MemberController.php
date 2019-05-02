@@ -96,12 +96,14 @@ class MemberController extends Controller
         $address = $data['address'];
         $address['uid'] = Auth::id();
         ///save address if new
-        $currAddress = Address::where('fname', $address['fname'])->where('lname', $address['lname'])->where('zip', $address['zip'])->where('city_id', $address['city_id'])->where('uid', Auth::id())->get()->toArray()[0];
+        $currAddress = Address::where('fname', $address['fname'])->where('lname', $address['lname'])->where('zip', $address['zip'])->where('city_id', $address['city_id'])->where('uid', Auth::id())->get();
 
         if (!sizeof($currAddress)) {
             $currAddress = Address::create($address);
+        }else{
+            $currAddress = $currAddress[0];
         }
-
+        
         //update item quantity'
         $item = Items::find($data['item_id']);
 
@@ -200,7 +202,7 @@ class MemberController extends Controller
     /* NOTIFICATIONS__________________________________________________________________________________ */
     public function fetchNotifications($limit = 0)
     {
-        if ($limit) { 
+        if ($limit) {
             return Auth::user()->notifications()->take($limit)->get();
         }
         return Auth::user()->notifications;
