@@ -65,7 +65,7 @@ class AuctionNotification extends Notification implements ShouldQueue
                 $message = $this->username . ' created a new auction of "' . $this->auction->title . '"';
                 break;
             case 'active':
-                $message = $this->username . "'s ".$this->auction->title." auction has just started! JOIN";
+                $message = $this->username . "'s ".$this->auction->title." auction has just started! <a href='#/auctions'>JOIN</a>";
                 break;
 
             default:

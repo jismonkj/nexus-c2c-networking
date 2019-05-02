@@ -6,6 +6,7 @@
         v-bind:key="notify.id"
         v-bind:notify="notify"
         @expired="expireNotification(notify)"
+        @closed="sliceNotification(notify.id)"
       ></notify>
     </transition-group>
   </div>
@@ -46,7 +47,7 @@ export default {
         '<span class="notify-event col-9">' +
         '<span class="chat-message-item" v-html="notify.message"></span>' +
         "</span>" +
-        '<span class="notify-close col-1 p-0" @click="$parent.sliceNotification(notify.id)">' +
+        '<span class="notify-close col-1 p-0" @click="$emit(\'closed\')">' +
         '<i class="far fa-times-circle"></i>' +
         "</span>" +
         "</div>"

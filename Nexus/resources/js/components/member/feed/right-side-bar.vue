@@ -24,7 +24,7 @@
             <h6 class="title">Auctions Live!</h6>
           </div>
           <!-- Today Events -->
-          <auctions v-for="auction in liveAuctions" :key="auction.auid" :auction="auction">
+          <auctions v-for="auction in liveAuctions" :key="auction.auid" :auction="auction" :mine="false">
           </auctions>
           <!-- ... end Today Events -->
         </div>
@@ -34,7 +34,7 @@
           <div class="widget w-action">
             <div class="content">
               <!-- <span>Find More Auctions</span> -->
-              <a href="#/auctions" class="btn btn-bg-secondary btn-md">Auctions</a>
+              <a href="#/auctions/live" class="btn btn-bg-secondary btn-md">Auctions</a>
             </div>
           </div>
 
@@ -45,7 +45,7 @@
   </div>
 </template>
 <script>
-import Auctions from '../../utils/auctions.vue';
+import Auctions from '../auctions/auctions.vue';
 export default {
   mounted() {
     axios.get("m/auction?type=minimal").then(res => {

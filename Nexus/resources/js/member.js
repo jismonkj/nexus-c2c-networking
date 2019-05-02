@@ -42,7 +42,10 @@ import NewsFeed from './components/member/news-feed.vue'
 import MainFeed from './components/member/feed/main-feed.vue'
 import LeftSideBar from './components/member/feed/left-side-bar.vue'
 import RightSideBar from './components/member/feed/right-side-bar.vue'
-import Auctions from './components/member/auctions/auctions-all.vue'
+//
+import Auctions from './components/member/auctions-all.vue'
+import AuctionsLive from './components/member/auctions/auctions-live.vue'
+import AuctionsMine from './components/member/auctions/auctions-mine.vue'
 //
 import ProfilePage from './components/member/profile-page.vue'
 import AboutPage from './components/member/profile/about-page.vue'
@@ -149,7 +152,17 @@ let routes = [{
 },
 {
     path: '/auctions',
-    component: Auctions
+    component: Auctions,
+    children: [
+        {
+            path: '/auctions/live',
+            component: AuctionsLive
+        },
+        {
+            path: '/auctions/mine',
+            component: AuctionsMine
+        }
+    ]
 },
 {
     path: '/user/:id',
@@ -193,7 +206,7 @@ const app = new Vue({
                     .notification((notification) => {
                         //notification pop up
                         this.$refs.notify.$data.notifications.push(notification);
-                        var notify = { id:notification.id, data:{ message:notification.message } };
+                        var notify = { id: notification.id, data: { message: notification.message } };
                         this.notifications.unshift(notify);
                     });
             }
