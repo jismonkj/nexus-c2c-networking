@@ -1,13 +1,18 @@
 <template>
   <div class="container">
     <div class="row">
-      <p v-if="liveAuctions==''">No Current Auctions</p>
+      <div
+        class="col col-xl-4 col-lg-6 col-md-6 col-sm-6 col-6 text-center"
+        v-if="liveAuctions==''"
+      >
+        <p>No Current Auctions</p>
+      </div>
       <div
         class="col col-xl-4 col-lg-6 col-md-6 col-sm-6 col-6"
         v-for="auction in liveAuctions"
         :key="auction.auid"
       >
-        <auctions :auction="auction" mine="false"></auctions>
+        <auctions :auction="auction" mine="false" :highestbid="auction.b_price"></auctions>
       </div>
     </div>
   </div>

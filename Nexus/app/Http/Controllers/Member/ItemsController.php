@@ -8,6 +8,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\FileStore;
 use App\Member\Tags;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\ItemNotification;
+use App\User;
+use Illuminate\Support\Facades\Log;
 
 class ItemsController extends Controller
 {
@@ -49,14 +53,46 @@ class ItemsController extends Controller
         $itemId = Items::create($data)->item_id;
 
         $tags = $data['tags'];
-        foreach($tags as $tag){
-            Tags::create(['item_id'=>$itemId, 'interest_id'=>$tag['id']]);
+        foreach ($tags as $tag) {
+            Tags::create(['item_id' => $itemId, 'interest_id' => $tag['id']]);
         }
-        
 
-        FileStore::where('refid', 'item-'.$imageToken)->where('type', 'items')->update(['refid'=>$itemId]);
+        FileStore::where('refid', 'items-' . $imageToken)->where('type', 'items')->update(['refid' => $itemId]);
 
-        return 1;
+
+        $profile = Auth::user()->profile;
+        $username =  $profile->fname . " " . $profile->lname;
+        $message = $username . " has posted a new item!";
+        //get item details
+        $item = User::where('users.id', Auth::id())->join('items', 'items.uid', 'users.id')->join('nexus_member_profile', 'nexus_member_profile.uid', 'users.id')->join('cities', 'items.loc_id', 'cities.id')->join('states', 'states.id', 'cities.sid')->join('countries', 'countries.id', 'states.cid')->where('items.item_id', $itemId)->select('users.id as xid', 'items.*', 'nexus_member_profile.fname', 'nexus_member_profile.lname', 'cities.city_name', 'states.state_name', 'countries.country_name')->get()->toArray()[0];
+        //files
+        $item['itemImages'] = FileStore::where('refid', $itemId)->where('type', 'items')->select('path')->get();
+        //tags
+        $item['tags'] = Tags::where('item_id', $itemId)->join('interests', 'interests.id', 'tags.interest_id')->select('tags.interest_id', 'interests.name')->get();
+        //avatar
+        $avatar = FileStore::where('refid', $itemId)->where('type', 'avatar')->select('path')->get();
+        if (sizeof($avatar) == 0) {
+            $avatar = "img/avatar5-sm.jpg";
+        } else {
+            $avatar = $avatar['0']->path;
+        }
+        $item['avatar'] = $avatar;
+
+        // new item notification
+        try {
+            foreach (Auth::user()->friendsOne()->get() as $friend) {
+                $user = User::find($friend->id);
+                Notification::send($user, new ItemNotification($message, $item, 'newitem'));
+            }
+            foreach (Auth::user()->friendsTwo()->get() as $friend) {
+                $user = User::find($friend->id);
+                Notification::send($user, new ItemNotification($message, $item, 'newitem'));
+            }
+        } catch (\Throwable $th) {
+            Log::debug($th);
+        }
+
+        return $item;
     }
 
     /**

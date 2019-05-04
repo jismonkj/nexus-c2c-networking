@@ -9,7 +9,7 @@
           title="Current Highest Bid"
         >
           <i class="fas fa-rupee-sign"></i>
-          {{ auction.b_price }}
+          {{ highest }}
         </div>
         <div class="day-week">{{ auction.title }}</div>
         <div class="month-year">
@@ -43,11 +43,11 @@
         </div>
       </div>
       <!-- //bidding button -->
-      <div class="form-group label-floating">
-        <label class="control-label">
+      <div class="bid form-group label-floating">
+        <label class="control-label" :class="{ 'au-warning':bidErr}">
           Bid Here: Starting From
           <i class="fas fa-rupee-sign"></i>
-          {{ auction.b_price }}
+          {{ highest }}
         </label>
         <input
           class="form-control"
@@ -57,7 +57,9 @@
           v-model="bidPrice"
           :disabled="expired || mine"
         >
-        <span></span>
+        <span class="bid-input" v-show="bidding">
+          <i class="fas fa-spinner fa-pulse"></i>
+        </span>
       </div>
     </div>
   </div>
@@ -73,28 +75,33 @@ export default {
     var end = new Date();
     end.setHours(time[0]);
     end.setMinutes(time[1]);
-  
+
     var setHours = end.getHours() + parseInt(hours[0]);
     var setMinutes = end.getMinutes() + parseInt(hours[1]);
     end.setHours(setHours);
     end.setMinutes(setMinutes);
+
+    //timer for auction
     let intervelId = setInterval(() => {
       var start = new Date();
       var val = this.timeDifference(start, end);
       if (!val) {
-        val = "Expired"
+        val = "Expired";
         this.expired = true;
         clearInterval(intervelId);
       }
       this.timer = val;
     }, 1000);
   },
-  props: ["auction", "mine"],
+  props: ["auction", "mine", "highestbid"],
   data: function() {
     return {
       bidPrice: "",
       timer: "__:__:__s",
-      expired: false
+      expired: false,
+      bidErr: false,
+      highest: this.highestbid,
+      bidding: false
     };
   },
   components: {
@@ -106,11 +113,17 @@ export default {
     },
     bidAuction(auid) {
       //price check
-      axios
-        .post("m/auction/bid", { auid: auid, bidprice: this.bidPrice })
-        .then(res => {
-          console.log(res.data);
-        });
+      if (this.bidPrice > this.highest) {
+        this.bidding = true;
+        this.bidErr = false;
+        axios
+          .post("m/auction/bid", { auid: auid, bidprice: this.bidPrice })
+          .then(res => {
+            this.bidding = false;
+          });
+      } else {
+        this.bidErr = true;
+      }
     },
     timeDifference(start, end) {
       var startHours = start.getHours();
@@ -138,7 +151,7 @@ export default {
         var minutes = endMinutes - startMinutes;
       }
 
-      var seconds = endSeconds - startSeconds + 60;
+      var seconds = Math.abs(startSeconds - 60);
 
       if (hours == 0 && minutes == 0) {
         return false;

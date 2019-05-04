@@ -178,9 +178,7 @@
                         <span>Pay</span>
                         <div class="ripple-container"></div>
                       </button>
-                      <div class="text-center" v-show="onProcess">
-                        <span class="fas fa-spinner fa-spin"></span>
-                      </div>
+                      <div class="text-center" v-show="onProcess">processing...</div>
                     </div>
                   </div>
                 </div>
@@ -193,27 +191,12 @@
                         <h5 class="mb-0">
                           <span class="far fa-check-circle"></span>
                           Order has successfully sent!
+                          <a href="#/account/orders-sent">VIEW</a>
                         </h5>
                       </div>
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col">
-                      <div class="card">
-                        <h6 class="mb-0">Order Summary</h6>
-                        <ul class="your-profile-menu">
-                          <li>
-                            Price:
-                            <b>{{ parseFloat(story.price) * itemQuantity }} Rs.</b>
-                          </li>
-                          <li>
-                            Delivery:
-                            <b>{{ Math.round(delCharge) }} Rs.</b>
-                          </li>
-                          <li>Grand Total: {{ grandTotal }} Rs.</li>
-                        </ul>
-                      </div>
-                    </div>
                     <div class="col">
                       <div class="card">
                         <h6 class="mb-0">Delivery Address</h6>
@@ -231,6 +214,23 @@
                             {{ currAddress.contact }},
                             pin: {{ currAddress.zip }}
                           </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="card">
+                        <h6 class="mb-0">Order Summary</h6>
+                        <ul class="your-profile-menu">
+                          <li>
+                            Price:
+                            <b>{{ parseFloat(story.price) * itemQuantity }} Rs.</b>
+                          </li>
+                          <li>
+                            Delivery:
+                            <b>{{ Math.round(delCharge) }} Rs.</b>
+                          </li>
+                          <li>Grand Total: {{ grandTotal }} Rs.</li>
+                          <br>
                         </ul>
                       </div>
                     </div>
@@ -277,6 +277,8 @@
                       <div class="form-group with-icon label-floating is-empty">
                         <label class="control-label">Search for Location</label>
                         <v-autocomplete
+                          :auto-select-one-item="false"
+                          :min-len="2"
                           :items="items"
                           v-model="item"
                           :get-label="getLabel"

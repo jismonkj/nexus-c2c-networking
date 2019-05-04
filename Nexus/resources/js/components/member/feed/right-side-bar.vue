@@ -24,7 +24,7 @@
             <h6 class="title">Auctions Live!</h6>
           </div>
           <!-- Today Events -->
-          <auctions v-for="auction in liveAuctions" :key="auction.auid" :auction="auction" :mine="false">
+          <auctions v-for="auction in liveAuctions" :key="auction.auid" :auction="auction" :mine="false" :highestbid="auction.b_price">
           </auctions>
           <!-- ... end Today Events -->
         </div>

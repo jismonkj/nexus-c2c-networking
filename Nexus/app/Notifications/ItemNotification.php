@@ -7,18 +7,20 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class FriendCircleNotification extends Notification
+class ItemNotification extends Notification
 {
     use Queueable;
-    public $message = "";
+    public $message, $item, $type;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($message)
+    public function __construct($message, $item, $type)
     {
         $this->message = $message;
+        $this->item = $item;
+        $this->type = $type;
     }
 
     /**
@@ -29,7 +31,7 @@ class FriendCircleNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['database', 'broadcast'];
+        return ['broadcast'];
     }
 
     /**
@@ -54,9 +56,13 @@ class FriendCircleNotification extends Notification
      */
     public function toArray($notifiable)
     {
+        # -- types
+        // newitem
+
         return [
-            'category' => 'friends',
-            'message'=>$this->message
+            'category'=> $this->type,
+            'item'=> $this->item,
+            'message' => $this->message
         ];
     }
 }

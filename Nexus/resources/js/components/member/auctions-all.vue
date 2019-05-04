@@ -9,7 +9,7 @@
         <div class="row">
           <div class="col col-lg-8 m-auto col-md-8 col-sm-12 col-12">
             <div class="main-header-content">
-              <h1>Manage your Friend Groups</h1>
+              <h1>Manage your Auctions</h1>
               <p>
                 Welcome to your friends groups! Do you wanna know what your close friends have been up to? Groups
                 will let you easily manage your friends and put the into categories so when you enter you’ll only
@@ -45,7 +45,40 @@
                     class="nav-link"
                     to="/auctions/mine"
                   >
-                    My Auctions
+                    My Current Events
+                    <!-- <span class="items-round-little bg-breez">2</span> -->
+                    <div class="ripple-container"></div>
+                  </router-link>
+                </li>
+
+                <li class="nav-item">
+                  <router-link
+                    class="nav-link"
+                    to="/auctions/old"
+                  >
+                    Oldies
+                    <!-- <span class="items-round-little bg-breez">2</span> -->
+                    <div class="ripple-container"></div>
+                  </router-link>
+                </li>
+                
+                <li class="nav-item">
+                  <router-link
+                    class="nav-link"
+                    to="/auctions/upcoming"
+                  >
+                    Upcoming
+                    <!-- <span class="items-round-little bg-breez">2</span> -->
+                    <div class="ripple-container"></div>
+                  </router-link>
+                </li>
+                
+                <li class="nav-item">
+                  <router-link
+                    class="nav-link"
+                    to="/auctions/bidded"
+                  >
+                    Bidded Auctions
                     <!-- <span class="items-round-little bg-breez">2</span> -->
                     <div class="ripple-container"></div>
                   </router-link>
@@ -69,19 +102,4 @@
   </div>
 </template>
 <script>
-// export default {
-//   mounted() {
-//     axios.get("m/auction?type=y").then(res => {
-//       this.liveAuctions = res.data;
-//     });
-//   },
-//   data: function() {
-//     return {
-//       liveAuctions: []
-//     };
-//   },
-//   components: {
-//     Auctions
-//   }
-// };
 </script>

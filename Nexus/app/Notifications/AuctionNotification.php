@@ -74,8 +74,8 @@ class AuctionNotification extends Notification implements ShouldQueue
         }
 
         return [
+            'category' => 'auction',
             'auction' => $this->auction,
-            'username' => $this->username,
             'message' => $message
         ];
     }

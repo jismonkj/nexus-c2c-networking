@@ -14,10 +14,11 @@ use App\Member\Wallet;
 use App\Member\Address;
 use App\ItemOrders;
 use App\Member\Items;
-use App\Member\Tags;
 use App\FileStore;
-use App\Tokens;
-use Illuminate\Support\Facades\DB;
+use App\User;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\FriendCircleNotification;
+use Illuminate\Support\Facades\Log;
 
 class MemberController extends Controller
 {
@@ -100,10 +101,10 @@ class MemberController extends Controller
 
         if (!sizeof($currAddress)) {
             $currAddress = Address::create($address);
-        }else{
+        } else {
             $currAddress = $currAddress[0];
         }
-        
+
         //update item quantity'
         $item = Items::find($data['item_id']);
 
@@ -136,6 +137,16 @@ class MemberController extends Controller
             Wallet::create($creditUser);
             # -- on distributor
             Wallet::create($creditDistrib);
+
+            $profile = Auth::user()->profile;
+            $username = $profile->fname . " " . $profile->lname;
+            $user = User::find($data['userid']);
+            $message = "<b>" . $username . "</b> has orderd your product! <a href='#/account/orders-sent'>VIEW</a>";
+            try {
+                Notification::send($user, new FriendCircleNotification($message));
+            } catch (\Throwable $th) {
+                Log::debug($th);
+            }
 
             return $this->fetchBalance();
         }

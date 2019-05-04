@@ -46,6 +46,9 @@ import RightSideBar from './components/member/feed/right-side-bar.vue'
 import Auctions from './components/member/auctions-all.vue'
 import AuctionsLive from './components/member/auctions/auctions-live.vue'
 import AuctionsMine from './components/member/auctions/auctions-mine.vue'
+import AuctionsOld from './components/member/auctions/auctions-old.vue'
+import AuctionsUpcoming from './components/member/auctions/auctions-upcoming.vue'
+import AuctionsBidded from './components/member/auctions/auctions-bidded.vue'
 //
 import ProfilePage from './components/member/profile-page.vue'
 import AboutPage from './components/member/profile/about-page.vue'
@@ -161,6 +164,18 @@ let routes = [{
         {
             path: '/auctions/mine',
             component: AuctionsMine
+        },
+        {
+            path: '/auctions/old',
+            component: AuctionsOld
+        },
+        {
+            path: '/auctions/upcoming',
+            component: AuctionsUpcoming
+        },
+        {
+            path: '/auctions/bidded',
+            component: AuctionsBidded
         }
     ]
 },
@@ -205,9 +220,13 @@ const app = new Vue({
                 window.echo.private('user' + this.user.id)
                     .notification((notification) => {
                         //notification pop up
-                        this.$refs.notify.$data.notifications.push(notification);
-                        var notify = { id: notification.id, data: { message: notification.message } };
-                        this.notifications.unshift(notify);
+                        var notify = { id: notification.id, message: notification.message };
+                        var notifyTop = { id: notification.id, data: { message: notification.message } }
+                        this.$refs.notify.$data.notifications.push(notify);
+                        this.notifications.unshift(notifyTop);
+                        if (notification.category == 'newitem') {
+                            this.$children[3].$refs.mainFeed.$data.stories.unshift(notification.item);
+                        }
                     });
             }
         );

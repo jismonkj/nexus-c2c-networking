@@ -12,16 +12,17 @@
         v-for="auction in liveAuctions"
         :key="auction.auid"
       >
-        <auctions :auction="auction" :mine="true" :highestbid="auction.b_price"></auctions>
+        <auctions :auction="auction" mine="false" :highestbid="auction.highestbid" period="old"></auctions>
       </div>
     </div>
   </div>
 </template>
 <script>
-import Auctions from "./auctions.vue";
+import Auctions from "./auctions-summary.vue";
 export default {
   mounted() {
-    axios.get("m/auction?type=mine").then(res => {
+    axios.get("m/auction?type=oldies").then(res => {
+      console.log(res.data);  
       this.liveAuctions = res.data;
     });
   },

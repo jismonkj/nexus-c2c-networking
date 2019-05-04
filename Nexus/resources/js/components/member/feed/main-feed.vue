@@ -32,7 +32,7 @@
                   class="smaller avatar"
                 >
               </div>
-              <div class="form-group with-icon label-floating is-empty">
+              <div class="form-group with-icon label-floating">
                 <label
                   class="control-label"
                 >Tell your people about what you offer to sell not less than 150 characters..</label>
@@ -42,7 +42,7 @@
               <div class="container">
                 <div class="row">
                   <div class="col px-0">
-                    <div class="form-group with-icon label-floating is-empty">
+                    <div class="form-group with-icon label-floating">
                       <label class="control-label">Price</label>
                       <input type="text" class="form-control" v-model="itemPrice">
                       <span class="makepost-icon">
@@ -52,7 +52,7 @@
                     </div>
                   </div>
                   <div class="col px-0">
-                    <div class="form-group with-icon label-floating is-empty">
+                    <div class="form-group with-icon label-floating">
                       <label class="control-label">Quantity</label>
                       <input type="text" class="form-control" v-model="itemQuantity">
                       <span class="makepost-icon">
@@ -67,6 +67,8 @@
                     <div class="form-group with-icon label-floating is-empty">
                       <label class="control-label">Search for Location</label>
                       <v-autocomplete
+                        :auto-select-one-item="false"
+                        :min-len="2"
                         :items="items"
                         v-model="item"
                         :get-label="getLabel"
@@ -84,6 +86,8 @@
                     <div class="form-group with-icon label-floating is-empty">
                       <label class="control-label">Add Tags</label>
                       <v-autocomplete
+                        :auto-select-one-item="false"
+                        :min-len="2"
                         :items="tags"
                         v-model="tag"
                         :get-label="getTagLabel"
@@ -480,7 +484,7 @@ export default {
     },
     postItem: function() {
       if (this.validate("item")) {
-        //post item
+        // post item
         axios
           .post("/items", {
             x_token: this.dropzoneOptions.params.x_token,
@@ -493,11 +497,12 @@ export default {
             tags: this.selectedTags
           })
           .then(res => this.afterPostingItem(res))
-          .catch(this.notify("Err! Try Later"));
+          .catch(this.notify("..."));
       }
     },
     afterPostingItem: function(res) {
       if (res) {
+        this.stories.unshift(res.data);
         this.item = "";
         (this.itemContent = ""),
           (this.itemQuantity = ""),
@@ -529,6 +534,16 @@ export default {
             this.itemPrice == ""
           ) {
             this.notify("Empty fields left behind!");
+            return false;
+          }
+
+          if (this.itemPrice <= 0) {
+            this.notify("Invalid Price");
+            return false;
+          }
+
+          if (this.itemQuantity <= 0) {
+            this.notify("Invalid Quantity");
             return false;
           }
 
