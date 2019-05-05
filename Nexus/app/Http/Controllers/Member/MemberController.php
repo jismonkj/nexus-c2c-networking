@@ -19,6 +19,7 @@ use App\User;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\FriendCircleNotification;
 use Illuminate\Support\Facades\Log;
+use App\Member\Auction;
 
 class MemberController extends Controller
 {
@@ -105,14 +106,22 @@ class MemberController extends Controller
             $currAddress = $currAddress[0];
         }
 
-        //update item quantity'
-        $item = Items::find($data['item_id']);
+        $proceed = false;
 
-        if ($item->quantity > 0) {
-            $newQuantity = $item->quantity - $data['quantity'];
-            $item->quantity = $newQuantity;
-            $item->save();
+        if ($request->type == "auction") {
+            $proceed = true;
+        } else {
+            $item = Items::find($data['item_id']);
+            if ($item->quantity > 0) {
+                $newQuantity = $item->quantity - $data['quantity'];
+                $item->quantity = $newQuantity;
+                $item->save();
+                $proceed = true;
+            }
+        }
 
+        //update item quantity' //wallet deductions //create order
+        if ($proceed) {
             ///place order
             $data['addr_id'] = $currAddress['addid'];
             $data['uid'] = Auth::id();
@@ -156,29 +165,62 @@ class MemberController extends Controller
 
     public function orderHistory($type)
     {
+        $ordersAu = [];
         $orders = [];
         switch ($type) {
             case 'sent':
-                $orders = ItemOrders::where('nexus_item_orders.uid', Auth::id())->join('items', 'nexus_item_orders.item_id', 'items.item_id')->join('nexus_member_profile', 'nexus_member_profile.uid', 'items.uid')->join('nexus_distrib_profile', 'nexus_distrib_profile.uid', 'nexus_item_orders.distrib_id')->join('cities', 'items.loc_id', 'cities.id')->join('states', 'cities.sid', 'states.id')->join('nexus_member_addresses', 'nexus_item_orders.addr_id', 'nexus_member_addresses.addid')->join('cities as dcity', 'nexus_member_addresses.city_id', 'dcity.id')->join('states as dstate', 'dcity.sid', 'dstate.id')->where('nexus_item_orders.distrib_id', '!=', '0')->select('nexus_item_orders.quantity', 'nexus_item_orders.o_id', 'nexus_item_orders.item_id', 'nexus_item_orders.amount', 'nexus_item_orders.distrib_id', 'nexus_item_orders.service_charge', 'nexus_item_orders.addr_id', 'nexus_member_profile.fname', 'nexus_member_profile.lname', 'nexus_distrib_profile.distrib_name', 'items.contents', 'cities.city_name as ucity', 'states.state_name as ustate', 'dcity.city_name as dcity', 'dstate.state_name as dstate', 'items.uid', 'nexus_item_orders.status', 'nexus_item_orders.created_at')->paginate(6)->toArray();
+                $orders = ItemOrders::where('nexus_item_orders.uid', Auth::id())->where('nexus_item_orders.type', 'item')->join('items', 'nexus_item_orders.item_id', 'items.item_id')->join('nexus_member_profile', 'nexus_member_profile.uid', 'items.uid')->join('nexus_distrib_profile', 'nexus_distrib_profile.uid', 'nexus_item_orders.distrib_id')->join('cities', 'items.loc_id', 'cities.id')->join('states', 'cities.sid', 'states.id')->join('nexus_member_addresses', 'nexus_item_orders.addr_id', 'nexus_member_addresses.addid')->join('cities as dcity', 'nexus_member_addresses.city_id', 'dcity.id')->join('states as dstate', 'dcity.sid', 'dstate.id')->where('nexus_item_orders.distrib_id', '!=', '0')->select('nexus_item_orders.quantity', 'nexus_item_orders.o_id', 'nexus_item_orders.item_id', 'nexus_item_orders.amount', 'nexus_item_orders.distrib_id', 'nexus_item_orders.service_charge', 'nexus_item_orders.addr_id', 'nexus_member_profile.fname', 'nexus_member_profile.lname', 'nexus_distrib_profile.distrib_name', 'items.contents', 'cities.city_name as ucity', 'states.state_name as ustate', 'dcity.city_name as dcity', 'dstate.state_name as dstate', 'items.uid', 'nexus_item_orders.status', 'nexus_item_orders.created_at', 'nexus_item_orders.type')->paginate(6)->toArray();
+                //orders on auctions
+                $ordersAu = ItemOrders::where('nexus_item_orders.uid', Auth::id())->where('nexus_item_orders.type', 'auction')->join('nexus_auctions', 'nexus_item_orders.item_id', 'nexus_auctions.auid')->join('nexus_member_profile', 'nexus_member_profile.uid', 'nexus_auctions.u_id')->join('nexus_distrib_profile', 'nexus_distrib_profile.uid', 'nexus_item_orders.distrib_id')->join('cities', 'nexus_auctions.loc_id', 'cities.id')->join('states', 'cities.sid', 'states.id')->join('nexus_member_addresses', 'nexus_item_orders.addr_id', 'nexus_member_addresses.addid')->join('cities as dcity', 'nexus_member_addresses.city_id', 'dcity.id')->join('states as dstate', 'dcity.sid', 'dstate.id')->where('nexus_item_orders.distrib_id', '!=', '0')->select('nexus_item_orders.quantity', 'nexus_item_orders.o_id', 'nexus_item_orders.item_id', 'nexus_item_orders.amount', 'nexus_item_orders.distrib_id', 'nexus_item_orders.service_charge', 'nexus_item_orders.addr_id', 'nexus_member_profile.fname', 'nexus_member_profile.lname', 'nexus_distrib_profile.distrib_name', 'nexus_auctions.description as contents', 'cities.city_name as ucity', 'states.state_name as ustate', 'dcity.city_name as dcity', 'dstate.state_name as dstate', 'nexus_auctions.u_id as uid', 'nexus_item_orders.status', 'nexus_item_orders.created_at', 'nexus_item_orders.type')->paginate(6)->toArray();
                 break;
 
             case 'recieved':
-                $orders = Items::where('items.uid', Auth::id())->join('nexus_item_orders', 'nexus_item_orders.item_id', 'items.item_id')->join('nexus_member_profile', 'nexus_member_profile.uid', 'nexus_item_orders.uid')->join('nexus_member_addresses', 'nexus_item_orders.addr_id', 'nexus_member_addresses.addid')->join('cities as ucity', 'nexus_member_addresses.city_id', 'ucity.id')->join('states as ustate', 'ucity.sid', 'ustate.id')->join('nexus_distrib_profile', 'nexus_distrib_profile.uid', 'nexus_item_orders.distrib_id')->join('cities', 'items.loc_id', 'cities.id')->join('states', 'cities.sid', 'states.id')->where('nexus_item_orders.distrib_id', '!=', '0')->select('nexus_item_orders.quantity', 'nexus_item_orders.o_id', 'nexus_item_orders.item_id', 'nexus_item_orders.amount', 'nexus_item_orders.distrib_id', 'nexus_item_orders.service_charge', 'nexus_item_orders.addr_id', 'nexus_member_profile.fname', 'nexus_member_profile.lname', 'nexus_distrib_profile.distrib_name', 'items.contents', 'cities.city_name as dcity', 'states.state_name as dstate', 'ucity.city_name as ucity', 'ustate.state_name as ustate', 'nexus_item_orders.uid', 'nexus_item_orders.status', 'nexus_item_orders.created_at')->paginate(6)->toArray();
+                $orders = Items::where('items.uid', Auth::id())->join('nexus_item_orders', 'nexus_item_orders.item_id', 'items.item_id')->join('nexus_member_profile', 'nexus_member_profile.uid', 'nexus_item_orders.uid')->join('nexus_member_addresses', 'nexus_item_orders.addr_id', 'nexus_member_addresses.addid')->join('cities as ucity', 'nexus_member_addresses.city_id', 'ucity.id')->join('states as ustate', 'ucity.sid', 'ustate.id')->join('nexus_distrib_profile', 'nexus_distrib_profile.uid', 'nexus_item_orders.distrib_id')->join('cities', 'items.loc_id', 'cities.id')->join('states', 'cities.sid', 'states.id')->where('nexus_item_orders.distrib_id', '!=', '0')->select('nexus_item_orders.quantity', 'nexus_item_orders.o_id', 'nexus_item_orders.item_id', 'nexus_item_orders.amount', 'nexus_item_orders.distrib_id', 'nexus_item_orders.service_charge', 'nexus_item_orders.addr_id', 'nexus_member_profile.fname', 'nexus_member_profile.lname', 'nexus_distrib_profile.distrib_name', 'items.contents', 'cities.city_name as dcity', 'states.state_name as dstate', 'ucity.city_name as ucity', 'ustate.state_name as ustate', 'nexus_item_orders.uid', 'nexus_item_orders.status', 'nexus_item_orders.created_at', 'nexus_item_orders.type')->paginate(6)->toArray();
+                //order Auctions
+                $ordersAu = Auction::where('nexus_auctions.u_id', Auth::id())->join('nexus_item_orders', 'nexus_item_orders.item_id', 'nexus_auctions.auid')->join('nexus_member_profile', 'nexus_member_profile.uid', 'nexus_item_orders.uid')->join('nexus_member_addresses', 'nexus_item_orders.addr_id', 'nexus_member_addresses.addid')->leftJoin('cities as ucity', 'nexus_member_addresses.city_id', 'ucity.id')->leftJoin('states as ustate', 'ucity.sid', 'ustate.id')->join('nexus_distrib_profile', 'nexus_distrib_profile.uid', 'nexus_item_orders.distrib_id')->leftJoin('cities', 'nexus_auctions.loc_id', 'cities.id')->leftJoin('states', 'cities.sid', 'states.id')->where('nexus_item_orders.distrib_id', '!=', '0')->select('nexus_item_orders.quantity', 'nexus_item_orders.o_id', 'nexus_item_orders.item_id', 'nexus_item_orders.amount', 'nexus_item_orders.distrib_id', 'nexus_item_orders.service_charge', 'nexus_item_orders.addr_id', 'nexus_member_profile.fname', 'nexus_member_profile.lname', 'nexus_distrib_profile.distrib_name', 'nexus_auctions.description as contents', 'cities.city_name as dcity', 'states.state_name as dstate', 'ucity.city_name as ucity', 'ustate.state_name as ustate', 'nexus_item_orders.uid', 'nexus_item_orders.status', 'nexus_item_orders.created_at', 'nexus_item_orders.type')->paginate(6)->toArray();
                 break;
 
             case 'myself-r':
-                $orders = Items::where('items.uid', Auth::id())->join('nexus_item_orders', 'nexus_item_orders.item_id', 'items.item_id')->where('nexus_item_orders.distrib_id', '0')->join('nexus_member_profile', 'nexus_member_profile.uid', 'nexus_item_orders.uid')->join('nexus_member_addresses', 'nexus_item_orders.addr_id', 'nexus_member_addresses.addid')->join('cities as ucity', 'nexus_member_addresses.city_id', 'ucity.id')->join('states as ustate', 'ucity.sid', 'ustate.id')->join('cities', 'items.loc_id', 'cities.id')->join('states', 'cities.sid', 'states.id')->select('nexus_item_orders.quantity', 'nexus_item_orders.o_id', 'nexus_item_orders.item_id', 'nexus_item_orders.amount', 'nexus_item_orders.service_charge', 'nexus_item_orders.addr_id', 'nexus_member_profile.fname', 'nexus_member_profile.lname', 'items.contents', 'cities.city_name as dcity', 'states.state_name as dstate', 'ucity.city_name as ucity', 'ustate.state_name as ustate', 'nexus_item_orders.uid', 'nexus_item_orders.status', 'nexus_item_orders.created_at')->paginate(6)->toArray();
+                $orders = Items::where('items.uid', Auth::id())->join('nexus_item_orders', 'nexus_item_orders.item_id', 'items.item_id')->where('nexus_item_orders.distrib_id', '0')->join('nexus_member_profile', 'nexus_member_profile.uid', 'nexus_item_orders.uid')->join('nexus_member_addresses', 'nexus_item_orders.addr_id', 'nexus_member_addresses.addid')->join('cities as ucity', 'nexus_member_addresses.city_id', 'ucity.id')->join('states as ustate', 'ucity.sid', 'ustate.id')->join('cities', 'items.loc_id', 'cities.id')->join('states', 'cities.sid', 'states.id')->select('nexus_item_orders.quantity', 'nexus_item_orders.o_id', 'nexus_item_orders.item_id', 'nexus_item_orders.amount', 'nexus_item_orders.service_charge', 'nexus_item_orders.addr_id', 'nexus_member_profile.fname', 'nexus_member_profile.lname', 'items.contents', 'cities.city_name as dcity', 'states.state_name as dstate', 'ucity.city_name as ucity', 'ustate.state_name as ustate', 'nexus_item_orders.uid', 'nexus_item_orders.status', 'nexus_item_orders.created_at', 'nexus_item_orders.type')->paginate(6)->toArray();
+                //orders 
+                $ordersAu = Auction::where('nexus_auctions.u_id', Auth::id())->join('nexus_item_orders', 'nexus_item_orders.item_id', 'nexus_auctions.auid')->where('nexus_item_orders.distrib_id', '0')->join('nexus_member_profile', 'nexus_member_profile.uid', 'nexus_item_orders.uid')->join('nexus_member_addresses', 'nexus_item_orders.addr_id', 'nexus_member_addresses.addid')->join('cities as ucity', 'nexus_member_addresses.city_id', 'ucity.id')->join('states as ustate', 'ucity.sid', 'ustate.id')->join('cities', 'nexus_auctions.loc_id', 'cities.id')->join('states', 'cities.sid', 'states.id')->select('nexus_item_orders.quantity', 'nexus_item_orders.o_id', 'nexus_item_orders.item_id', 'nexus_item_orders.amount', 'nexus_item_orders.service_charge', 'nexus_item_orders.addr_id', 'nexus_member_profile.fname', 'nexus_member_profile.lname', 'nexus_auctions.description as contents', 'cities.city_name as dcity', 'states.state_name as dstate', 'ucity.city_name as ucity', 'ustate.state_name as ustate', 'nexus_item_orders.uid', 'nexus_item_orders.status', 'nexus_item_orders.created_at', 'nexus_item_orders.type')->paginate(6)->toArray();
                 break;
 
             case 'myself-s':
-                $orders = ItemOrders::where('nexus_item_orders.uid', Auth::id())->where('nexus_item_orders.distrib_id', '0')->join('items', 'nexus_item_orders.item_id', 'items.item_id')->join('nexus_member_profile', 'nexus_member_profile.uid', 'items.uid')->join('cities', 'items.loc_id', 'cities.id')->join('states', 'cities.sid', 'states.id')->join('nexus_member_addresses', 'nexus_item_orders.addr_id', 'nexus_member_addresses.addid')->join('cities as dcity', 'nexus_member_addresses.city_id', 'dcity.id')->join('states as dstate', 'dcity.sid', 'dstate.id')->select('nexus_item_orders.quantity', 'nexus_item_orders.o_id', 'nexus_item_orders.item_id', 'nexus_item_orders.amount', 'nexus_item_orders.service_charge', 'nexus_item_orders.addr_id', 'nexus_member_profile.fname', 'nexus_member_profile.lname', 'items.contents', 'cities.city_name as ucity', 'states.state_name as ustate', 'dcity.city_name as dcity', 'dstate.state_name as dstate', 'items.uid', 'nexus_item_orders.status', 'nexus_item_orders.created_at')->paginate(6)->toArray();
+                $orders = ItemOrders::where('nexus_item_orders.uid', Auth::id())->where('nexus_item_orders.distrib_id', '0')->where('nexus_item_orders.type', 'item')->join('items', 'nexus_item_orders.item_id', 'items.item_id')->join('nexus_member_profile', 'nexus_member_profile.uid', 'items.uid')->join('cities', 'items.loc_id', 'cities.id')->join('states', 'cities.sid', 'states.id')->join('nexus_member_addresses', 'nexus_item_orders.addr_id', 'nexus_member_addresses.addid')->join('cities as dcity', 'nexus_member_addresses.city_id', 'dcity.id')->join('states as dstate', 'dcity.sid', 'dstate.id')->select('nexus_item_orders.quantity', 'nexus_item_orders.o_id', 'nexus_item_orders.item_id', 'nexus_item_orders.amount', 'nexus_item_orders.service_charge', 'nexus_item_orders.addr_id', 'nexus_member_profile.fname', 'nexus_member_profile.lname', 'items.contents', 'cities.city_name as ucity', 'states.state_name as ustate', 'dcity.city_name as dcity', 'dstate.state_name as dstate', 'items.uid', 'nexus_item_orders.status', 'nexus_item_orders.created_at', 'nexus_item_orders.type')->paginate(6)->toArray();
+                //orders auctions
+                $ordersAu = ItemOrders::where('nexus_item_orders.uid', Auth::id())->where('nexus_item_orders.distrib_id', '0')->where('nexus_item_orders.type', 'item')->join('nexus_auctions', 'nexus_item_orders.item_id', 'nexus_auctions.auid')->join('nexus_member_profile', 'nexus_member_profile.uid', 'nexus_auctions.u_id')->join('cities', 'nexus_auctions.loc_id', 'cities.id')->join('states', 'cities.sid', 'states.id')->join('nexus_member_addresses', 'nexus_item_orders.addr_id', 'nexus_member_addresses.addid')->join('cities as dcity', 'nexus_member_addresses.city_id', 'dcity.id')->join('states as dstate', 'dcity.sid', 'dstate.id')->select('nexus_item_orders.quantity', 'nexus_item_orders.o_id', 'nexus_item_orders.item_id', 'nexus_item_orders.amount', 'nexus_item_orders.service_charge', 'nexus_item_orders.addr_id', 'nexus_member_profile.fname', 'nexus_member_profile.lname', 'nexus_auctions.description as contents', 'cities.city_name as ucity', 'states.state_name as ustate', 'dcity.city_name as dcity', 'dstate.state_name as dstate', 'nexus_auctions.u_id as uid', 'nexus_item_orders.status', 'nexus_item_orders.created_at', 'nexus_item_orders.type')->paginate(6)->toArray();
                 break;
 
             default:
                 break;
         }
 
-        if (sizeof($orders)) {
+        if (sizeof($orders) || sizeof($ordersAu)) {
+            if (sizeof($ordersAu)) {
+                //merge data
+                if (sizeof($orders)) {
+                    $data = $orders['data'];
+                    $dataAu = $ordersAu['data'];
+                    $pos = sizeof($data);
+
+                    foreach ($dataAu as $d) {
+                        $data[$pos] = $d;
+                        $pos++;
+                    }
+
+                    //TO DO -- check pagination size
+                    if ($orders['total'] > $ordersAu['total']) {
+                        $orders['data'] = $data;
+                    }else{
+                        $ordersAu['data'] = $data;
+                        $orders = $ordersAu;
+                    }
+                } else {
+                    $orders = $ordersAu; //in case no orders on items
+                }
+            }
+
             $data = $orders['data'];
             $i = 0;
             foreach ($data as $order) {

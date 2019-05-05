@@ -19,6 +19,7 @@ import Autocomplete from "v-autocomplete"
 Vue.use(Autocomplete);
 import Wallet from "./components/utils/wallet";
 import NotifyBar from "./components/utils/notify.vue";
+import ImageView from "./components/utils/image-view.vue";
 // import SBar from './components/admin/SideBar.vue'
 // import Places from './components/admin/Places.vue'
 
@@ -242,17 +243,22 @@ const app = new Vue({
     },
     data: {
         user: {},
+        pageShadow:false,
         csrftoken: '',
         data: '',
         breadCumbPath: "Dashboard",
         newUserStatus: '',
         isWalletModalVisible: false,
         notifications: [
-        ],        
+        ],
         //buy modal
         isBuyModalVisible: false,
         buyDetails: {},
         buyType: "",
+        //imageview
+        imgSet: null,
+        imgPath: null,
+        viewImage: false,
     },
     router,
     methods: {
@@ -274,16 +280,28 @@ const app = new Vue({
 
         },
         showBuyModal(story, type) {
-            console.log(story);
+            this.pageShadow = true;
             this.buyDetails = story;
+            if (type == "auction") {
+                this.buyDetails.price = story.highestbid;
+                this.buyDetails.uid = story.u_id;
+                this.buyDetails.item_id = story.auid;
+            }
             this.isBuyModalVisible = true;
             this.buyType = type;
+        },
+        showImage(path, imgSet = []) {
+            this.pageShadow = true;
+            this.imgPath = path;
+            this.imgSet = imgSet
+            this.viewImage = true;
         }
     },
     components: {
         "modal-wallet": Wallet,
         NotifyBar,
-        ModalBuy
+        ModalBuy,
+        ImageView
     }
 
 });

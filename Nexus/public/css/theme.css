@@ -34,7 +34,7 @@ ____________________________________________*/
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: hsla(232, 16%, 29%, 0.57);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -52,7 +52,7 @@ ____________________________________________*/
 .modal.buy,
 .modal.auction {
     padding: 0;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .modal .create-auction {
@@ -259,7 +259,7 @@ ______________________________________________*/
 }
 
 /* auction biddings */
-.bid.form-groups{
+.bid.form-groups {
     position: relative;
 }
 
@@ -282,7 +282,29 @@ ______________________________________________*/
     background: white;
 }
 
+.au-order-bg::after {
+    content: 'Auction';
+    background: #ff5e3a;
+    width: 60px;
+    position: absolute;
+    height: 25px;
+    border-radius: 15px;
+    padding: 3px 6px;
+    color: white;
+}
+
 /* news feed */
 article.hentry.post h6 {
     word-break: break-all;
+}
+
+
+/* //home page */
+.page-shadow {
+    /* overflow: hidden;
+    height: 100vh; */
+}
+
+.img-link{
+    cursor: pointer;
 }

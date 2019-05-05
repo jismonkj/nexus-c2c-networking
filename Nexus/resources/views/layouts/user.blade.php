@@ -36,8 +36,7 @@
 </head>
 
 <body>
-    <div id="memberApp">
-
+    <div id="memberApp" :class="{'page-shadow':pageShadow}">
         <!-- Header-BP -->
         <header class="header" id="site-header">
             <div class="page-title">
@@ -644,6 +643,10 @@
 
         <transition leave-active-class="animate fade" enter-active-class="animate fade">
             <notify-bar ref="notify"></notify-bar>
+        </transition>
+
+        <transition leave-active-class="animate fade" enter-active-class="animate fade">
+            <image-view v-show="viewImage" :imgurl="imgPath" v-if="imgPath" :imgset="imgSet"></image-view>
         </transition>
 
     </div>

@@ -46,7 +46,12 @@
                         v-for="imgPath in story.itemImages"
                         v-bind:key="imgPath.path"
                       >
+                       <a
+                      :href="'storage/'+imgPath.path"
+                      @click.prevent="$root.showImage(imgPath.path, story.itemImages)"
+                    >
                         <img :src="'storage/'+imgPath.path" alt="photo">
+                       </a>
                       </div>
                     </div>
                   </div>
@@ -81,9 +86,7 @@
                         class="btn m-0 px-3 py-1"
                         @click="showDistrib"
                         :class="{'btn-primary':readyForRoute, 'btn-disabled':!readyForRoute}"
-                      >
-                      Confirm Buy
-                      </button>
+                      >Confirm Buy</button>
                     </div>
                   </div>
                 </div>
@@ -207,6 +210,7 @@
                           <span class="far fa-check-circle"></span>
                           Order has successfully sent!
                           <a
+                            @click="close"
                             href="#/account/orders-sent"
                           >VIEW</a>
                         </h5>
@@ -431,6 +435,8 @@ export default {
       this.showFindDistribForm = false;
       this.showPayForm = false;
       this.transComplete = false;
+      this.readyForRoute = true;
+      this.$root.$data.pageShadow = false;
     },
     notify: function(text, postText) {
       this.buyButton = text;
@@ -439,7 +445,16 @@ export default {
       }, 5000);
     },
     showDistrib: function() {
-      this.showFindDistribForm = true;
+      var cost = this.itemQuantity * this.story.price;
+      cost += cost * 0.2;
+      axios.get("/my/wallet").then(res => {
+        if (res.data > cost) {
+          this.showFindDistribForm = true;
+        } else {
+          this.notify("Low Wallet", "Try Then");
+          this.readyForRoute = false;
+        }
+      });
     },
     distribSelected: function(distribId, serviceCharge) {
       this.selectedDistribId = distribId;
@@ -473,7 +488,7 @@ export default {
           city_id: this.item.id,
           zip: this.currAddress.zip
         },
-        type:this.type
+        type: this.type
       };
 
       axios.post("place/order", data).then(res => {

@@ -16,7 +16,7 @@ class FileController extends Controller
         $path = Auth::id()."/covers/";
         $rPath = $this->storeFile($file, $path);
         if($rPath){
-            $data = ['type'=>'cover', 'refid'=>Auth::id()];
+            $data = ['type'=> $request->type, 'refid'=>Auth::id()];
             if(!$this->updateDb($data, $rPath)){
                 $rPath = 0;
             }

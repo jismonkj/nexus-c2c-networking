@@ -190,8 +190,17 @@
           >{{ tag.name }}</span>
           <div class="post-thumb">
             <div class="row">
-              <div class="col p-1" v-for="imgPath in story.itemImages" v-bind:key="imgPath.path">
-                <img :src="'storage/'+imgPath.path" alt="photo">
+              <div class="col p-1">
+                <ul class="widget w-last-photo">
+                  <li v-for="imgPath in story.itemImages" v-bind:key="imgPath.path">
+                    <a
+                      :href="'storage/'+imgPath.path"
+                      @click.prevent="$root.showImage(imgPath.path, story.itemImages)"
+                    >
+                      <img :src="'storage/'+imgPath.path" alt="photo">
+                    </a>
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
@@ -563,7 +572,7 @@ export default {
     },
     showBuyModal: function(itemId) {
       this.buyItemId = itemId;
-      var pos = this.stories.findIndex(item => item.item_id == itemId);      
+      var pos = this.stories.findIndex(item => item.item_id == itemId);
       this.$root.showBuyModal(this.stories[pos], "item");
     }
   }

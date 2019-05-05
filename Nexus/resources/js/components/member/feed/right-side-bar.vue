@@ -8,10 +8,7 @@
             <div class="content">
               <a href="#" class="h4 title">Start An Auction</a>
               <p>
-                <button
-                  class="btn btn-primary"
-                  @click="$parent.$refs.mainFeed.showAuctionModal=true"
-                >Create Auction</button>
+                <button class="btn btn-primary" @click="showAuModal">Create Auction</button>
               </p>
             </div>
           </div>
@@ -24,8 +21,13 @@
             <h6 class="title">Auctions Live!</h6>
           </div>
           <!-- Today Events -->
-          <auctions v-for="auction in liveAuctions" :key="auction.auid" :auction="auction" :mine="false" :highestbid="auction.b_price">
-          </auctions>
+          <auctions
+            v-for="auction in liveAuctions"
+            :key="auction.auid"
+            :auction="auction"
+            :mine="false"
+            :highestbid="auction.b_price"
+          ></auctions>
           <!-- ... end Today Events -->
         </div>
 
@@ -45,7 +47,7 @@
   </div>
 </template>
 <script>
-import Auctions from '../auctions/auctions.vue';
+import Auctions from "../auctions/auctions.vue";
 export default {
   mounted() {
     axios.get("m/auction?type=minimal").then(res => {
@@ -54,11 +56,17 @@ export default {
   },
   data: function() {
     return {
-      liveAuctions: [],
+      liveAuctions: []
     };
   },
-  components:{
+  components: {
     Auctions
   },
+  methods: {
+    showAuModal() {
+      this.$root.$data.pageShadow = true;
+      this.$parent.$refs.mainFeed.showAuctionModal = true;
+    }
+  }
 };
 </script>

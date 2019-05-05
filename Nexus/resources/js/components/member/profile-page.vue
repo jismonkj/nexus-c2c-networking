@@ -6,7 +6,10 @@
         <div class="col col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
           <div class="ui-block">
             <div class="top-header top-header-favorit">
-              <div class="top-header-thumb">
+              <div
+                class="top-header-thumb img-link"
+                @click.prevent="$root.showImage($parent.$data.user.myCover)"
+              >
                 <img :src="'storage/'+this.$parent.$data.user.myCover" alt="nature">
                 <div class="top-header-author">
                   <div class="author-thumb">
@@ -46,13 +49,14 @@
 
                     <ul class="more-dropdown more-with-triangle triangle-bottom-right">
                       <li>
-                        <a href="#" @click.prevent="toggleShow">Update Profile Photo</a>
+                        <a href="#" @click.prevent="toggleShow('avatar')">Update Profile Photo</a>
                       </li>
                       <li>
                         <a
                           href="#"
                           data-toggle="modal"
                           data-target="#update-header-photo"
+                          @click.prevent="toggleShow('cover')"
                         >Update Header Photo</a>
                       </li>
                       <li>
@@ -73,41 +77,45 @@
     </div>
     <!-- <modal-photo v-show="isModalVisible"></modal-photo> -->
     <!-- <a class="btn" >set avatar</a> -->
-    <my-upload field="image"
-        @crop-success="cropSuccess"
-        @crop-upload-success="cropUploadSuccess"
-        @crop-upload-fail="cropUploadFail"
-        v-model="show"
-		:width="630"
-		:height="220"
-		url="images/upload"
-		:params="{_token:$root.csrftoken}"
-    lang-type="en"
-    noCircle='true'
-    method="post"
-		img-format="png"></my-upload>
-	<img :src="imgDataUrl">
+    <my-upload
+      field="image"
+      @crop-success="cropSuccess"
+      @crop-upload-success="cropUploadSuccess"
+      @crop-upload-fail="cropUploadFail"
+      v-model="show"
+      :width="630"
+      :height="220"
+      url="images/upload"
+      :params="{_token:$root.csrftoken, type:this.imgType}"
+      lang-type="en"
+      noCircle="true"
+      method="post"
+      img-format="png"
+    ></my-upload>
+    <img :src="imgDataUrl">
   </div>
 </template>
 <script>
 import myUpload from "vue-image-crop-upload";
 
 export default {
-  mounted(){
+  mounted() {
     //
   },
   data: function() {
     return {
-      user:'',
+      user: "",
       show: false,
       imgDataUrl: "", // the datebase64 url of created image
+      imgType:"",
     };
   },
   components: {
     "my-upload": myUpload
   },
   methods: {
-    toggleShow() {
+    toggleShow(type) {
+      this.imgType = type;
       this.show = !this.show;
     },
     /**
@@ -127,7 +135,7 @@ export default {
      * [param] field
      */
     cropUploadSuccess(jsonData, field) {
-      this.coverUrl = "storage/"+jsonData;
+      this.coverUrl = "storage/" + jsonData;
     },
     /**
      * upload fail

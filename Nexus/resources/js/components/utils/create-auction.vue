@@ -314,6 +314,7 @@ export default {
         this.afterEventCreation = false;
       }
       this.$parent.showAuctionModal = false;
+      this.$root.$data.pageShadow = false;
     },
     createEvent: function() {
       this.eventCreateBtnTxt = "Please wait..";

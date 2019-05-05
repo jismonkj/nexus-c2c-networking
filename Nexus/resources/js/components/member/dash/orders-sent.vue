@@ -15,7 +15,7 @@
         <li v-if="sentOrders == ''">
           <div class="notification-event">No purchase history</div>
         </li>
-        <li v-for="order in sentOrders" v-bind:key="order.id">
+        <li v-for="order in sentOrders" v-bind:key="order.id" :class="{'au-order-bg':order.type =='auction'}">
           <div class="author-thumb">
             <img :src="'storage/'+order.uavatar" alt="author">
           </div>

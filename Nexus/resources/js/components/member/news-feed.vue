@@ -2,7 +2,7 @@
   <div>
     <!-- start div -->
     <div class="header-spacer"></div>
-    <div class="container-fluid">
+    <div class="container">
       <div class="row">
         <!-- Main Content -->
         <main-feed ref="mainFeed"></main-feed>
