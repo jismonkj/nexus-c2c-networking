@@ -33,23 +33,23 @@ class AuctionController extends Controller
 
         switch ($request->type) {
             case 'mine':
-                $auction = Auction::where('date', date('Y-m-d'))->where('time', '<=', DB::raw("time_format(CURRENT_TIME, '%h:%i')"))->where('amOrPm', $amOrPm)->where(DB::raw("ADDTIME(time, hours)"), '>', DB::raw("time_format(CURRENT_TIME, '%h:%i')"))->where('u_id', '=', Auth::id())->join('nexus_member_profile', 'nexus_member_profile.uid', 'nexus_auctions.u_id')->select('nexus_auctions.*', 'nexus_member_profile.fname', 'nexus_member_profile.lname')->get();
+                $auction = Auction::where('date', date('Y-m-d'))->where('time', '<=', DB::raw("time_format(CURRENT_TIME, '%h:%i')"))->where('amOrPm', $amOrPm)->where(DB::raw("ADDTIME(time, hours)"), '>', DB::raw("time_format(CURRENT_TIME, '%h:%i')"))->where('u_id', '=', Auth::id())->join('nexus_member_profile', 'nexus_member_profile.uid', 'nexus_auctions.u_id')->leftJoin('cities', 'cities.id', 'nexus_auctions.loc_id')->leftJoin('states', 'states.id', 'cities.sid')->leftJoin('countries', 'countries.id', 'states.cid')->select('nexus_auctions.*', 'nexus_member_profile.fname', 'nexus_member_profile.lname', 'cities.city_name', 'states.state_name', 'countries.country_name')->get();
                 break;
             case 'oldies':
-                $auction = Auction::where('date', '<', date('Y-m-d'))->where('u_id', '=', Auth::id())->join('nexus_member_profile', 'nexus_member_profile.uid', 'nexus_auctions.u_id')->select('nexus_auctions.*', 'nexus_member_profile.fname', 'nexus_member_profile.lname')->get();
+                $auction = Auction::where('date', '<', date('Y-m-d'))->where('u_id', '=', Auth::id())->join('nexus_member_profile', 'nexus_member_profile.uid', 'nexus_auctions.u_id')->leftJoin('cities', 'cities.id', 'nexus_auctions.loc_id')->leftJoin('states', 'states.id', 'cities.sid')->leftJoin('countries', 'countries.id', 'states.cid')->select('nexus_auctions.*', 'nexus_member_profile.fname', 'nexus_member_profile.lname', 'cities.city_name', 'states.state_name', 'countries.country_name')->get();
                 break;
             case 'upcoming':
-                $auction = Auction::where('date', '>', date('Y-m-d'))->orWhere('date', date('Y-m-d'))->where('time', '>', DB::raw("time_format(CURRENT_TIME, '%h:%i')"))->where('amOrPm', $amOrPm)->join('nexus_member_profile', 'nexus_member_profile.uid', 'nexus_auctions.u_id')->select('nexus_auctions.*', 'nexus_member_profile.fname', 'nexus_member_profile.lname')->get();
+                $auction = Auction::where('date', '>', date('Y-m-d'))->orWhere('date', date('Y-m-d'))->where('time', '>', DB::raw("time_format(CURRENT_TIME, '%h:%i')"))->where('amOrPm', $amOrPm)->join('nexus_member_profile', 'nexus_member_profile.uid', 'nexus_auctions.u_id')->leftJoin('cities', 'cities.id', 'nexus_auctions.loc_id')->leftJoin('states', 'states.id', 'cities.sid')->leftJoin('countries', 'countries.id', 'states.cid')->select('nexus_auctions.*', 'nexus_member_profile.fname', 'nexus_member_profile.lname', 'cities.city_name', 'states.state_name', 'countries.country_name')->get();
                 break;
             case 'bidded':
                 $biddedAuctionIds = Bidding::where('uid', Auth::id())->distinct('auid')->pluck('auid');
-                $auction = Auction::whereIn('auid', $biddedAuctionIds)->where('date', '<', date('Y-m-d'))->orWhere('date', date('Y-m-d'))->where('time', '>', DB::raw("time_format(CURRENT_TIME, '%h:%i')"))->where('amOrPm', $amOrPm)->whereIn('auid', $biddedAuctionIds)->join('nexus_member_profile', 'nexus_member_profile.uid', 'nexus_auctions.u_id')->select('nexus_auctions.*', 'nexus_member_profile.fname', 'nexus_member_profile.lname')->get();
+                $auction = Auction::whereIn('auid', $biddedAuctionIds)->where('date', '<', date('Y-m-d'))->orWhere('date', date('Y-m-d'))->where('time', '>', DB::raw("time_format(CURRENT_TIME, '%h:%i')"))->where('amOrPm', $amOrPm)->whereIn('auid', $biddedAuctionIds)->join('nexus_member_profile', 'nexus_member_profile.uid', 'nexus_auctions.u_id')->leftJoin('cities', 'cities.id', 'nexus_auctions.loc_id')->leftJoin('states', 'states.id', 'cities.sid')->leftJoin('countries', 'countries.id', 'states.cid')->select('nexus_auctions.*', 'nexus_member_profile.fname', 'nexus_member_profile.lname', 'cities.city_name', 'states.state_name', 'countries.country_name')->get();
                 break;
             case 'minimal':
                 $auction = Auction::where('date', date('Y-m-d'))->where('time', '<=', DB::raw("time_format(CURRENT_TIME, '%h:%i')"))->where('amOrPm', $amOrPm)->where(DB::raw("ADDTIME(time, hours)"), '>', DB::raw("time_format(CURRENT_TIME, '%h:%i')"))->where('u_id', '!=', Auth::id())->join('nexus_member_profile', 'nexus_member_profile.uid', 'nexus_auctions.u_id')->select('nexus_auctions.*', 'nexus_member_profile.fname', 'nexus_member_profile.lname')->take(2)->get();
                 break;
             default:
-                $auction = Auction::where('date', date('Y-m-d'))->where('time', '<=', DB::raw("time_format(CURRENT_TIME, '%h:%i')"))->where('amOrPm', $amOrPm)->where(DB::raw("ADDTIME(time, hours)"), '>', DB::raw("time_format(CURRENT_TIME, '%h:%i')"))->where('u_id', '!=', Auth::id())->join('nexus_member_profile', 'nexus_member_profile.uid', 'nexus_auctions.u_id')->select('nexus_auctions.*', 'nexus_member_profile.fname', 'nexus_member_profile.lname')->get();
+                $auction = Auction::where('date', date('Y-m-d'))->where('time', '<=', DB::raw("time_format(CURRENT_TIME, '%h:%i')"))->where('amOrPm', $amOrPm)->where(DB::raw("ADDTIME(time, hours)"), '>', DB::raw("time_format(CURRENT_TIME, '%h:%i')"))->where('u_id', '!=', Auth::id())->join('nexus_member_profile', 'nexus_member_profile.uid', 'nexus_auctions.u_id')->leftJoin('cities', 'cities.id', 'nexus_auctions.loc_id')->leftJoin('states', 'states.id', 'cities.sid')->leftJoin('countries', 'countries.id', 'states.cid')->select('nexus_auctions.*', 'nexus_member_profile.fname', 'nexus_member_profile.lname', 'cities.city_name', 'states.state_name', 'countries.country_name')->get();
                 break;
         }
 
@@ -180,6 +180,8 @@ class AuctionController extends Controller
         //
     }
 
+    /* bidding and delivery
+    ___________________ */
     public function bidAuction(Request $request)
     {
         //set bidding price

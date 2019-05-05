@@ -23,7 +23,6 @@ export default {
   mounted() {
     axios.get("m/auction?type=bidded").then(res => {
       this.liveAuctions = res.data;
-      console.log(res.data);
     });
   },
   data: function() {

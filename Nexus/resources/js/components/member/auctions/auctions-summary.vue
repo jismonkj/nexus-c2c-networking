@@ -110,7 +110,7 @@ export default {
       return amOrPm ? " am" : " pm";
     },
     notifyMember(uid){
-      alert(uid);
+      this.$root.showBuyModal(this.auction, "auction");
     }
   }
 };

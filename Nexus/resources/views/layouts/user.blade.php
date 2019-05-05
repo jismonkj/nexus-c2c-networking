@@ -635,6 +635,13 @@
         <transition leave-active-class="animate fade" enter-active-class="animate fade">
             <modal-wallet v-show="isWalletModalVisible" ref="modalWallet"></modal-wallet>
         </transition>
+
+        <!-- //modal buy -->
+        <transition leave-active-class="animate fade" enter-active-class="animate fade">
+            <modal-buy v-show="isBuyModalVisible" ref="modalBuy" :story="buyDetails" :type="buyType"></modal-buy>
+        </transition>
+
+
         <transition leave-active-class="animate fade" enter-active-class="animate fade">
             <notify-bar ref="notify"></notify-bar>
         </transition>

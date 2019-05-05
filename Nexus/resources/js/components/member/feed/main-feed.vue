@@ -306,11 +306,6 @@
       </div>
     </div>
 
-    <!-- //modal buy -->
-    <transition leave-active-class="animate fade" enter-active-class="animate fade">
-      <modal-buy v-show="isBuyModalVisible" ref="modalBuy"></modal-buy>
-    </transition>
-
     <!-- modal auctions -->
     <transition leave-active-class="animate fade" enter-active-class="animate fade">
       <modal-auction ref="modalAuc" v-show="showAuctionModal"></modal-auction>
@@ -320,8 +315,6 @@
 <script>
 import ItemTemplate from "./ItemTemplate.vue";
 import TagTemplate from "./TagTemplate.vue";
-//modal buy
-import ModalBuy from "../../utils/modal-buy.vue";
 //modal auction
 import ModalAuction from "../../utils/create-auction.vue";
 //vue dropzone
@@ -380,15 +373,13 @@ export default {
       itemContent: "",
       itemQuantity: "",
       itemPrice: "",
-      //buy modal
+      //modal
       buyItemId: "",
-      isBuyModalVisible: false,
       showAuctionModal: false
     };
   },
   components: {
     "vue-dropzone": vue2Dropzone,
-    "modal-buy": ModalBuy,
     "modal-auction": ModalAuction
   },
   watch: {
@@ -572,9 +563,8 @@ export default {
     },
     showBuyModal: function(itemId) {
       this.buyItemId = itemId;
-      var pos = this.stories.findIndex(item => item.item_id == itemId);
-      this.isBuyModalVisible = true;
-      this.$refs.modalBuy.yes(this.stories[pos]);
+      var pos = this.stories.findIndex(item => item.item_id == itemId);      
+      this.$root.showBuyModal(this.stories[pos], "item");
     }
   }
 };

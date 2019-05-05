@@ -56,7 +56,9 @@ import AboutPage from './components/member/profile/about-page.vue'
 import ProfileOther from './components/member/profile-other.vue'
 import MemberFriends from './components/member/other/member-friends.vue'
 import MemberAbout from './components/member/other/member-about.vue'
-
+//
+//modal buy
+import ModalBuy from "./components/utils/modal-buy.vue";
 
 // Vue.component('PersonalInfo', PersonalInfo);
 // Vue.component('ChangePassword', ChangePassword);
@@ -246,7 +248,11 @@ const app = new Vue({
         newUserStatus: '',
         isWalletModalVisible: false,
         notifications: [
-        ]
+        ],        
+        //buy modal
+        isBuyModalVisible: false,
+        buyDetails: {},
+        buyType: "",
     },
     router,
     methods: {
@@ -266,11 +272,18 @@ const app = new Vue({
             window.location.href = url;
             // this.$router.go();
 
+        },
+        showBuyModal(story, type) {
+            console.log(story);
+            this.buyDetails = story;
+            this.isBuyModalVisible = true;
+            this.buyType = type;
         }
     },
     components: {
         "modal-wallet": Wallet,
-        NotifyBar
+        NotifyBar,
+        ModalBuy
     }
 
 });

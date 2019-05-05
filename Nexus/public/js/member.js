@@ -669,7 +669,6 @@ __webpack_require__.r(__webpack_exports__);
 
     axios.get("m/auction?type=bidded").then(function (res) {
       _this.liveAuctions = res.data;
-      console.log(res.data);
     });
   },
   data: function data() {
@@ -955,7 +954,7 @@ __webpack_require__.r(__webpack_exports__);
       return amOrPm ? " am" : " pm";
     },
     notifyMember: function notifyMember(uid) {
-      alert(uid);
+      this.$root.showBuyModal(this.auction, "auction");
     }
   }
 });
@@ -3843,10 +3842,9 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ItemTemplate_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ItemTemplate.vue */ "./resources/js/components/member/feed/ItemTemplate.vue");
 /* harmony import */ var _TagTemplate_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TagTemplate.vue */ "./resources/js/components/member/feed/TagTemplate.vue");
-/* harmony import */ var _utils_modal_buy_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../utils/modal-buy.vue */ "./resources/js/components/utils/modal-buy.vue");
-/* harmony import */ var _utils_create_auction_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../utils/create-auction.vue */ "./resources/js/components/utils/create-auction.vue");
-/* harmony import */ var vue2_dropzone__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue2-dropzone */ "./node_modules/vue2-dropzone/dist/vue2Dropzone.js");
-/* harmony import */ var vue2_dropzone__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(vue2_dropzone__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _utils_create_auction_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../utils/create-auction.vue */ "./resources/js/components/utils/create-auction.vue");
+/* harmony import */ var vue2_dropzone__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue2-dropzone */ "./node_modules/vue2-dropzone/dist/vue2Dropzone.js");
+/* harmony import */ var vue2_dropzone__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(vue2_dropzone__WEBPACK_IMPORTED_MODULE_3__);
 //
 //
 //
@@ -4161,13 +4159,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-
- //modal buy
 
  //modal auction
 
@@ -4230,16 +4221,14 @@ __webpack_require__.r(__webpack_exports__);
       itemContent: "",
       itemQuantity: "",
       itemPrice: "",
-      //buy modal
+      //modal
       buyItemId: "",
-      isBuyModalVisible: false,
       showAuctionModal: false
     };
   },
   components: {
-    "vue-dropzone": vue2_dropzone__WEBPACK_IMPORTED_MODULE_4___default.a,
-    "modal-buy": _utils_modal_buy_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
-    "modal-auction": _utils_create_auction_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
+    "vue-dropzone": vue2_dropzone__WEBPACK_IMPORTED_MODULE_3___default.a,
+    "modal-auction": _utils_create_auction_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   watch: {
     itemPrice: function itemPrice() {
@@ -4426,8 +4415,7 @@ __webpack_require__.r(__webpack_exports__);
       var pos = this.stories.findIndex(function (item) {
         return item.item_id == itemId;
       });
-      this.isBuyModalVisible = true;
-      this.$refs.modalBuy.yes(this.stories[pos]);
+      this.$root.showBuyModal(this.stories[pos], "item");
     }
   }
 });
@@ -5173,6 +5161,23 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue2_dropzone__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue2-dropzone */ "./node_modules/vue2-dropzone/dist/vue2Dropzone.js");
 /* harmony import */ var vue2_dropzone__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue2_dropzone__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _member_feed_ItemTemplate_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../member/feed/ItemTemplate.vue */ "./resources/js/components/member/feed/ItemTemplate.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -5323,6 +5328,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //vue dropzone
 
+
 var date = new Date();
 var month = date.getMonth() + 1;
 var day = date.getDate() + 1;
@@ -5346,6 +5352,14 @@ var currDate = date.getFullYear() + "-" + (month.length > 1 ? month : "0" + mont
       description: "",
       refid: "",
       //auction details - end
+      //autocomplete
+      item: null,
+      items: [],
+      template: _member_feed_ItemTemplate_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+      inputAttrs: {
+        "class": "form-control"
+      },
+      //auto-complete-end
       dropzoneOptions: {
         url: "store/files",
         paramName: "file",
@@ -5445,7 +5459,7 @@ var currDate = date.getFullYear() + "-" + (month.length > 1 ? month : "0" + mont
   },
   methods: {
     showUpldFiles: function showUpldFiles() {
-      if (this.validInputs) {
+      if (this.validInputs && this.item != null) {
         this.uploadFiles = true;
       } else {
         this.notify("Invalid Fields");
@@ -5476,7 +5490,8 @@ var currDate = date.getFullYear() + "-" + (month.length > 1 ? month : "0" + mont
         hours: this.hours,
         b_price: this.b_price,
         description: this.description,
-        refid: this.refid
+        refid: this.refid,
+        loc_id: this.item.id
       }; //ajax
 
       axios.post("m/auction/", auction).then(function (res) {
@@ -5495,7 +5510,19 @@ var currDate = date.getFullYear() + "-" + (month.length > 1 ? month : "0" + mont
       setTimeout(function () {
         _this2.nextStepBtnTxt = "Go";
       }, 3000);
-    }
+    },
+    //auto complete
+    getLabel: function getLabel(item) {
+      return item.city_name;
+    },
+    updateItems: function updateItems(text) {
+      var _this3 = this;
+
+      axios.get("location/search/" + text).then(function (response) {
+        _this3.items = response.data;
+      });
+    } //auto complete end
+
   }
 });
 
@@ -5845,18 +5872,36 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: ["story", "type"],
   mounted: function mounted() {
     var _this = this;
 
+    this.buyButtton = this.story.price;
     axios.get("/my/wallet").then(function (res) {
       _this.walletBalance = res.data;
     });
   },
   data: function data() {
     return {
-      story: [],
       itemQuantity: 1,
       buyButton: "Buy Now",
       showFindDistribForm: false,
@@ -5926,15 +5971,10 @@ __webpack_require__.r(__webpack_exports__);
     },
     //auto complete end
     close: function close() {
-      this.$parent.isBuyModalVisible = false;
+      this.$root.$data.isBuyModalVisible = false;
       this.showFindDistribForm = false;
       this.showPayForm = false;
       this.transComplete = false;
-    },
-    yes: function yes(story) {
-      this.story = story;
-      this.itemQuantity = 1;
-      this.buyButtton = this.story.price;
     },
     notify: function notify(text, postText) {
       var _this4 = this;
@@ -5973,7 +6013,7 @@ __webpack_require__.r(__webpack_exports__);
         amount: this.story.price,
         distrib_id: this.selectedDistribId,
         service_charge: this.serviceCharge,
-        userid: this.story.xid,
+        userid: this.story.uid,
         address: {
           fname: this.currAddress.fname,
           lname: this.currAddress.lname,
@@ -5981,7 +6021,8 @@ __webpack_require__.r(__webpack_exports__);
           address: this.currAddress.address,
           city_id: this.item.id,
           zip: this.currAddress.zip
-        }
+        },
+        type: this.type
       };
       axios.post("place/order", data).then(function (res) {
         if (res.data) {
@@ -38546,30 +38587,6 @@ var render = function() {
           }
         },
         [
-          _c("modal-buy", {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.isBuyModalVisible,
-                expression: "isBuyModalVisible"
-              }
-            ],
-            ref: "modalBuy"
-          })
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "transition",
-        {
-          attrs: {
-            "leave-active-class": "animate fade",
-            "enter-active-class": "animate fade"
-          }
-        },
-        [
           _c("modal-auction", {
             directives: [
               {
@@ -40604,6 +40621,43 @@ var render = function() {
                     )
                   ]),
                   _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "form-group with-icon label-floating is-empty"
+                    },
+                    [
+                      _c("label", { staticClass: "control-label" }, [
+                        _vm._v("Search for Location")
+                      ]),
+                      _vm._v(" "),
+                      _c("v-autocomplete", {
+                        attrs: {
+                          "auto-select-one-item": false,
+                          "min-len": 2,
+                          items: _vm.items,
+                          "get-label": _vm.getLabel,
+                          "component-item": _vm.template,
+                          wait: 300,
+                          value: _vm.item,
+                          "input-attrs": _vm.inputAttrs
+                        },
+                        on: { "update-items": _vm.updateItems },
+                        model: {
+                          value: _vm.item,
+                          callback: function($$v) {
+                            _vm.item = $$v
+                          },
+                          expression: "item"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "material-input" })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
                   _c("div", { staticClass: "form-group label-floating" }, [
                     _c("label", { staticClass: "control-label" }, [
                       _vm._v("Event Details")
@@ -40735,7 +40789,11 @@ var render = function() {
                     "div",
                     { staticClass: "alert alert-success" },
                     [
-                      _vm._v(_vm._s(_vm.title) + "\n                "),
+                      _vm._v(
+                        "\n                " +
+                          _vm._s(_vm.title) +
+                          "\n                "
+                      ),
                       _c("router-link", { attrs: { to: "actions/upcoming" } })
                     ],
                     1
@@ -40810,16 +40868,26 @@ var render = function() {
                 "div",
                 { staticClass: "post__author author vcard inline-items mb-0" },
                 [
-                  _c("img", {
-                    attrs: { src: "storage/" + _vm.story.avatar, alt: "author" }
-                  }),
+                  _vm.story.avatar == null
+                    ? _c("img", {
+                        attrs: {
+                          src: "storage/img/avatar5-sm.jpg",
+                          alt: "author"
+                        }
+                      })
+                    : _c("img", {
+                        attrs: {
+                          src: "storage/" + _vm.story.avatar,
+                          alt: "author"
+                        }
+                      }),
                   _vm._v(" "),
                   _c("div", { staticClass: "author-date" }, [
                     _c(
                       "a",
                       {
                         staticClass: "h6 post__author-name fn",
-                        attrs: { href: _vm.$root.encr(_vm.story.xid) }
+                        attrs: { href: _vm.$root.encr(_vm.story.uid) }
                       },
                       [_vm._v(_vm._s(_vm.story.fname + " " + _vm.story.lname))]
                     ),
@@ -40867,7 +40935,11 @@ var render = function() {
                   [
                     !_vm.showFindDistribForm
                       ? _c("div", { staticClass: "story-block" }, [
-                          _c("pre", [_vm._v(_vm._s(_vm.story.contents))]),
+                          _vm.type == "item"
+                            ? _c("pre", [_vm._v(_vm._s(_vm.story.contents))])
+                            : _c("pre", [
+                                _vm._v(_vm._s(_vm.story.description))
+                              ]),
                           _vm._v(" "),
                           _c("div", { staticClass: "post-thumb" }, [
                             _c(
@@ -40891,35 +40963,61 @@ var render = function() {
                             )
                           ]),
                           _vm._v(" "),
-                          _vm.story.quantity > 0
-                            ? _c("div", { staticClass: "row" }, [
-                                _vm._m(0),
-                                _vm._v(" "),
-                                _c("div", { staticClass: "col-3" }, [
-                                  _c("input", {
-                                    directives: [
-                                      {
-                                        name: "model",
-                                        rawName: "v-model",
-                                        value: _vm.itemQuantity,
-                                        expression: "itemQuantity"
-                                      }
-                                    ],
-                                    staticClass: "py-1",
-                                    attrs: { type: "text", name: "quantity" },
-                                    domProps: { value: _vm.itemQuantity },
-                                    on: {
-                                      input: function($event) {
-                                        if ($event.target.composing) {
-                                          return
-                                        }
-                                        _vm.itemQuantity = $event.target.value
-                                      }
-                                    }
-                                  })
-                                ]),
-                                _vm._v(" "),
-                                _c("div", { staticClass: "col-3" }, [
+                          _vm.type == "item"
+                            ? _c("div", { staticClass: "cover" }, [
+                                _vm.story.quantity > 0
+                                  ? _c("div", { staticClass: "row" }, [
+                                      _vm._m(0),
+                                      _vm._v(" "),
+                                      _c("div", { staticClass: "col-3" }, [
+                                        _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: _vm.itemQuantity,
+                                              expression: "itemQuantity"
+                                            }
+                                          ],
+                                          staticClass: "py-1",
+                                          attrs: {
+                                            type: "text",
+                                            name: "quantity"
+                                          },
+                                          domProps: { value: _vm.itemQuantity },
+                                          on: {
+                                            input: function($event) {
+                                              if ($event.target.composing) {
+                                                return
+                                              }
+                                              _vm.itemQuantity =
+                                                $event.target.value
+                                            }
+                                          }
+                                        })
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("div", { staticClass: "col-3" }, [
+                                        _c(
+                                          "button",
+                                          {
+                                            staticClass: "btn m-0 px-3 py-1",
+                                            class: {
+                                              "btn-primary": _vm.readyForRoute,
+                                              "btn-disabled": !_vm.readyForRoute
+                                            },
+                                            on: { click: _vm.showDistrib }
+                                          },
+                                          [_vm._v(_vm._s(_vm.buyButton))]
+                                        )
+                                      ])
+                                    ])
+                                  : _c("div", { staticClass: "row" }, [
+                                      _vm._m(1)
+                                    ])
+                              ])
+                            : _c("div", { staticClass: "row" }, [
+                                _c("div", { staticClass: "col text-right" }, [
                                   _c(
                                     "button",
                                     {
@@ -40930,11 +41028,14 @@ var render = function() {
                                       },
                                       on: { click: _vm.showDistrib }
                                     },
-                                    [_vm._v(_vm._s(_vm.buyButton))]
+                                    [
+                                      _vm._v(
+                                        "\n                    Confirm Buy\n                    "
+                                      )
+                                    ]
                                   )
                                 ])
                               ])
-                            : _c("div", { staticClass: "row" }, [_vm._m(1)])
                         ])
                       : _vm.showPayForm
                       ? _c("div", { staticClass: "story-block" }, [
@@ -41701,7 +41802,7 @@ var staticRenderFns = [
     return _c("div", { staticClass: "col text-right" }, [
       _c("span", { staticClass: "alert alert-danger" }, [
         _c("i", { staticClass: "fas fa-exclamation-triangle" }),
-        _vm._v("\n                      Sold Out\n                    ")
+        _vm._v("\n                        Sold Out\n                      ")
       ])
     ])
   },
@@ -47295,12 +47396,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_member_auctions_auctions_mine_vue__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./components/member/auctions/auctions-mine.vue */ "./resources/js/components/member/auctions/auctions-mine.vue");
 /* harmony import */ var _components_member_auctions_auctions_old_vue__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./components/member/auctions/auctions-old.vue */ "./resources/js/components/member/auctions/auctions-old.vue");
 /* harmony import */ var _components_member_auctions_auctions_upcoming_vue__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./components/member/auctions/auctions-upcoming.vue */ "./resources/js/components/member/auctions/auctions-upcoming.vue");
-/* harmony import */ var _components_member_auctions_auctions_bidded_vue__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./components/member/auctions/auctions-bidded.vue */ "./resources/js/components/member/auctions/auctions-bidded.vue");
+/* harmony import */ var _components_member_auctions_auctions_bidded_vue__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./components/member/auctions/auctions-bidded.vue */ "./resources/js/components/member/auctions/auctions-bidded.vue");
 /* harmony import */ var _components_member_profile_page_vue__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./components/member/profile-page.vue */ "./resources/js/components/member/profile-page.vue");
 /* harmony import */ var _components_member_profile_about_page_vue__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./components/member/profile/about-page.vue */ "./resources/js/components/member/profile/about-page.vue");
 /* harmony import */ var _components_member_profile_other_vue__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./components/member/profile-other.vue */ "./resources/js/components/member/profile-other.vue");
 /* harmony import */ var _components_member_other_member_friends_vue__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./components/member/other/member-friends.vue */ "./resources/js/components/member/other/member-friends.vue");
 /* harmony import */ var _components_member_other_member_about_vue__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./components/member/other/member-about.vue */ "./resources/js/components/member/other/member-about.vue");
+/* harmony import */ var _components_utils_modal_buy_vue__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./components/utils/modal-buy.vue */ "./resources/js/components/utils/modal-buy.vue");
 // # -- Dependencies
  // es6 shim
 
@@ -47355,6 +47457,9 @@ Vue.use(v_autocomplete__WEBPACK_IMPORTED_MODULE_4___default.a);
  //
 
 
+
+ //
+//modal buy
 
  // Vue.component('PersonalInfo', PersonalInfo);
 // Vue.component('ChangePassword', ChangePassword);
@@ -47451,7 +47556,7 @@ var routes = [{
     component: _components_member_auctions_auctions_upcoming_vue__WEBPACK_IMPORTED_MODULE_28__["default"]
   }, {
     path: '/auctions/bidded',
-    component: _components_member_auctions_auctions_bidded_vue__WEBPACK_IMPORTED_MODULE_35__["default"]
+    component: _components_member_auctions_auctions_bidded_vue__WEBPACK_IMPORTED_MODULE_29__["default"]
   }]
 }, {
   path: '/user/:id',
@@ -47523,7 +47628,11 @@ var app = new Vue({
     breadCumbPath: "Dashboard",
     newUserStatus: '',
     isWalletModalVisible: false,
-    notifications: []
+    notifications: [],
+    //buy modal
+    isBuyModalVisible: false,
+    buyDetails: {},
+    buyType: ""
   },
   router: router,
   methods: {
@@ -47543,11 +47652,18 @@ var app = new Vue({
     },
     redirectTo: function redirectTo(url) {
       window.location.href = url; // this.$router.go();
+    },
+    showBuyModal: function showBuyModal(story, type) {
+      console.log(story);
+      this.buyDetails = story;
+      this.isBuyModalVisible = true;
+      this.buyType = type;
     }
   },
   components: {
     "modal-wallet": _components_utils_wallet__WEBPACK_IMPORTED_MODULE_5__["default"],
-    NotifyBar: _components_utils_notify_vue__WEBPACK_IMPORTED_MODULE_6__["default"]
+    NotifyBar: _components_utils_notify_vue__WEBPACK_IMPORTED_MODULE_6__["default"],
+    ModalBuy: _components_utils_modal_buy_vue__WEBPACK_IMPORTED_MODULE_35__["default"]
   }
 });
 

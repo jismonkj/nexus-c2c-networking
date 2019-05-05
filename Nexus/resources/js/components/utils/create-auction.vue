@@ -87,7 +87,22 @@
                   </div>
                 </div>
               </div>
-
+              <div class="form-group with-icon label-floating is-empty">
+                <label class="control-label">Search for Location</label>
+                <v-autocomplete
+                  :auto-select-one-item="false"
+                  :min-len="2"
+                  :items="items"
+                  v-model="item"
+                  :get-label="getLabel"
+                  :component-item="template"
+                  @update-items="updateItems"
+                  :wait="300"
+                  :value="item"
+                  :input-attrs="inputAttrs"
+                ></v-autocomplete>
+                <span class="material-input"></span>
+              </div>
               <div class="form-group label-floating">
                 <label class="control-label">Event Details</label>
 
@@ -126,7 +141,8 @@
             <!-- summary 
             ---------------------------->
             <section v-show="afterEventCreation" class="p-4">
-              <div class="alert alert-success">{{ title }}
+              <div class="alert alert-success">
+                {{ title }}
                 <router-link to="actions/upcoming"></router-link>
               </div>
               <h6>
@@ -149,6 +165,8 @@
 <script>
 //vue dropzone
 import vue2Dropzone from "vue2-dropzone";
+import ItemTemplate from "../member/feed/ItemTemplate.vue";
+
 var date = new Date();
 var month = date.getMonth() + 1;
 var day = date.getDate() + 1;
@@ -179,6 +197,14 @@ export default {
       description: "",
       refid: "",
       //auction details - end
+      //autocomplete
+      item: null,
+      items: [],
+      template: ItemTemplate,
+      inputAttrs: {
+        class: "form-control"
+      },
+      //auto-complete-end
       dropzoneOptions: {
         url: "store/files",
         paramName: "file",
@@ -275,7 +301,7 @@ export default {
   },
   methods: {
     showUpldFiles: function() {
-      if (this.validInputs) {
+      if (this.validInputs && this.item != null) {
         this.uploadFiles = true;
       } else {
         this.notify("Invalid Fields");
@@ -304,7 +330,8 @@ export default {
         hours: this.hours,
         b_price: this.b_price,
         description: this.description,
-        refid: this.refid
+        refid: this.refid,
+        loc_id:this.item.id
       };
       //ajax
       axios
@@ -325,7 +352,17 @@ export default {
       setTimeout(() => {
         this.nextStepBtnTxt = "Go";
       }, 3000);
+    },
+    //auto complete
+    getLabel(item) {
+      return item.city_name;
+    },
+    updateItems(text) {
+      axios.get("location/search/" + text).then(response => {
+        this.items = response.data;
+      });
     }
+    //auto complete end
   }
 };
 </script>

@@ -5,10 +5,11 @@
         <div class="modal-content">
           <div class="modal-header">
             <div class="post__author author vcard inline-items mb-0">
-              <img :src="'storage/'+story.avatar" alt="author">
+              <img v-if="story.avatar==null" src="storage/img/avatar5-sm.jpg" alt="author">
+              <img v-else :src="'storage/'+story.avatar" alt="author">
               <div class="author-date">
                 <a
-                  :href="$root.encr(story.xid)"
+                  :href="$root.encr(story.uid)"
                   class="h6 post__author-name fn"
                 >{{ story.fname+" "+story.lname }}</a>
                 <div class="post__date">
@@ -36,7 +37,8 @@
 
                 <!-- item post summary -->
                 <div class="story-block" v-if="!showFindDistribForm">
-                  <pre>{{ story.contents }}</pre>
+                  <pre v-if="type=='item'">{{ story.contents }}</pre>
+                  <pre v-else>{{ story.description }}</pre>
                   <div class="post-thumb">
                     <div class="row">
                       <div
@@ -48,27 +50,40 @@
                       </div>
                     </div>
                   </div>
-                  <div class="row" v-if="story.quantity > 0">
-                    <div class="col-6 text-right">
-                      <label for="quantity">Quantity Required:</label>
+                  <div class="cover" v-if="type=='item'">
+                    <div class="row" v-if="story.quantity > 0">
+                      <div class="col-6 text-right">
+                        <label for="quantity">Quantity Required:</label>
+                      </div>
+                      <div class="col-3">
+                        <input type="text" name="quantity" v-model="itemQuantity" class="py-1">
+                      </div>
+                      <div class="col-3">
+                        <button
+                          class="btn m-0 px-3 py-1"
+                          @click="showDistrib"
+                          :class="{'btn-primary':readyForRoute, 'btn-disabled':!readyForRoute}"
+                        >{{ buyButton }}</button>
+                      </div>
                     </div>
-                    <div class="col-3">
-                      <input type="text" name="quantity" v-model="itemQuantity" class="py-1">
-                    </div>
-                    <div class="col-3">
-                      <button
-                        class="btn m-0 px-3 py-1"
-                        @click="showDistrib"
-                        :class="{'btn-primary':readyForRoute, 'btn-disabled':!readyForRoute}"
-                      >{{ buyButton }}</button>
+                    <div class="row" v-else>
+                      <div class="col text-right">
+                        <span class="alert alert-danger">
+                          <i class="fas fa-exclamation-triangle"></i>
+                          Sold Out
+                        </span>
+                      </div>
                     </div>
                   </div>
                   <div class="row" v-else>
                     <div class="col text-right">
-                      <span class="alert alert-danger">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        Sold Out
-                      </span>
+                      <button
+                        class="btn m-0 px-3 py-1"
+                        @click="showDistrib"
+                        :class="{'btn-primary':readyForRoute, 'btn-disabled':!readyForRoute}"
+                      >
+                      Confirm Buy
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -191,7 +206,9 @@
                         <h5 class="mb-0">
                           <span class="far fa-check-circle"></span>
                           Order has successfully sent!
-                          <a href="#/account/orders-sent">VIEW</a>
+                          <a
+                            href="#/account/orders-sent"
+                          >VIEW</a>
                         </h5>
                       </div>
                     </div>
@@ -336,14 +353,15 @@
 import ItemTemplate from "../member/feed/ItemTemplate.vue";
 
 export default {
+  props: ["story", "type"],
   mounted() {
+    this.buyButtton = this.story.price;
     axios.get("/my/wallet").then(res => {
       this.walletBalance = res.data;
     });
   },
   data: function() {
     return {
-      story: [],
       itemQuantity: 1,
       buyButton: "Buy Now",
       showFindDistribForm: false,
@@ -409,15 +427,10 @@ export default {
     },
     //auto complete end
     close() {
-      this.$parent.isBuyModalVisible = false;
+      this.$root.$data.isBuyModalVisible = false;
       this.showFindDistribForm = false;
       this.showPayForm = false;
       this.transComplete = false;
-    },
-    yes: function(story) {
-      this.story = story;
-      this.itemQuantity = 1;
-      this.buyButtton = this.story.price;
     },
     notify: function(text, postText) {
       this.buyButton = text;
@@ -451,7 +464,7 @@ export default {
         amount: this.story.price,
         distrib_id: this.selectedDistribId,
         service_charge: this.serviceCharge,
-        userid: this.story.xid,
+        userid: this.story.uid,
         address: {
           fname: this.currAddress.fname,
           lname: this.currAddress.lname,
@@ -459,7 +472,8 @@ export default {
           address: this.currAddress.address,
           city_id: this.item.id,
           zip: this.currAddress.zip
-        }
+        },
+        type:this.type
       };
 
       axios.post("place/order", data).then(res => {

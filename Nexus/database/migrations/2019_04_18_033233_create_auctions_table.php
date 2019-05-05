@@ -23,6 +23,7 @@ class CreateAuctionsTable extends Migration
             $table->string("hours", 15);
             $table->string("b_price", 15);
             $table->string("description");
+            $table->integer("loc_id");
             $table->timestamps();
         });
     }
