@@ -15,23 +15,24 @@
         <li v-if="sentOrders == ''">
           <div class="notification-event">No purchase history</div>
         </li>
-        <li v-for="order in sentOrders" v-bind:key="order.id" :class="{'au-order-bg':order.type =='auction'}">
+        <li
+          v-for="order in sentOrders"
+          v-bind:key="order.id"
+          :class="{'au-order-bg':order.type =='auction'}"
+        >
           <div class="author-thumb">
-            <img :src="'storage/'+order.uavatar" alt="author">
+            <img :src="'storage/'+order.uavatar" alt="author" class="small">
           </div>
           <div class="notification-event">
             <a
               :href="$root.encr(order.uid)"
               class="h6 notification-friend"
             >{{ order.fname+" "+order.lname }}</a>
-            <span class="chat-message-item">{{ order.contents.substring(0, 30) }}</span>
+            <div class="chat-message-item">{{ order.contents.substring(0, 60) }}</div>
           </div>
           <div class="notification-event">
-            Quantity: {{ order.quantity }}
-            <br>
-            Price: {{ order.quantity * order.amount }}
-          </div>
-          <div class="notification-event">
+            {{ order.quantity }} Nos.
+            {{ order.quantity * order.amount }} Rs.<br/>
             Service Charge: {{ (order.quantity * order.amount) * (order.service_charge/100) }}
             <br>Grand Total:
             <b>{{ (order.quantity * order.amount) * (order.service_charge/100) + (order.quantity * order.amount) }}</b>
@@ -42,10 +43,12 @@
             {{ order.ucity}}, {{ order.ustate}}
             <i class="fas fa-angle-double-right"></i>
             {{ order.dcity}}, {{ order.dstate}}
+            <br>Order Date:
+            <span>{{ order.created_at.substring(0, 10) }}</span>
           </div>
           <span class="notification-icon">
             <button
-              v-show="order.status=='fresh'"
+              v-if="order.status=='fresh'"
               class="bg-blue btn"
               data-toggle="tooltip"
               data-placement="left"
@@ -54,7 +57,7 @@
               <i class="far fa-stop-circle"></i>
             </button>
             <button
-              v-show="order.status=='ontheway'"
+              v-if="order.status=='ontheway'"
               class="btn bg-breez"
               data-toggle="tooltip"
               data-placement="left"
@@ -63,14 +66,25 @@
             >
               <i class="fas fa-truck"></i>
             </button>
-            <button v-show="order.status=='token'" 
-            data-toggle="tooltip"
+            <span
+              data-toggle="tooltip"
+              data-placement="left"
+              data-original-title="Order Cancelled"
+              v-if="order.status=='cancelled'"
+              class="color-red"
+            >
+              <i class="fas fa-md fa-exclamation"></i>
+            </span>
+            <button
+              v-show="order.status=='token'"
+              data-toggle="tooltip"
               data-placement="right"
               data-original-title="Click to Refresh"
               @click="getDeliSecret(order.o_id)"
-            class="btn bg-breez">{{ deliToken }}</button>
+              class="btn bg-breez"
+            >{{ deliToken }}</button>
             <button
-              v-show="order.status=='delivered'"
+              v-if="order.status=='delivered'"
               class="btn bg-green"
               data-toggle="tooltip"
               data-placement="right"
@@ -110,16 +124,20 @@ export default {
       for (let i = 0; i < 6; i++) {
         token += digits[Math.floor(Math.random() * 10)];
       }
+
+      var val = this.sentOrders.findIndex(order => order.status == "token");
+      if(val != -1){
+        this.sentOrders[val].status = "ontheway";  
+      }
+
       var index = this.sentOrders.findIndex(order => order.o_id == o_id);
-      this.deliToken = "Token: "+token;
+      this.deliToken = "Token: " + token;
       this.sentOrders[index].status = "token";
 
       //update server
       axios
-        .post("store/token", { 'uid': o_id, 'token': token, 'type': "delivery" })
+        .post("store/token", { uid: o_id, token: token, type: "delivery" })
         .then(res => {
-          console.log(res.data);
-          
           if (res.data) {
             //
           }

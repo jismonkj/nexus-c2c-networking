@@ -83,13 +83,17 @@ class ProfileController extends Controller
 
         $profile[0]->connected = false;
         //see if connected
-        if(Friends::where('uid', $profile[0]->uid)->where('fid', Auth::id())->where('status', 'active')->count() || Friends::where('fid', $profile[0]->uid)->where('uid', Auth::id())->where('status', 'active')->count()){
+        if (Friends::where('uid', $profile[0]->uid)->where('fid', Auth::id())->where('status', 'active')->count() || Friends::where('fid', $profile[0]->uid)->where('uid', Auth::id())->where('status', 'active')->count()) {
             $profile[0]->connected = true;
-                }
+        }
 
-        if(Friends::where('uid', $profile[0]->uid)->where('fid', Auth::id())->where('status', 'request')->count() || Friends::where('fid', $profile[0]->uid)->where('uid', Auth::id())->where('status', 'request')->count()){
+        if (Friends::where('fid', $profile[0]->uid)->where('uid', Auth::id())->where('status', 'request')->count()) {
             $profile[0]->connected = 3;
-                }
+        }
+
+        if (Friends::where('uid', $profile[0]->uid)->where('fid', Auth::id())->where('status', 'request')->count()) {
+            $profile[0]->connected = 4;
+        }
 
         // //get intererest list of the user
         $interests = InterestList::where('uid', Auth::id())->join('interests', 'interests.id', 'interest_id')->select('name')->get();

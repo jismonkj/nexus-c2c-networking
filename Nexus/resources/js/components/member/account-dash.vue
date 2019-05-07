@@ -220,7 +220,7 @@
                         aria-expanded="true"
                         aria-controls="collapseOrders"
                       >
-                        Orders Through Courier
+                        Couriers
                         <svg class="olymp-dropdown-arrow-icon">
                           <use
                             xlink:href="theme/svg-icons/sprites/icons.svg#olymp-dropdown-arrow-icon"

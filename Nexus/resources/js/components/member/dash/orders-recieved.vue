@@ -16,14 +16,14 @@
         </li>
         <li v-for="order in recievedOrders" v-bind:key="order.o_id">
           <div class="author-thumb">
-            <img :src="'storage/'+order.uavatar" alt="author">
+            <img :src="'storage/'+order.uavatar" alt="author" class="small">
           </div>
           <div class="notification-event">
             <a
               :href="$root.encr(order.uid)"
               class="h6 notification-friend"
             >{{ order.fname+" "+order.lname }}</a>
-            <span class="chat-message-item">{{ order.contents.substring(0, 30) }}</span>
+            <div class="chat-message-item">{{ order.contents.substring(0, 60) }}</div>
           </div>
           <div class="notification-event">
             Quantity: {{ order.quantity }}
@@ -42,14 +42,16 @@
             <i class="fas fa-angle-double-right"></i>
             {{ order.dcity}}, {{ order.dstate}}
           </div>
+          <div class="notification-event">
+           Order Date: <br/><span>{{ order.created_at.substring(0, 10) }}</span>
+          </div>
           <span class="notification-icon">
             <button
-              v-show="order.status=='fresh'"
+              v-if="order.status=='fresh'"
               class="bg-blue btn"
               data-toggle="tooltip"
               data-placement="left"
-              data-original-title="Cancel"
-              @click="cancelOrder(order.o_id)"
+              data-original-title="Fresh"
             >
               <i class="far fa-stop-circle"></i>
             </button>
@@ -57,13 +59,13 @@
               data-toggle="tooltip"
               data-placement="left"
               data-original-title="Cancelled"
-              v-show="order.status=='cancelled'"
+              v-if="order.status=='cancelled'"
               class="color-red"
             >
               <i class="fas fa-md fa-exclamation"></i>
             </span>
             <button
-              v-show="order.status=='ontheway'"
+              v-if="order.status=='ontheway'"
               class="btn bg-breez"
               data-toggle="tooltip"
               data-placement="left"
@@ -73,7 +75,7 @@
               <i class="fas fa-truck"></i>
             </button>
             <button
-              v-show="order.status=='delivered'"
+              v-if="order.status=='delivered'"
               class="btn bg-green"
               data-toggle="tooltip"
               data-placement="right"
@@ -101,17 +103,17 @@ export default {
     return {
       totalPages: 0,
       nextPageUrl: "",
-      recievedOrders: [],
+      recievedOrders: []
     };
   },
   methods: {
-    cancelOrder: function(o_id) {
-      axios.post("order/cancel", { o_id: o_id }).then(res => {
-        console.log(res.data);
-        var index = this.recievedOrders.findIndex(order => order.o_id == o_id);
-        this.recievedOrders[index].status = "cancelled";
-      });
-    }
+    // cancelOrder: function(o_id) {
+    //   axios.post("order/cancel", { o_id: o_id }).then(res => {
+    //     console.log(res.data);
+    //     var index = this.recievedOrders.findIndex(order => order.o_id == o_id);
+    //     this.recievedOrders[index].status = "cancelled";
+    //   });
+    // }
   }
 };
 </script>

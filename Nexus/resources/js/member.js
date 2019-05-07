@@ -3,6 +3,18 @@ import "babel-polyfill"; // es6 shim
 /* vue router________________________ */
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
+import NProgress from 'nprogress';
+Vue.use(NProgress);
+
+
+window.axios.interceptors.request.use(function (config) {
+    NProgress.start();
+    return config;
+});
+window.axios.interceptors.response.use(function(response){
+    NProgress.done();
+    return response;
+});
 
 // laravel echo  && pusher____________________
 import Pusher from 'pusher-js';
@@ -61,28 +73,10 @@ import MemberAbout from './components/member/other/member-about.vue'
 //modal buy
 import ModalBuy from "./components/utils/modal-buy.vue";
 
-// Vue.component('PersonalInfo', PersonalInfo);
-// Vue.component('ChangePassword', ChangePassword);
-// Vue.component('FriendRequests', FriendRequests);
-// Vue.component('SentRequests', SentRequests);
-// Vue.component('AccountDash', AccountDash);
-// Vue.component('MyInterests', MyInterests);
-// Vue.component('EducationEmployment', EducationEmployment);
-// Vue.component('OrdersSent', OrdersSent);
-// Vue.component('OrdersRecieved', OrdersRecieved);
-
-// Vue.component('NewsFeed', NewsFeed);
 Vue.component('MainFeed', MainFeed);
 Vue.component('LeftSideBar', LeftSideBar);
 Vue.component('RightSideBar', RightSideBar);
-// Vue.component('FriendCircle', FriendCircle);
-// //
-// Vue.component('ProfilePage', ProfilePage);
-// Vue.component('AboutPage', AboutPage);
-// //
-// Vue.component('ProfileOther', ProfileOther);
-// Vue.component('MemberFriends', MemberFriends);
-// Vue.component('MemberAbout', MemberAbout);
+
 
 // routes
 // __________________
@@ -200,6 +194,14 @@ const router = new VueRouter({
     routes // short for `routes: routes`
 })
 
+router.beforeResolve((to, from, next) => {
+    NProgress.start();
+    next();
+});
+
+router.afterEach((to, from) => {
+    NProgress.done();
+});
 
 // admin app
 // ____________________
@@ -212,12 +214,6 @@ const app = new Vue({
             response => {
                 this.user = response.data;
                 this.newUserStatus = this.user.status_text;
-                if (this.user.myAvatar == "") {
-                    this.user.myAvatar = "img/author-main2.jpg"
-                }
-                if (this.user.myCover == "") {
-                    this.user.myAvatar = "img/top-header2.jpg"
-                }
 
                 //subscribe to notification channel
                 window.echo.private('user' + this.user.id)
@@ -243,7 +239,7 @@ const app = new Vue({
     },
     data: {
         user: {},
-        pageShadow:false,
+        pageShadow: false,
         csrftoken: '',
         data: '',
         breadCumbPath: "Dashboard",

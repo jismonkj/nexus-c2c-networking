@@ -16,6 +16,7 @@ use App\Http\Controllers\FileController;
 use App\Notifications\FriendCircleNotification;
 use App\User;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Log;
 
 class FriendCircleController extends Controller
 {
@@ -78,7 +79,7 @@ class FriendCircleController extends Controller
 
                 # -- avatar
                 $path = FileController::getImageUrl('avatar', $member['uid']);
-                ($path=="")? $memberList[$key]['avatar'] = "img/avatar38-sm.jpg": $memberList[$key]['avatar'] = $path ;
+                ($path == "") ? $memberList[$key]['avatar'] = "img/avatar38-sm.jpg" : $memberList[$key]['avatar'] = $path;
             }
         }
 
@@ -105,10 +106,14 @@ class FriendCircleController extends Controller
 
 
         $profile = Auth::user()->profile;
-        $username =  $profile->fname." ".$profile->lname;
+        $username =  $profile->fname . " " . $profile->lname;
         $user = User::find($data['fid']);
-        $message = "<b>".$username."</b> has sent you a friend request! <a href='#/account/friend-requests'>VIEW</a>";
-        Notification::send($user, new FriendCircleNotification($message));
+        $message = "<b>" . $username . "</b> has sent you a friend request! <a href='#/account/friend-requests'>VIEW</a>";
+        try {
+            Notification::send($user, new FriendCircleNotification($message));
+        } catch (\Throwable $th) {
+            Log::debug($th);
+        }
 
         return 1;
     }
@@ -129,14 +134,18 @@ class FriendCircleController extends Controller
 
     public function update(Request $request, $status)
     {
-        if($status == 'active'){
+         if($status ==  'active'){
             $fcircle = Friends::where('uid', $request->uid)->where('fid', Auth::id())->update(['status' => $status, 'date_accepted'=>now()]);
 
             $profile = Auth::user()->profile;
             $username =  $profile->fname." ".$profile->lname;
             $user = User::find($request->uid);
-            $message = "<b>".$username."</b> accepted your friend request!";
-            Notification::send($user, new FriendCircleNotification($message));
+            $message = "<b>" . $username."</b> accepted your friend request!";
+            try {
+                Notification::send($user, new FriendCircleNotification($message));
+            } catch (\Throwable $th) {
+                Log::debug($th);
+            }
             return $fcircle;
         }
         return Friends::where('uid', $request->uid)->where('fid', Auth::id())->update(['status' => $status]);
@@ -152,18 +161,17 @@ class FriendCircleController extends Controller
     {
         $mid = $request->mid; //uid of another user
         return $this->getFriendCircle($mid);
-        
     }
 
 
     public function getFriendCircle($mid){
-        $friends = []; 
-          $friendSetOne = Friends::where('nexus_friends_circle.uid', $mid)->where('status', 'active')->join('nexus_member_profile', 'nexus_friends_circle.fid', 'nexus_member_profile.uid')->select('nexus_friends_circle.fid as uid', 'city_id','fname', 'lname', 'date_accepted')->get(); 
+        $friends = [];
+        $friendSetOne = Friends::where('nexus_friends_circle.uid', $mid)->where('status', 'active')->join('nexus_member_profile', 'nexus_friends_circle.fid', 'nexus_member_profile.uid')->select('nexus_friends_circle.fid as uid',  'city_id','fname', 'lname', 'date_accepted')->get();
 
-           $friendSetTwo = Friends::where('nexus_friends_circle.fid', $mid)->where('status', 'active')->join('nexus_member_profile', 'nexus_friends_circle.uid', 'nexus_member_profile.uid')->select('nexus_friends_circle.uid', 'city_id', 'fname', 'lname',  'date_accepted')->get(); 
+        $friendSetTwo = Friends::where('nexus_friends_circle.fid', $mid)->where('status', 'active')->join('nexus_member_profile', 'nexus_friends_circle.uid', 'nexus_member_profile.uid')->select('nexus_friends_circle.uid', 'city_id', 'fname', 'lname',  'date_accepted')->get();
 
         foreach ($friendSetOne as $friend) {
-           $friend = $this->setPlaces($friend);
+            $friend = $this->setPlaces($friend);
             array_push($friends, $friend);
         }
         foreach ($friendSetTwo as $friend) {

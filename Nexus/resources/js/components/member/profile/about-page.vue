@@ -94,7 +94,7 @@
           <!-- W-Socials -->
           <div class="widget w-socials">
             <h6 class="title">Other Social Networks:</h6>
-            <a v-if="user.facebook!=null" :href="user.facebook" class="social-item bg-facebook">
+            <a v-if="user.facebook!=null" :href="'http://www.facebook.com/'+user.facebook" class="social-item bg-facebook" target="blank">
               <svg
                 class="svg-inline--fa fa-facebook-f fa-w-9"
                 aria-hidden="true"
@@ -113,7 +113,7 @@
               <!-- <i class="fab fa-facebook-f" aria-hidden="true"></i> -->
               Facebook
             </a>
-            <a v-if="user.twitter!=null" :href="user.twitter" class="social-item bg-twitter">
+            <a v-if="user.twitter!=null" :href="'http://www.twitter.com/'+user.twitter" class="social-item bg-twitter" target="blank">
               <svg
                 class="svg-inline--fa fa-twitter fa-w-16"
                 aria-hidden="true"
@@ -132,7 +132,7 @@
               <!-- <i class="fab fa-twitter" aria-hidden="true"></i> -->
               Twitter
             </a>
-            <a v-if="user.dribble!=null" :href="user.dribble" class="social-item bg-dribble">
+            <a v-if="user.dribble!=null" :href="'http://www.dribble.com/'+user.dribble" class="social-item bg-dribble" target="blank">
               <svg
                 class="svg-inline--fa fa-dribbble fa-w-16"
                 aria-hidden="true"

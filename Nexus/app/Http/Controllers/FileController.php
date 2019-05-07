@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\FileStore;
+use Illuminate\Support\Facades\Log;
 
 class FileController extends Controller
 {
@@ -13,7 +14,7 @@ class FileController extends Controller
     //collect images
     public function imageCollect(Request $request){
         $file = $request->file('image');
-        $path = Auth::id()."/covers/";
+        $path = Auth::id()."/".$request->type."/";
         $rPath = $this->storeFile($file, $path);
         if($rPath){
             $data = ['type'=> $request->type, 'refid'=>Auth::id()];
@@ -75,7 +76,6 @@ class FileController extends Controller
         $path = "";
         // $type = $request->type;'
         $file = FileStore::where('refid', $refid)->where('type', $type)->get();
-
         if($file->count()){
             $path = $file[0]->path;
         }

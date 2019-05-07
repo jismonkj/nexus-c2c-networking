@@ -28,6 +28,7 @@
         "babel-polyfill": "^6.26.0",
         "bootstrap-vue": "^2.0.0-rc.14",
         "laravel-echo": "^1.5.3",
+        "nprogress": "^0.2.0",
         "pusher-js": "^4.4.0",
         "v-autocomplete": "^1.8.2",
         "vue-image-crop-upload": "^2.5.0",

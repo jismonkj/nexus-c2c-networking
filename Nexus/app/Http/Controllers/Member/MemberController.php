@@ -175,7 +175,7 @@ class MemberController extends Controller
                 break;
 
             case 'recieved':
-                $orders = Items::where('items.uid', Auth::id())->join('nexus_item_orders', 'nexus_item_orders.item_id', 'items.item_id')->join('nexus_member_profile', 'nexus_member_profile.uid', 'nexus_item_orders.uid')->join('nexus_member_addresses', 'nexus_item_orders.addr_id', 'nexus_member_addresses.addid')->join('cities as ucity', 'nexus_member_addresses.city_id', 'ucity.id')->join('states as ustate', 'ucity.sid', 'ustate.id')->join('nexus_distrib_profile', 'nexus_distrib_profile.uid', 'nexus_item_orders.distrib_id')->join('cities', 'items.loc_id', 'cities.id')->join('states', 'cities.sid', 'states.id')->where('nexus_item_orders.distrib_id', '!=', '0')->select('nexus_item_orders.quantity', 'nexus_item_orders.o_id', 'nexus_item_orders.item_id', 'nexus_item_orders.amount', 'nexus_item_orders.distrib_id', 'nexus_item_orders.service_charge', 'nexus_item_orders.addr_id', 'nexus_member_profile.fname', 'nexus_member_profile.lname', 'nexus_distrib_profile.distrib_name', 'items.contents', 'cities.city_name as dcity', 'states.state_name as dstate', 'ucity.city_name as ucity', 'ustate.state_name as ustate', 'nexus_item_orders.uid', 'nexus_item_orders.status', 'nexus_item_orders.created_at', 'nexus_item_orders.type')->paginate(6)->toArray();
+                $orders = Items::where('items.uid', Auth::id())->join('nexus_item_orders', 'nexus_item_orders.item_id', 'items.item_id')->join('nexus_member_profile', 'nexus_member_profile.uid', 'nexus_item_orders.uid')->join('nexus_member_addresses', 'nexus_item_orders.addr_id', 'nexus_member_addresses.addid')->join('cities as ucity', 'nexus_member_addresses.city_id', 'ucity.id')->join('states as ustate', 'ucity.sid', 'ustate.id')->join('nexus_distrib_profile', 'nexus_distrib_profile.uid', 'nexus_item_orders.distrib_id')->join('cities', 'items.loc_id', 'cities.id')->join('states', 'cities.sid', 'states.id')->where('nexus_item_orders.distrib_id', '!=', '0')->select('nexus_item_orders.quantity', 'nexus_item_orders.o_id', 'nexus_item_orders.item_id', 'nexus_item_orders.amount', 'nexus_item_orders.distrib_id', 'nexus_item_orders.service_charge', 'nexus_item_orders.addr_id', 'nexus_member_profile.fname', 'nexus_member_profile.lname', 'nexus_distrib_profile.distrib_name', 'items.contents', 'cities.city_name as dcity', 'states.state_name as dstate', 'ucity.city_name as ucity', 'ustate.state_name as ustate', 'nexus_item_orders.uid', 'nexus_item_orders.status', 'nexus_item_orders.created_at', 'nexus_item_orders.type')->orderBy('nexus_item_orders.created_at', 'DESC')->paginate(6)->toArray();
                 //order Auctions
                 $ordersAu = Auction::where('nexus_auctions.u_id', Auth::id())->join('nexus_item_orders', 'nexus_item_orders.item_id', 'nexus_auctions.auid')->join('nexus_member_profile', 'nexus_member_profile.uid', 'nexus_item_orders.uid')->join('nexus_member_addresses', 'nexus_item_orders.addr_id', 'nexus_member_addresses.addid')->leftJoin('cities as ucity', 'nexus_member_addresses.city_id', 'ucity.id')->leftJoin('states as ustate', 'ucity.sid', 'ustate.id')->join('nexus_distrib_profile', 'nexus_distrib_profile.uid', 'nexus_item_orders.distrib_id')->leftJoin('cities', 'nexus_auctions.loc_id', 'cities.id')->leftJoin('states', 'cities.sid', 'states.id')->where('nexus_item_orders.distrib_id', '!=', '0')->select('nexus_item_orders.quantity', 'nexus_item_orders.o_id', 'nexus_item_orders.item_id', 'nexus_item_orders.amount', 'nexus_item_orders.distrib_id', 'nexus_item_orders.service_charge', 'nexus_item_orders.addr_id', 'nexus_member_profile.fname', 'nexus_member_profile.lname', 'nexus_distrib_profile.distrib_name', 'nexus_auctions.description as contents', 'cities.city_name as dcity', 'states.state_name as dstate', 'ucity.city_name as ucity', 'ustate.state_name as ustate', 'nexus_item_orders.uid', 'nexus_item_orders.status', 'nexus_item_orders.created_at', 'nexus_item_orders.type')->paginate(6)->toArray();
                 break;
@@ -202,18 +202,18 @@ class MemberController extends Controller
                 if (sizeof($orders)) {
                     $data = $orders['data'];
                     $dataAu = $ordersAu['data'];
-                    $pos = sizeof($data);
+                    $pos = sizeof($dataAu);
 
-                    foreach ($dataAu as $d) {
-                        $data[$pos] = $d;
+                    foreach ($data as $d) {
+                        $dataAu[$pos] = $d;
                         $pos++;
                     }
 
                     //TO DO -- check pagination size
                     if ($orders['total'] > $ordersAu['total']) {
-                        $orders['data'] = $data;
+                        $orders['data'] = $dataAu;
                     }else{
-                        $ordersAu['data'] = $data;
+                        $ordersAu['data'] = $dataAu;
                         $orders = $ordersAu;
                     }
                 } else {

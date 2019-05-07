@@ -17,14 +17,14 @@
         </li>
         <li v-for="order in sentOrders" v-bind:key="order.o_id">
           <div class="author-thumb">
-            <img :src="'storage/'+order.uavatar" alt="author">
+            <img :src="'storage/'+order.uavatar" alt="author" class="small">
           </div>
           <div class="notification-event">
             <a
               :href="$root.encr(order.uid)"
               class="h6 notification-friend"
             >{{ order.fname+" "+order.lname }}</a>
-            <span class="chat-message-item">{{ order.contents.substring(0, 30) }}</span>
+            <div class="chat-message-item">{{ order.contents.substring(0, 60) }}</div>
           </div>
           <div class="notification-event">
              Quantity: {{ order.quantity }}
@@ -41,18 +41,30 @@
               <i class="fas fa-angle-double-right"></i>
              {{ order.dcity}}, {{ order.dstate}}
           </div>
+           <div class="notification-event">
+           Order Date: <br/><span>{{ order.created_at.substring(0, 10) }}</span>
+          </div>
           <span class="notification-icon">
-              <button v-show="order.status=='fresh'" class="bg-blue btn"  data-toggle="tooltip" 
+              <button v-if="order.status=='fresh'" class="bg-blue btn"  data-toggle="tooltip" 
                       data-placement="left"
                       data-original-title="Cancel">
                 <i class="far fa-stop-circle"></i>
               </button>
-              <button v-show="order.status=='ontheway'" class="btn bg-breez" data-toggle="tooltip"
+              <button v-if="order.status=='ontheway'" class="btn bg-breez" data-toggle="tooltip"
                       data-placement="left"
                       data-original-title="On The Way">
                 <i class="fas fa-truck"></i>
               </button>
-              <button v-show="order.status=='delivered'" class="btn bg-green" data-toggle="tooltip"
+               <span
+              data-toggle="tooltip"
+              data-placement="left"
+              data-original-title="Order Cancelled"
+              v-if="order.status=='cancelled'"
+              class="color-red"
+            >
+              <i class="fas fa-md fa-exclamation"></i>
+            </span>
+              <button v-if="order.status=='delivered'" class="btn bg-green" data-toggle="tooltip"
                       data-placement="right"
                       data-original-title="Delivered">
                 <i class="far fa-check-circle"></i>

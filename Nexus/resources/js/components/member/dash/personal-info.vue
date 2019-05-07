@@ -154,7 +154,7 @@
             </div>
             <div class="col col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
               <div class="form-group with-icon label-floating">
-                <label class="control-label">Your Facebook Account</label>
+                <label class="control-label">Your Facebook Username</label>
                 <input
                   class="form-control"
                   type="text"
@@ -180,7 +180,7 @@
                 <span class="material-input"></span>
               </div>
               <div class="form-group with-icon label-floating">
-                <label class="control-label">Your Twitter Account</label>
+                <label class="control-label">Your Twitter Username</label>
                 <input
                   class="form-control"
                   type="text"
@@ -206,7 +206,7 @@
                 <span class="material-input"></span>
               </div>
               <div class="form-group with-icon label-floating">
-                <label class="control-label">Your RSS Feed Account</label>
+                <label class="control-label">Your RSS Feed Username</label>
                 <input class="form-control" type="text" v-model="profile.rss_feed">
                 <svg
                   class="svg-inline--fa fa-rss fa-w-14 c-rss"
@@ -227,7 +227,7 @@
                 <span class="material-input"></span>
               </div>
               <div class="form-group with-icon label-floating">
-                <label class="control-label">Your Dribbble Account</label>
+                <label class="control-label">Your Dribbble Username</label>
                 <input
                   class="form-control"
                   type="text"
@@ -253,7 +253,7 @@
                 <span class="material-input"></span>
               </div>
               <div class="form-group with-icon label-floating">
-                <label class="control-label">Your Spotify Account</label>
+                <label class="control-label">Your Spotify Username</label>
                 <input class="form-control" type="text" v-model="profile.spotify">
                 <svg
                   class="svg-inline--fa fa-spotify fa-w-16 c-spotify"

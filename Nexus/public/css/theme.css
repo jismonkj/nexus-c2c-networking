@@ -99,11 +99,13 @@ ____________________________________________*/
 }
 
 .author-thumb img.small {
-    max-width: 42px
+    width: 42px;
+    height: 42px;
 }
 
 .author-thumb img.smaller {
-    max-width: 35px
+    width: 35px;
+    height: 35px;
 }
 
 .form-control {
@@ -221,8 +223,7 @@ ______________________________________________*/
     padding: 8px;
     background: #3f4257;
     margin: 5px;
-    border-radius: 5px;
-    box-shadow: 1px 1px 2px 0px #3f4257;
+    box-shadow: -2px 1px 8px 0px #3f4257b8;
     color: #d5d0d0;
     text-align: justify;
     align-items: center;
@@ -282,15 +283,18 @@ ______________________________________________*/
     background: white;
 }
 
-.au-order-bg::after {
+.au-order-bg::before {
     content: 'Auction';
-    background: #ff5e3a;
-    width: 60px;
+    background: #3f4257;
+    width: 54px;
     position: absolute;
-    height: 25px;
+    height: 20px;
     border-radius: 15px;
-    padding: 3px 6px;
+    padding: 0px 6px;
     color: white;
+    right: 185px;
+    top: 8px;
+    font-size: 12px;
 }
 
 /* news feed */
@@ -300,11 +304,26 @@ article.hentry.post h6 {
 
 
 /* //home page */
-.page-shadow {
-    /* overflow: hidden;
-    height: 100vh; */
+/* .page-shadow {
+    overflow: hidden;
+    height: 100vh;
+} */
+
+.img-link {
+    cursor: pointer;
 }
 
-.img-link{
-    cursor: pointer;
+.img-wrap svg {
+    height: 75px;
+    width: 220px;
+}
+
+.notification-list li {
+    padding: 18px 25px;
+}
+
+.notification-event .chat-message-item {
+    width: 200px;
+    font-weight: 800;
+    word-break: break-word;
 }

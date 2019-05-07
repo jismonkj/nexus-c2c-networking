@@ -72,7 +72,7 @@ class HomeController extends Controller
         return $data[0];
     }
 
-    public function getUserBasicInfo()
+    public function getUserBasicInfo(Request $req)
     {
         $data = "";
 
@@ -94,8 +94,11 @@ class HomeController extends Controller
 
         $image = new FileController();
 
-        $data[0]->myCover = $image->getImageUrl('cover', Auth::id());
-        $data[0]->myAvatar = $image->getImageUrl('avatar', Auth::id());
+        $myCover = $image->getImageUrl('cover', Auth::id());
+        // Log::debug(Auth::id());        
+        $myCover == "" ?  $data[0]->myCover = "img/top-header2.jpg" : $data[0]->myCover = $myCover;
+        $myAvatar = $image->getImageUrl('avatar', Auth::id());
+        $myCover == "" ? $data[0]->myAvatar = "img/author-main2.jpg" : $data[0]->myAvatar = $myAvatar;
 
         return $data[0];
     }
@@ -115,7 +118,7 @@ class HomeController extends Controller
             $itemImages = FileStore::where('refid', $refid)->where('type', 'items')->select('path')->get();
 
             //member avatar
-            $avatar = FileStore::where('refid', $refid)->where('type', 'avatar')->select('path')->get();
+            $avatar = FileStore::where('refid', $person['uid'])->where('type', 'avatar')->select('path')->get();
             if (sizeof($avatar) == 0) {
                 $avatar = "img/avatar5-sm.jpg";
             } else {
@@ -140,7 +143,6 @@ class HomeController extends Controller
         }
 
         //get friends set 2
-        //get friends set 2
         $fSetTwo = Friends::where('nexus_friends_circle.fid', Auth::id())->join('items', 'items.uid', 'nexus_friends_circle.uid')->join('nexus_member_profile', 'nexus_member_profile.uid', 'nexus_friends_circle.uid')->join('cities', 'items.loc_id', 'cities.id')->join('states', 'states.id', 'cities.sid')->join('countries', 'countries.id', 'states.cid')->select('nexus_friends_circle.uid as xid', 'items.*', 'nexus_member_profile.fname', 'nexus_member_profile.lname', 'cities.city_name', 'states.state_name', 'countries.country_name')->orderBy('items.updated_at', 'desc')->paginate(5)->toArray();
 
         //images for set 2
@@ -152,7 +154,7 @@ class HomeController extends Controller
             $itemImages = FileStore::where('refid', $refid)->where('type', 'items')->select('path')->get();
 
             //member avatar
-            $avatar = FileStore::where('refid', $refid)->where('type', 'avatar')->select('path')->get();
+            $avatar = FileStore::where('refid', $person['uid'])->where('type', 'avatar')->select('path')->get();
             if (sizeof($avatar) == 0) {
                 $avatar = "img/avatar5-sm.jpg";
             } else {
@@ -179,16 +181,16 @@ class HomeController extends Controller
         //my own posts
         $fSetThree = User::where('users.id', Auth::id())->join('items', 'items.uid', 'users.id')->join('nexus_member_profile', 'nexus_member_profile.uid', 'users.id')->join('cities', 'items.loc_id', 'cities.id')->join('states', 'states.id', 'cities.sid')->join('countries', 'countries.id', 'states.cid')->select('users.id as xid', 'items.*', 'nexus_member_profile.fname', 'nexus_member_profile.lname', 'cities.city_name', 'states.state_name', 'countries.country_name')->orderBy('items.updated_at', 'desc')->paginate(1)->toArray();
 
-        //images for own set 2
+        //images for own set 3
         $i = 0;
-        $dataSetThree = $fSetThree['data'];
+        $dataSetThree = $fSetThree['data'];        
         foreach ($dataSetThree as $person) {
             $refid = $person['item_id'];
             //item images
             $itemImages = FileStore::where('refid', $refid)->where('type', 'items')->select('path')->get();
 
             //member avatar
-            $avatar = FileStore::where('refid', $refid)->where('type', 'avatar')->select('path')->get();
+            $avatar = FileStore::where('refid', $person['uid'])->where('type', 'avatar')->select('path')->get();
             if (sizeof($avatar) == 0) {
                 $avatar = "img/avatar5-sm.jpg";
             } else {
@@ -280,39 +282,6 @@ class HomeController extends Controller
     //test method
     public function test()
     {
-        //check for auctions that goes live on current time
-        // $tz = 'Asia/Kolkata';
-        // $timestamp = time();
-        // $dt = new \DateTime("now", new \DateTimeZone($tz)); //first argument "must" be a string
-        // $dt->setTimestamp($timestamp); //adjust the object to correct timestamp
-        // $time = (string)$dt->format('g:i');
-        // $amOrPm = $dt->format('a') == 'am' ? true : false;
-
-        // // return $dt->format('a');
-        // $auction = Auction::where('date', date('Y-m-d'))->where('time', DB::raw("time_format(CURRENT_TIME, '%h:%i')"))->get();
-
-        // // return $auction[0]->u_id;
-        // $auction->count();
-        // if ($auction->count() > 0) {
-        //     Log::debug($auction[0]->title);
-
-        //     //find owner and notify friends
-        //     $profile = User::find($auction[0]->u_id)->profile;
-        //     $username =  $profile->fname . " " . $profile->lname;
-
-        //     foreach (User::find($auction[0]->u_id)->friendsOne()->get() as $friend) {
-        //         $user = User::find($friend->id);
-        //         Notification::send($user, new AuctionNotification($auction[0], $username, 'active'));
-        //     }
-        //     foreach (User::find($auction[0]->u_id)->friendsTwo()->get() as $friend) {
-        //         $user = User::find($friend->id);
-        //         Notification::send($user, new AuctionNotification($auction[0], $username, 'active'));
-        //     }
-        // }
-
-        $data['auid'] = 123;
-        $highestbid = '123';
-        $username = 'some';
-        return event(new BiddingPlaced($data, $username, $highestbid));
+        //
     }
 }

@@ -46,12 +46,12 @@
                         v-for="imgPath in story.itemImages"
                         v-bind:key="imgPath.path"
                       >
-                       <a
-                      :href="'storage/'+imgPath.path"
-                      @click.prevent="$root.showImage(imgPath.path, story.itemImages)"
-                    >
-                        <img :src="'storage/'+imgPath.path" alt="photo">
-                       </a>
+                        <a
+                          :href="'storage/'+imgPath.path"
+                          @click.prevent="$root.showImage(imgPath.path, story.itemImages)"
+                        >
+                          <img :src="'storage/'+imgPath.path" alt="photo">
+                        </a>
                       </div>
                     </div>
                   </div>

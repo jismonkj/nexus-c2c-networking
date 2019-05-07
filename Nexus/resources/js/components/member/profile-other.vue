@@ -52,21 +52,28 @@
               </div>
 
               <div class="control-block-button">
-                <a v-if="connected==true" href="" class="btn btn-control bg-blue" data-toggle="tooltip"
+                <a v-if="connected==true && userProfile.uid != $root.user.uid" href="" class="btn btn-control bg-green" data-toggle="tooltip"
                   data-placement="bottom"
-                  title="Friends">
+                  title="Unfriend" @click.prevent="unFriend(userProfile.uid)">
                   <svg class="olymp-happy-face-icon">
                     <use xlink:href="theme/svg-icons/sprites/icons.svg#olymp-happy-face-icon"></use>
                   </svg>
                 </a>               
-                <a v-if="connected==3" @click.prevent="delFriendReq(userProfile.uid)" href="" class="btn btn-control bg-secondary" data-toggle="tooltip"
+                <a v-if="connected==3 && userProfile.uid != $root.user.uid" @click.prevent="delFriendReq(userProfile.uid)" href="" class="btn btn-control bg-secondary" data-toggle="tooltip"
                   data-placement="bottom"
                   title="Cancel Friend Request">
                   <svg class="olymp-happy-face-icon">
                     <use xlink:href="theme/svg-icons/sprites/icons.svg#olymp-happy-face-icon"></use>
                   </svg>
                 </a>               
-                <a v-if="connected==false" @click.prevent="sendFriendReq(userProfile.uid)" href="" class="btn btn-control bg-blue" data-toggle="tooltip"
+                <a v-if="connected==4 && userProfile.uid != $root.user.uid" @click.prevent="acceptRequest(userProfile.uid)" href="" class="btn btn-control bg-primary" data-toggle="tooltip"
+                  data-placement="bottom"
+                  title="Accept Friend Request">
+                  <svg class="olymp-happy-face-icon">
+                    <use xlink:href="theme/svg-icons/sprites/icons.svg#olymp-happy-face-icon"></use>
+                  </svg>
+                </a>               
+                <a v-if="connected==false && userProfile.uid != $root.user.uid" @click.prevent="sendFriendReq(userProfile.uid)" href="" class="btn btn-control bg-blue" data-toggle="tooltip"
                   data-placement="bottom"
                   title="Send Friend Request">
                   <svg class="olymp-happy-face-icon">
@@ -124,9 +131,24 @@ export default {
       this.connected = 3;
       this.userProfile.connected = 3;
       });
-      
+    },
+    acceptRequest:function($mid){
+ //   server update
+      axios.put("member/friends/active", { 'uid': $mid }).then(response => {
+        //	ui update
+        this.connected = true;
+      this.userProfile.connected = true;
+      });
     },
     delFriendReq: function($mid) {
+      //push server update
+      axios.delete("member/friends/" + $mid ).then(response => {
+        //change icon
+        this.connected = false;
+        this.userProfile.connected = false;
+      });
+    },
+    unFriend: function($mid) {
       //push server update
       axios.delete("member/friends/" + $mid ).then(response => {
         //change icon

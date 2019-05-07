@@ -10,14 +10,14 @@
                 class="top-header-thumb img-link"
                 @click.prevent="$root.showImage($parent.$data.user.myCover)"
               >
-                <img :src="'storage/'+this.$parent.$data.user.myCover" alt="nature">
+                <img :src="'storage/'+$parent.$data.user.myCover" alt="nature">
                 <div class="top-header-author">
                   <div class="author-thumb">
                     <img :src="'storage/'+this.$parent.$data.user.myAvatar" alt="author">
                   </div>
                   <div class="author-content">
-                    <a href="#" class="h3 author-name">{{ this.$parent.$data.user.uname }}</a>
-                    <div class="country">{{ this.$parent.$data.user.status_text }}</div>
+                    <a href="#" class="h3 author-name">{{ $parent.$data.user.uname }}</a>
+                    <div class="country">{{ $parent.$data.user.status_text }}</div>
                   </div>
                 </div>
               </div>
@@ -49,14 +49,14 @@
 
                     <ul class="more-dropdown more-with-triangle triangle-bottom-right">
                       <li>
-                        <a href="#" @click.prevent="toggleShow('avatar')">Update Profile Photo</a>
+                        <a href="#" @click.prevent="toggleShowAvatar()">Update Profile Photo</a>
                       </li>
                       <li>
                         <a
                           href="#"
                           data-toggle="modal"
                           data-target="#update-header-photo"
-                          @click.prevent="toggleShow('cover')"
+                          @click.prevent="toggleShow()"
                         >Update Header Photo</a>
                       </li>
                       <li>
@@ -86,13 +86,31 @@
       :width="630"
       :height="220"
       url="images/upload"
-      :params="{_token:$root.csrftoken, type:this.imgType}"
+      :params="{_token:$root.csrftoken, type:'cover'}"
       lang-type="en"
-      noCircle="true"
+      :noCircle=true
       method="post"
       img-format="png"
     ></my-upload>
+
+    <my-upload-avatar
+      field="image"
+      @crop-success="cropSuccessAv"
+      @crop-upload-success="cropUploadSuccessAv"
+      @crop-upload-fail="cropUploadFail"
+      v-model="showAvatar"
+      :width="330"
+      :height="270"
+      url="images/upload"
+      :params="{_token:$root.csrftoken, type:'avatar'}"
+      lang-type="en"
+      :noCircle=false
+      method="post"
+      img-format="png"
+    ></my-upload-avatar>
+
     <img :src="imgDataUrl">
+    <img :src="imgDataUrlAv">
   </div>
 </template>
 <script>
@@ -100,23 +118,27 @@ import myUpload from "vue-image-crop-upload";
 
 export default {
   mounted() {
-    //
+ //
   },
   data: function() {
     return {
       user: "",
       show: false,
+      showAvatar:false,
       imgDataUrl: "", // the datebase64 url of created image
-      imgType:"",
+      imgDataUrlAv:""
     };
   },
   components: {
-    "my-upload": myUpload
+    "my-upload": myUpload,
+    "my-upload-avatar": myUpload
   },
   methods: {
-    toggleShow(type) {
-      this.imgType = type;
+    toggleShow() {
       this.show = !this.show;
+    },
+    toggleShowAvatar() {
+      this.showAvatar= !this.show;
     },
     /**
      * crop success
@@ -125,8 +147,10 @@ export default {
      * [param] field
      */
     cropSuccess(imgDataUrl, field) {
-      console.log("-------- crop success --------");
       this.imgDataUrl = imgDataUrl;
+    },
+    cropSuccessAv(imgDataUrl, field) {
+      this.imgDataUrlAv = imgDataUrl;
     },
     /**
      * upload success
@@ -135,7 +159,10 @@ export default {
      * [param] field
      */
     cropUploadSuccess(jsonData, field) {
-      this.coverUrl = "storage/" + jsonData;
+      this.$parent.$data.user.myCover = jsonData;
+    },
+    cropUploadSuccessAv(jsonData, field) {
+      this.$parent.$data.user.myAvatar = jsonData;
     },
     /**
      * upload fail

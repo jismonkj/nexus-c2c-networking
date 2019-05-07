@@ -22,12 +22,12 @@ class CreateAuctionsTable extends Migration
             $table->boolean("amOrPm");
             $table->string("hours", 15);
             $table->string("b_price", 15);
-            $table->string("description");
+            $table->text("description");
             $table->integer("loc_id");
             $table->timestamps();
         });
     }
-
+ 
     /**
      * Reverse the migrations.
      *
