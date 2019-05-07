@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Notification;
 use App\Notifications\FriendCircleNotification;
 use Illuminate\Support\Facades\Log;
 use App\Member\Auction;
+use App\Http\Controllers\HomeController;
 
 class MemberController extends Controller
 {
@@ -94,6 +95,10 @@ class MemberController extends Controller
 
     public function placeOrder(Request $request)
     {
+        Log::debug($request);
+        if(!HomeController::verifyToken($request)){
+            return 0;
+        }
         $data = $request->all();
         $address = $data['address'];
         $address['uid'] = Auth::id();

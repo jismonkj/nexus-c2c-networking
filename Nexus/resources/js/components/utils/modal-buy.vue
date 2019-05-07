@@ -190,12 +190,26 @@
                       <button
                         href="#"
                         class="btn btn-blue mb-0 full-width"
-                        @click="payForItem"
-                        v-show="!onProcess"
+                        @click="verifyToken"
+                        v-show="!onProcess && !payToken"
                       >
                         <span>Pay</span>
                         <div class="ripple-container"></div>
                       </button>
+                      <div v-show="payToken">
+                        <small>
+                          {{ otpVerifyAlert }}
+                          <span>{{ tokenTimer }}</span>
+                          <a href="#" @click.prevent="verifyToken">Resend</a>
+                          <span v-show="tokenSent" class="text-success">
+                            <i class="far fa-check-circle"></i>
+                          </span>
+                          <span v-show="tokenResending">
+                            <i class="fas fa-spinner fa-spin"></i>
+                          </span>
+                        </small>
+                        <input type="number" v-model="token" placeholder="Enter otp recieved">
+                      </div>
                       <div class="text-center" v-show="onProcess">processing...</div>
                     </div>
                   </div>
@@ -388,6 +402,8 @@ export default {
       walletBalance: 0,
       delCharge: 0,
       onProcess: false,
+      payToken: false,
+      token: "",
       readyForRoute: true,
       //address --------
       currAddress: {
@@ -398,7 +414,11 @@ export default {
         zipcode: ""
       },
       //address - end
-      deliveryOption: "courier"
+      deliveryOption: "courier",
+      tokenResending: false,
+      tokenSent: false,
+      tokenTimer: "5:00",
+      otpVerifyAlert:"",
     };
   },
   methods: {
@@ -431,12 +451,26 @@ export default {
     },
     //auto complete end
     close() {
-      this.$root.$data.isBuyModalVisible = false;
+      this.tokenTimer = "5:00";
       this.showFindDistribForm = false;
       this.showPayForm = false;
       this.transComplete = false;
       this.readyForRoute = true;
       this.$root.$data.pageShadow = false;
+      this.onProcess = false;
+      this.payToken = false;
+      this.item = null;
+      this.token = "";
+      this.itemQuantity = 1;
+      this.storedAddresses = [];
+      this.currAddress = [];
+      this.delCharge = null;
+      this.buyButton = "Buy";
+      this.selectedDistribId = null;
+      this.tokenResending = false;
+      this.tokenSent = false;
+      this.otpVerifyAlert = "",
+      this.$root.$data.isBuyModalVisible = false;
     },
     notify: function(text, postText) {
       this.buyButton = text;
@@ -470,38 +504,56 @@ export default {
         this.showPayForm = true;
       }
     },
-    payForItem: function() {
-      this.onProcess = true;
-      var data = {
-        //order
-        item_id: this.story.item_id,
-        quantity: this.itemQuantity,
-        amount: this.story.price,
-        distrib_id: this.selectedDistribId,
-        service_charge: this.serviceCharge,
-        userid: this.story.uid,
-        address: {
-          fname: this.currAddress.fname,
-          lname: this.currAddress.lname,
-          contact: this.currAddress.contact,
-          address: this.currAddress.address,
-          city_id: this.item.id,
-          zip: this.currAddress.zip
-        },
-        type: this.type
-      };
+    verifyToken: function() {
+      //generate token
+      this.tokenSent = false;
+      this.tokenResending = true;
+      var digits = "0123456789";
+      let token = "";
+      for (let i = 0; i < 6; i++) {
+        token += digits[Math.floor(Math.random() * 10)];
+      }
 
-      axios.post("place/order", data).then(res => {
+      //update server
+      axios.post("store/token", { token: token, type: this.type }).then(res => {
         if (res.data) {
-          this.onProcess = false;
-          this.showPayForm = false;
-          this.transComplete = true;
-          this.walletBalance = res.data;
+          this.otpVerifyAlert = "Check your email for OTP!";
+          this.tokenResending = false;
+          this.tokenSent = true;
+          this.tokenTimer = "5:00";
+          this.timerOnToken();
+          this.payToken = true;
         }
       });
     },
     changeAddress: function(address) {
       this.currAddress = address;
+    },
+    timerOnToken() {
+      var timerIntervelId = setInterval(() => {
+        var time = this.tokenTimer.split(":");
+        var seconds = time[1];
+        var minutes = time[0];
+
+        if (minutes <= 0 && seconds == 1) {
+          seconds = "00";
+          clearInterval(timerIntervelId);
+          this.tokenTimer = "Expired";
+        } else {
+          if (seconds == "00") {
+            minutes -= 1;
+            seconds = 59;
+          } else {
+            seconds -= 1;
+          }
+
+          //if less than 10 change to \ss\ format
+          if (seconds < 10) {
+            seconds = "0" + seconds;
+          }
+          this.tokenTimer = minutes + ":" + seconds;
+        }
+      }, 1000);
     }
   },
   watch: {
@@ -527,11 +579,47 @@ export default {
       } else {
         this.selectedDistribId = null;
       }
+    },
+    token: function() {
+      if (this.token.length == 6) {
+        this.onProcess = false;
+        var data = {
+          //order
+          item_id: this.story.item_id,
+          quantity: this.itemQuantity,
+          amount: this.story.price,
+          distrib_id: this.selectedDistribId,
+          service_charge: this.serviceCharge,
+          userid: this.story.uid,
+          address: {
+            fname: this.currAddress.fname,
+            lname: this.currAddress.lname,
+            contact: this.currAddress.contact,
+            address: this.currAddress.address,
+            city_id: this.item.id,
+            zip: this.currAddress.zip
+          },
+          type: this.type,
+          token: this.token,
+          uid: this.$root.user.id
+        };
+        axios.post("place/order", data).then(res => {
+          if (res.data) {
+            this.showPayForm = false;
+            this.transComplete = true;
+            this.walletBalance = res.data;
+          } else {
+            //token error
+            this.otpVerifyAlert = "Invalid Token";
+          }
+          this.onProcess = false;
+        });
+      }
     }
   },
   computed: {
     readyForPay: function() {
-      return this.selectedDistribId != null;
+      return this.selectedDistribId != null && this.item != null;
     },
     grandTotal: function() {
       return parseFloat(this.story.price) + parseFloat(this.delCharge);

@@ -15,12 +15,9 @@ use App\Member\Items;
 use App\Member\PostLikes;
 use App\Member\Tags;
 use App\Tokens;
-use App\Member\Auction;
-use Illuminate\Support\Facades\Notification;
-use App\Notifications\AuctionNotification;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\PaymentOtp;
 use Illuminate\Support\Facades\Log;
-use App\Events\BiddingPlaced;
 
 
 class HomeController extends Controller
@@ -183,7 +180,7 @@ class HomeController extends Controller
 
         //images for own set 3
         $i = 0;
-        $dataSetThree = $fSetThree['data'];        
+        $dataSetThree = $fSetThree['data'];
         foreach ($dataSetThree as $person) {
             $refid = $person['item_id'];
             //item images
@@ -260,11 +257,22 @@ class HomeController extends Controller
     public function storeToken(Request $request)
     {
         $data = $request->all();
-        if (Tokens::where('uid', $data['uid'])->where('type', $data['type'])->get()->count()) {
+        $data['uid'] = Auth::id();
+        if (Tokens::where('uid', Auth::id())->where('type', $data['type'])->get()->count()) {
             Tokens::where('uid', $data['uid'])->where('type', $data['type'])->update(['token' => $data['token']]);
             return 1;
         }
         Tokens::create($data);
+        if ($data['type'] == "item" || $data['type'] == "auction") {
+            $profile = Auth::user()->profile;
+            $name = $profile->fname . " " . $profile->lname;
+            try {
+                Mail::to(Auth::user()->email)->send(new PaymentOtp($data['token'], $name));
+            } catch (\Throwable $th) {
+                Log::debug($th);
+            }
+            
+        }
         return 1;
     }
 
@@ -272,6 +280,7 @@ class HomeController extends Controller
     {
         $count = Tokens::where('uid', $request->uid)->where('token', $request->token)->where('type', $request->type)->get()->count();
 
+        Log::debug($count);
         if ($count) {
             Tokens::where('uid', $request->uid)->where('token', $request->token)->where('type', $request->type)->delete();
         }
@@ -282,6 +291,6 @@ class HomeController extends Controller
     //test method
     public function test()
     {
-        //
+        Mail::to("nvision755@gmail.com")->send(new PaymentOtp('12321', 'JIsmon'));
     }
 }

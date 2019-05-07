@@ -6089,6 +6089,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["story", "type"],
@@ -6124,6 +6138,8 @@ __webpack_require__.r(__webpack_exports__);
       walletBalance: 0,
       delCharge: 0,
       onProcess: false,
+      payToken: false,
+      token: "",
       readyForRoute: true,
       //address --------
       currAddress: {
@@ -6134,7 +6150,11 @@ __webpack_require__.r(__webpack_exports__);
         zipcode: ""
       },
       //address - end
-      deliveryOption: "courier"
+      deliveryOption: "courier",
+      tokenResending: false,
+      tokenSent: false,
+      tokenTimer: "5:00",
+      otpVerifyAlert: ""
     };
   },
   methods: {
@@ -6171,12 +6191,25 @@ __webpack_require__.r(__webpack_exports__);
     },
     //auto complete end
     close: function close() {
-      this.$root.$data.isBuyModalVisible = false;
+      this.tokenTimer = "5:00";
       this.showFindDistribForm = false;
       this.showPayForm = false;
       this.transComplete = false;
       this.readyForRoute = true;
       this.$root.$data.pageShadow = false;
+      this.onProcess = false;
+      this.payToken = false;
+      this.item = null;
+      this.token = "";
+      this.itemQuantity = 1;
+      this.storedAddresses = [];
+      this.currAddress = [];
+      this.delCharge = null;
+      this.buyButton = "Buy";
+      this.selectedDistribId = null;
+      this.tokenResending = false;
+      this.tokenSent = false;
+      this.otpVerifyAlert = "", this.$root.$data.isBuyModalVisible = false;
     },
     notify: function notify(text, postText) {
       var _this4 = this;
@@ -6216,39 +6249,68 @@ __webpack_require__.r(__webpack_exports__);
         this.showPayForm = true;
       }
     },
-    payForItem: function payForItem() {
+    verifyToken: function verifyToken() {
       var _this7 = this;
 
-      this.onProcess = true;
-      var data = {
-        //order
-        item_id: this.story.item_id,
-        quantity: this.itemQuantity,
-        amount: this.story.price,
-        distrib_id: this.selectedDistribId,
-        service_charge: this.serviceCharge,
-        userid: this.story.uid,
-        address: {
-          fname: this.currAddress.fname,
-          lname: this.currAddress.lname,
-          contact: this.currAddress.contact,
-          address: this.currAddress.address,
-          city_id: this.item.id,
-          zip: this.currAddress.zip
-        },
+      //generate token
+      this.tokenSent = false;
+      this.tokenResending = true;
+      var digits = "0123456789";
+      var token = "";
+
+      for (var i = 0; i < 6; i++) {
+        token += digits[Math.floor(Math.random() * 10)];
+      } //update server
+
+
+      axios.post("store/token", {
+        token: token,
         type: this.type
-      };
-      axios.post("place/order", data).then(function (res) {
+      }).then(function (res) {
         if (res.data) {
-          _this7.onProcess = false;
-          _this7.showPayForm = false;
-          _this7.transComplete = true;
-          _this7.walletBalance = res.data;
+          _this7.otpVerifyAlert = "Check your email for OTP!";
+          _this7.tokenResending = false;
+          _this7.tokenSent = true;
+          _this7.tokenTimer = "5:00";
+
+          _this7.timerOnToken();
+
+          _this7.payToken = true;
         }
       });
     },
     changeAddress: function changeAddress(address) {
       this.currAddress = address;
+    },
+    timerOnToken: function timerOnToken() {
+      var _this8 = this;
+
+      var timerIntervelId = setInterval(function () {
+        var time = _this8.tokenTimer.split(":");
+
+        var seconds = time[1];
+        var minutes = time[0];
+
+        if (minutes <= 0 && seconds == 1) {
+          seconds = "00";
+          clearInterval(timerIntervelId);
+          _this8.tokenTimer = "Expired";
+        } else {
+          if (seconds == "00") {
+            minutes -= 1;
+            seconds = 59;
+          } else {
+            seconds -= 1;
+          } //if less than 10 change to \ss\ format
+
+
+          if (seconds < 10) {
+            seconds = "0" + seconds;
+          }
+
+          _this8.tokenTimer = minutes + ":" + seconds;
+        }
+      }, 1000);
     }
   },
   watch: {
@@ -6275,11 +6337,50 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         this.selectedDistribId = null;
       }
+    },
+    token: function token() {
+      var _this9 = this;
+
+      if (this.token.length == 6) {
+        this.onProcess = false;
+        var data = {
+          //order
+          item_id: this.story.item_id,
+          quantity: this.itemQuantity,
+          amount: this.story.price,
+          distrib_id: this.selectedDistribId,
+          service_charge: this.serviceCharge,
+          userid: this.story.uid,
+          address: {
+            fname: this.currAddress.fname,
+            lname: this.currAddress.lname,
+            contact: this.currAddress.contact,
+            address: this.currAddress.address,
+            city_id: this.item.id,
+            zip: this.currAddress.zip
+          },
+          type: this.type,
+          token: this.token,
+          uid: this.$root.user.id
+        };
+        axios.post("place/order", data).then(function (res) {
+          if (res.data) {
+            _this9.showPayForm = false;
+            _this9.transComplete = true;
+            _this9.walletBalance = res.data;
+          } else {
+            //token error
+            _this9.otpVerifyAlert = "Invalid Token";
+          }
+
+          _this9.onProcess = false;
+        });
+      }
     }
   },
   computed: {
     readyForPay: function readyForPay() {
-      return this.selectedDistribId != null;
+      return this.selectedDistribId != null && this.item != null;
     },
     grandTotal: function grandTotal() {
       return parseFloat(this.story.price) + parseFloat(this.delCharge);
@@ -42267,18 +42368,121 @@ var render = function() {
                                     {
                                       name: "show",
                                       rawName: "v-show",
-                                      value: !_vm.onProcess,
-                                      expression: "!onProcess"
+                                      value: !_vm.onProcess && !_vm.payToken,
+                                      expression: "!onProcess && !payToken"
                                     }
                                   ],
                                   staticClass: "btn btn-blue mb-0 full-width",
                                   attrs: { href: "#" },
-                                  on: { click: _vm.payForItem }
+                                  on: { click: _vm.verifyToken }
                                 },
                                 [
                                   _c("span", [_vm._v("Pay")]),
                                   _vm._v(" "),
                                   _c("div", { staticClass: "ripple-container" })
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  directives: [
+                                    {
+                                      name: "show",
+                                      rawName: "v-show",
+                                      value: _vm.payToken,
+                                      expression: "payToken"
+                                    }
+                                  ]
+                                },
+                                [
+                                  _c("small", [
+                                    _vm._v(
+                                      "\n                        " +
+                                        _vm._s(_vm.otpVerifyAlert) +
+                                        "\n                        "
+                                    ),
+                                    _c("span", [
+                                      _vm._v(_vm._s(_vm.tokenTimer))
+                                    ]),
+                                    _vm._v(" "),
+                                    _c(
+                                      "a",
+                                      {
+                                        attrs: { href: "#" },
+                                        on: {
+                                          click: function($event) {
+                                            $event.preventDefault()
+                                            return _vm.verifyToken($event)
+                                          }
+                                        }
+                                      },
+                                      [_vm._v("Resend")]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "span",
+                                      {
+                                        directives: [
+                                          {
+                                            name: "show",
+                                            rawName: "v-show",
+                                            value: _vm.tokenSent,
+                                            expression: "tokenSent"
+                                          }
+                                        ],
+                                        staticClass: "text-success"
+                                      },
+                                      [
+                                        _c("i", {
+                                          staticClass: "far fa-check-circle"
+                                        })
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "span",
+                                      {
+                                        directives: [
+                                          {
+                                            name: "show",
+                                            rawName: "v-show",
+                                            value: _vm.tokenResending,
+                                            expression: "tokenResending"
+                                          }
+                                        ]
+                                      },
+                                      [
+                                        _c("i", {
+                                          staticClass: "fas fa-spinner fa-spin"
+                                        })
+                                      ]
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.token,
+                                        expression: "token"
+                                      }
+                                    ],
+                                    attrs: {
+                                      type: "number",
+                                      placeholder: "Enter otp recieved"
+                                    },
+                                    domProps: { value: _vm.token },
+                                    on: {
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.token = $event.target.value
+                                      }
+                                    }
+                                  })
                                 ]
                               ),
                               _vm._v(" "),
