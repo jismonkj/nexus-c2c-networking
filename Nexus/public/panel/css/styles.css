@@ -113,7 +113,8 @@ input.form-control {
 }
 
 .navbar-custom {
-    background: #222;
+    /* background: #222; */
+    background: #3f4257;
     height: 60px;
 }
 
@@ -1557,4 +1558,20 @@ a:hover {
     float: right;
     font-size: 15px;
     color: #fff3f3fc;
+}
+
+/* admin -- user profile modal */
+
+.modal-backdrop{
+    background: #1b35481c;
+    padding: 120px 120px;
+}
+
+.navbar-brand svg{
+    height: 60px;
+    width:auto;
+}
+
+.navbar-header .navbar-brand {
+    padding-top: 1px;
 }

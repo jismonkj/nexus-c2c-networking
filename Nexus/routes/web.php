@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Broadcast;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,12 +21,18 @@ Route::get('/home', 'HomeController@index')->name('nexushome');
 /* COMMON
 _________________________________________________________________
 ___________________________________________________________________ */
-
+//block info
+Route::get('/disabled', function(){
+    if(Auth::user()->status != "ban"){
+        return redirect('/home');
+    }
+    return view("disabled");
+});
 //places
 Route::resource('/country', 'CountryController');
 Route::resource('/state', 'StateController');
 Route::resource('/city', 'CityController');
-
+//mail 
 Route::post('/check/mail/exists', 'GuestController@checkIfMailExists');
 
 /* MEMBER

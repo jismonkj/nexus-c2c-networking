@@ -47,12 +47,8 @@
                 <label for="checkbox-1">{{ country.country_name }}</label>
               </div>
               <div class="pull-right action-buttons">
-                <a class="pencil" @click="editCountry(country.id)">
+                <a href="#" class="pencil" @click.prevent="editCountry(country.id)">
                   <em class="fa fa-pencil"></em>
-                </a>
-                |
-                <a class="trash" @click="delCountry(country.id)">
-                  <em class="fa fa-trash"></em>
                 </a>
               </div>
             </li>
@@ -149,12 +145,8 @@
                 <label for="checkbox-1">{{ state.state_name }}</label>
               </div>
               <div class="pull-right action-buttons">
-                <a href="" class="pencil" @click="editState(state.id)">
+                <a href="#" class="pencil" @click.prevent="editState(state.id)">
                   <em class="fa fa-pencil"></em>
-                </a>
-                |
-                <a href="" class="trash" @click="delState(state.id)">
-                  <em class="fa fa-trash"></em>
                 </a>
               </div>
             </li>
@@ -243,12 +235,8 @@
                 <label for="checkbox-1">{{ city.city_name }}</label>
               </div>
               <div class="pull-right action-buttons">
-                <a class="pencil" @click="editCity(city.id)">
+                <a href="#" class="pencil" @click.prevent="editCity(city.id)">
                   <em class="fa fa-pencil"></em>
-                </a>
-                |
-                <a class="trash" @click="delCity(city.id)">
-                  <em class="fa fa-trash"></em>
                 </a>
               </div>
             </li>
@@ -281,13 +269,6 @@
           </div>
         </div>
       </div>
-    </div>
-    <!--/.col-->
-    <div class="col-sm-12">
-      <p class="back-link">
-        Lumino Theme by
-        <a href="https://www.medialoot.com">Medialoot</a>
-      </p>
     </div>
   </div>
 </template>

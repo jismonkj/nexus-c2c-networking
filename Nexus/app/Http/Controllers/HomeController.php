@@ -39,6 +39,11 @@ class HomeController extends Controller
      */
     public function index()
     {
+        if(Auth::user()->status == "ban"){
+
+            return redirect('/disabled');
+        }
+
         if (Auth::user()->type == 'admin') {
             return view('layouts.admin');
         } else if (Auth::user()->type == 'distrib') {

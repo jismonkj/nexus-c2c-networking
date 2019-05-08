@@ -30,7 +30,7 @@
       <li v-bind:class="{ active : activeTab == 'Places' }" @click="setBreadCumb('Places')">
         <router-link to="places">
           <a href>
-            <em class="fa fa-dashboard">&nbsp;</em>
+            <em class="fa fa-location-arrow">&nbsp;</em>
             Places
           </a>
         </router-link>
@@ -38,7 +38,7 @@
       <li v-bind:class="{ active : activeTab == 'Members' }" @click="setBreadCumb('Members')">
         <router-link to="members">
           <a href>
-            <em class="fa fa-dashboard">&nbsp;</em>
+            <em class="fa fa-group">&nbsp;</em>
             Members
           </a>
         </router-link>
@@ -49,7 +49,7 @@
       >
         <router-link to="distributors">
           <a href>
-            <em class="fa fa-dashboard">&nbsp;</em>
+            <em class="fa fa-truck">&nbsp;</em>
             Distributors
           </a>
         </router-link>
@@ -60,7 +60,7 @@
       >
         <router-link to="distribreg">
           <a href>
-            <em class="fa fa-dashboard">&nbsp;</em>
+            <em class="fa fa-plus-square-o">&nbsp;</em>
             Add Distributors
           </a>
         </router-link>
