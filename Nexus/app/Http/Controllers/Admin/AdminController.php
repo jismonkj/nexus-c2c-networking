@@ -10,6 +10,7 @@ use App\Distrib\Profile;
 use App\Http\Controllers\FileController;
 use Illuminate\Support\Facades\Log;
 use App\Member\Items;
+use App\Member\Wallet;
 
 class AdminController extends Controller
 {
@@ -158,5 +159,18 @@ class AdminController extends Controller
         //update distrib profile
         Profile::create($profileData);
         return 1;
+    }
+
+    public function allTransactions()
+    {
+        $data= [];
+        //transer
+        // $data['transfer'] = Wallet::where('type', 'transfer')->leftJoin('nexus_member_profile', 'nexus_member_profile.uid', 'nexus_wallet_trans.refid')->select('nexus_member_profile.fname as cfname', 'nexus_member_profile.lname as clname', 'nexus_wallet_trans.*')->get();
+        //member
+        $data['member'] = Wallet::where('type', 'member')->leftJoin('nexus_member_profile as d', 'd.uid', 'nexus_wallet_trans.uid')->leftJoin('nexus_member_profile as c', 'c.uid', 'nexus_wallet_trans.refid')->select('d.fname as dfname', 'd.lname as dlname', 'c.fname as cfname', 'c.lname as clname', 'nexus_wallet_trans.*')->orderBy('nexus_wallet_trans.created_at', 'DESC')->get();
+        //distributor
+        // $data['member'] = Wallet::where('type', 'member')->get();
+
+        return $data;
     }
 }

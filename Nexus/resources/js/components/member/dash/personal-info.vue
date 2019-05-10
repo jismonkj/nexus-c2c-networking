@@ -9,7 +9,7 @@
         <form @submit.prevent="saveProfile">
           <div class="row">
             <div class="col col-lg-6 col-md-6 col-sm-12 col-12">
-              <div class="form-group label-floating">
+              <div class="form-group label-floating is-focused">
                 <label class="control-label">First Name</label>
                 <input
                   class="form-control"
@@ -21,7 +21,7 @@
                 <span class="material-input"></span>
               </div>
 
-              <div class="form-group label-floating">
+              <div class="form-group label-floating is-focused">
                 <label class="control-label">Your Email</label>
                 <input
                   class="form-control"
@@ -33,7 +33,7 @@
                 <span class="material-input"></span>
               </div>
 
-              <div class="form-group date-time-picker label-floating">
+              <div class="form-group date-time-picker label-floating is-focused">
                 <label class="control-label">Your Birthday</label>
                 <input name="datetimepicker" value="10/24/1984" v-model="profile.dob">
                 <span class="input-group-addon">
@@ -45,7 +45,7 @@
             </div>
 
             <div class="col col-lg-6 col-md-6 col-sm-12 col-12">
-              <div class="form-group label-floating">
+              <div class="form-group label-floating is-focused">
                 <label class="control-label">Last Name</label>
                 <input
                   class="form-control"
@@ -57,7 +57,7 @@
                 <span class="material-input"></span>
               </div>
 
-              <div class="form-group label-floating">
+              <div class="form-group label-floating is-focused">
                 <label class="control-label">Your Website</label>
                 <input
                   class="form-control"
@@ -69,7 +69,7 @@
                 <span class="material-input"></span>
               </div>
 
-              <div class="form-group label-floating">
+              <div class="form-group label-floating is-focused">
                 <label class="control-label">Your Phone Number</label>
                 <input class="form-control" placeholder type="text" v-model="profile.mobile">
                 <span class="material-input"></span>
@@ -77,7 +77,7 @@
             </div>
 
             <div class="col col-lg-4 col-md-4 col-sm-12 col-12">
-              <div class="form-group label-floating is-select">
+              <div class="form-group label-floating is-focused is-select">
                 <label class="control-label">Your Country</label>
                 <select name="country_id" class="form-control-lg" @change="getStates" v-model="profile.country_id">
                   <option
@@ -90,7 +90,7 @@
             </div>
 
             <div class="col col-lg-4 col-md-4 col-sm-12 col-12">
-              <div class="form-group label-floating is-select">
+              <div class="form-group label-floating is-focused is-select">
                 <label class="control-label">Your State/Province</label>
                 <select name="state_id" class="form-control-lg" @change="getCities" v-model="profile.state_id">
                   <option
@@ -102,7 +102,7 @@
               </div>
             </div>
             <div class="col col-lg-4 col-md-4 col-sm-12 col-12">
-              <div class="form-group label-floating is-select">
+              <div class="form-group label-floating is-focused is-select">
                 <label class="control-label">Your City</label>
                 <select name="state_id" class="form-control-lg" @change="getCities" v-model="profile.city_id">
                   <option
@@ -114,14 +114,14 @@
               </div>
             </div>
             <div class="col col-lg-4 col-md-4 col-sm-12 col-12">
-              <div class="form-group label-floating">
+              <div class="form-group label-floating is-focused">
                 <label class="control-label">Your Birthplace</label>
                 <input class="form-control-lg" placeholder type="text" v-model="profile.birth_place">
                 <span class="material-input"></span>
               </div>
             </div>
             <div class="col col-lg-4 col-md-4 col-sm-12 col-12">
-              <div class="form-group label-floating ">
+              <div class="form-group label-floating is-focused ">
                 <label class="control-label">Your Gender</label>
                 <select class=" form-control-lg" v-model="profile.gender" tabindex="-98">
                   <option value="male">Male</option>
@@ -131,7 +131,7 @@
               </div>
             </div>
             <div class="col col-lg-4 col-md-4 col-sm-12 col-12">
-              <div class="form-group label-floating">
+              <div class="form-group label-floating is-focused">
                 <label class="control-label">Status</label>
                 <select
                   class="form-control-lg"
@@ -146,14 +146,14 @@
               </div>
             </div>
             <div class="col-12">
-              <div class="form-group label-floating">
+              <div class="form-group label-floating is-focused">
                 <label class="control-label">Write a little description about you</label>
                 <textarea v-model="profile.about_you" class="form-control" placeholder>Hi, I’m James, I’m 36 and I work as a Digital Designer for the  “Daydreams” Agency in Pier 56</textarea>
                 <span class="material-input"></span>
               </div>
             </div>
             <div class="col col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-              <div class="form-group with-icon label-floating">
+              <div class="form-group with-icon label-floating is-focused">
                 <label class="control-label">Your Facebook Username</label>
                 <input
                   class="form-control"
@@ -179,7 +179,7 @@
                 <!-- <i class="fab fa-facebook-f c-facebook" aria-hidden="true"></i> -->
                 <span class="material-input"></span>
               </div>
-              <div class="form-group with-icon label-floating">
+              <div class="form-group with-icon label-floating is-focused">
                 <label class="control-label">Your Twitter Username</label>
                 <input
                   class="form-control"
@@ -205,7 +205,7 @@
                 <!-- <i class="fab fa-twitter c-twitter" aria-hidden="true"></i> -->
                 <span class="material-input"></span>
               </div>
-              <div class="form-group with-icon label-floating">
+              <div class="form-group with-icon label-floating is-focused">
                 <label class="control-label">Your RSS Feed Username</label>
                 <input class="form-control" type="text" v-model="profile.rss_feed">
                 <svg
@@ -226,7 +226,7 @@
                 <!-- <i class="fa fa-rss c-rss" aria-hidden="true"></i> -->
                 <span class="material-input"></span>
               </div>
-              <div class="form-group with-icon label-floating">
+              <div class="form-group with-icon label-floating is-focused">
                 <label class="control-label">Your Dribbble Username</label>
                 <input
                   class="form-control"
@@ -252,7 +252,7 @@
                 <!-- <i class="fab fa-dribbble c-dribbble" aria-hidden="true"></i> -->
                 <span class="material-input"></span>
               </div>
-              <div class="form-group with-icon label-floating">
+              <div class="form-group with-icon label-floating is-focused">
                 <label class="control-label">Your Spotify Username</label>
                 <input class="form-control" type="text" v-model="profile.spotify">
                 <svg

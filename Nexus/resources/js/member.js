@@ -32,6 +32,7 @@ Vue.use(Autocomplete);
 import Wallet from "./components/utils/wallet";
 import NotifyBar from "./components/utils/notify.vue";
 import ImageView from "./components/utils/image-view.vue";
+import WalkThrough from "./components/utils/walk-through.vue";
 // import SBar from './components/admin/SideBar.vue'
 // import Places from './components/admin/Places.vue'
 
@@ -255,6 +256,8 @@ const app = new Vue({
         imgSet: null,
         imgPath: null,
         viewImage: false,
+        //walkthrough
+        showWalkThrough:false
     },
     router,
     methods: {
@@ -291,13 +294,20 @@ const app = new Vue({
             this.imgPath = path;
             this.imgSet = imgSet
             this.viewImage = true;
+        },
+        startTour(){
+            this.showWalkThrough = true;
+        },
+        endTour(){
+            this.showWalkThrough = false;
         }
     },
     components: {
         "modal-wallet": Wallet,
         NotifyBar,
         ModalBuy,
-        ImageView
+        ImageView,
+        WalkThrough
     }
 
 });

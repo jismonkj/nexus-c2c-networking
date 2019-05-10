@@ -36,7 +36,8 @@
 </head>
 
 <body>
-    <div id="memberApp" :class="{'page-shadow':pageShadow}">
+    <div id="memberApp">
+        <div :class="{'page-shadow':pageShadow}"></div>
         <!-- Header-BP -->
         <header class="header" id="site-header">
             <div class="page-title">

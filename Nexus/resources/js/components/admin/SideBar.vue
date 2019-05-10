@@ -65,6 +65,17 @@
           </a>
         </router-link>
       </li>
+      <li
+        v-bind:class="{ active : activeTab == 'Transactions' }"
+        @click="setBreadCumb('Transactions')"
+      >
+        <router-link to="transactions">
+          <a href>
+            <em class="fa fa-plus-square-o">&nbsp;</em>
+            Transactions
+          </a>
+        </router-link>
+      </li>
     </ul>
   </div>
 </template>

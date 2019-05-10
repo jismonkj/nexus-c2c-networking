@@ -10,8 +10,8 @@ import Places from './components/admin/Places.vue'
 import Members from './components/admin/Members.vue'
 import Distributors from './components/admin/Distributors.vue'
 import DistribReg from './components/admin/DistribReg.vue'
-import AdminDash from './components/admin/DashBoard.vue'
-import { throws } from 'assert';
+import AdminDash from './components/admin/DashBoard.vue' 
+import Transactions from './components/admin/Transactions.vue' 
 
 Vue.component('SBar', SBar)
 
@@ -22,8 +22,10 @@ let routes = [
     { path: '/places', component: Places },
     { path: '/members', component: Members },
     { path: '/distributors', component: Distributors },
-    { path: '/distribreg', component: DistribReg }
+    { path: '/distribreg', component: DistribReg },
+    { path: '/transactions', component: Transactions },
 ];
+
 const router = new VueRouter({
     routes // short for `routes: routes`
 })

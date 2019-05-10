@@ -28,6 +28,8 @@ Route::get('/disabled', function(){
     }
     return view("disabled");
 });
+//walkthrough
+Route::view('/walkthrough', 'walk');
 //places
 Route::resource('/country', 'CountryController');
 Route::resource('/state', 'StateController');
@@ -96,6 +98,7 @@ ______________________________________________________________________________*/
 Route::resource('/admin', 'Admin\AdminController');
 Route::post('/admin/users/list', 'Admin\AdminController@listUsers');
 Route::post('/admin/add/distrib', 'Admin\AdminController@addDistrib');
+Route::get('/adm/transactions', 'Admin\AdminController@allTransactions');
 # -- orders
 
 /* FILES

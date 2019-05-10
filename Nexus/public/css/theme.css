@@ -305,8 +305,16 @@ article.hentry.post h6 {
 
 /* //home page */
 /* .page-shadow {
-    overflow: hidden;
-    height: 100vh;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+    color: rgba(130, 130, 130, 0.5);
+    font-size: 50px;
+    text-align: center;
+    line-height: 100px;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
 } */
 
 .img-link {
@@ -326,4 +334,16 @@ article.hentry.post h6 {
     width: 200px;
     font-weight: 800;
     word-break: break-word;
+}
+
+/* walkthrough
+___________________ */
+.drop-bottom{
+    position: absolute;
+    bottom: 0;
+}
+
+.height-462{
+    height: 462px;
+    overflow: hidden;
 }
