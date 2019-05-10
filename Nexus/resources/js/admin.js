@@ -43,6 +43,15 @@ const app = new Vue({
     },
     router,
     mounted() {
+
+window.axios.interceptors.request.use( (config) =>{
+    this.processing = true;
+    return config;
+});
+window.axios.interceptors.response.use((response)=>{
+    this.processing = false;
+    return response;
+});
     },
     methods: {
         register: function () {

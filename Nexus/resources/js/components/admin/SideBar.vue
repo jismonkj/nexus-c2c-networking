@@ -5,7 +5,7 @@
         <img src="http://placehold.it/50/30a5ff/fff" class="img-responsive" alt>
       </div>
       <div class="profile-usertitle">
-        <div class="profile-usertitle-name">Admin</div>
+        <div class="profile-usertitle-name font-800 all-uppercase">Admin</div>
         <div class="profile-usertitle-status">
           <span class="indicator label-success"></span>Online
         </div>
@@ -71,7 +71,7 @@
       >
         <router-link to="transactions">
           <a href>
-            <em class="fa fa-plus-square-o">&nbsp;</em>
+            <em class="fa fa-money">&nbsp;</em>
             Transactions
           </a>
         </router-link>

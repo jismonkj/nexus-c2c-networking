@@ -2,7 +2,6 @@
   <div class="cover">
     <div class="row">
       <div class="col-lg-12">
-        <h1 class="page-header">Dashboard</h1>
       </div>
     </div>
     <div class="panel panel-container">
@@ -12,7 +11,7 @@
             <div class="row no-padding">
               <em class="fa fa-xl fa-shopping-cart color-blue"></em>
               <div class="large">{{ statistics.items }}</div>
-              <div class="text-muted">New Orders</div>
+              <div class="text-muted">New Posts</div>
             </div>
           </div>
         </div>
@@ -20,8 +19,8 @@
           <div class="panel panel-blue panel-widget border-right">
             <div class="row no-padding">
               <em class="fa fa-xl fa-comments color-orange"></em>
-              <div class="large">{{ statistics.items }}</div>
-              <div class="text-muted">Comments</div>
+              <div class="large">{{ statistics.orders }}</div>
+              <div class="text-muted">Orders</div>
             </div>
           </div>
         </div>
@@ -38,8 +37,8 @@
           <div class="panel panel-red panel-widget">
             <div class="row no-padding">
               <em class="fa fa-xl fa-search color-red"></em>
-              <div class="large">25.2k</div>
-              <div class="text-muted">Page Views</div>
+              <div class="large">{{ statistics.auctions }}</div>
+              <div class="text-muted">Auctions This Week</div>
             </div>
           </div>
         </div>

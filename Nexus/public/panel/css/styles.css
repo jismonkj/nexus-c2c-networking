@@ -1576,3 +1576,21 @@ a:hover {
     padding-top: 1px;
 }
 
+
+/* sidebars  */
+.sidebar{
+    background: #3f4257;
+    color:#fff;
+}
+
+.sidebar ul.nav li a{
+    color:#fff;
+}
+
+.font-800{
+    font-weight: 800;
+}
+
+.all-uppercase{
+    text-transform: uppercase
+}

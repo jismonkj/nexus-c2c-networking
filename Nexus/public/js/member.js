@@ -6596,7 +6596,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       var data = {
-        'uid': Math.ceil(Math.random() * 10000),
+        'uid': '0',
         'amount': this.transferAmount,
         'type': 'transfer'
       };

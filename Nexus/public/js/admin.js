@@ -182,7 +182,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     var _this = this;
@@ -508,7 +507,6 @@ __webpack_require__.r(__webpack_exports__);
     blockOrUnblockUser: function blockOrUnblockUser(id) {
       var _this2 = this;
 
-      this.$root.processing = true;
       var index = this.users.findIndex(function (user) {
         return user.id == id;
       });
@@ -522,7 +520,6 @@ __webpack_require__.r(__webpack_exports__);
         }).then(function (data) {
           // update ui
           _this2.users[index].status = "ban";
-          _this2.$root.processing = false;
         });
       } else if (status == "ban") {
         //unblock user
@@ -532,7 +529,6 @@ __webpack_require__.r(__webpack_exports__);
         }).then(function (data) {
           //update ui
           _this2.users[index].status = "active";
-          _this2.$root.processing = false;
         });
       }
     },
@@ -1265,18 +1261,168 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     var _this = this;
 
     axios.get('adm/transactions').then(function (res) {
-      console.log(res.data);
       _this.memberTransactions = res.data.member;
+      _this.distribTransactions = res.data.distributor;
+      _this.walletTransfers = res.data.transferCredits;
+      _this.walletTransfers2 = res.data.transferDebits;
     });
   },
   data: function data() {
     return {
-      memberTransactions: []
+      memberTransactions: [],
+      distribTransactions: [],
+      walletTransfers: [],
+      walletTransfers2: []
     };
   }
 });
@@ -1317,7 +1463,7 @@ var render = function() {
                   _vm._v(_vm._s(_vm.statistics.items))
                 ]),
                 _vm._v(" "),
-                _c("div", { staticClass: "text-muted" }, [_vm._v("New Orders")])
+                _c("div", { staticClass: "text-muted" }, [_vm._v("New Posts")])
               ])
             ]
           )
@@ -1332,10 +1478,10 @@ var render = function() {
                 _c("em", { staticClass: "fa fa-xl fa-comments color-orange" }),
                 _vm._v(" "),
                 _c("div", { staticClass: "large" }, [
-                  _vm._v(_vm._s(_vm.statistics.items))
+                  _vm._v(_vm._s(_vm.statistics.orders))
                 ]),
                 _vm._v(" "),
-                _c("div", { staticClass: "text-muted" }, [_vm._v("Comments")])
+                _c("div", { staticClass: "text-muted" }, [_vm._v("Orders")])
               ])
             ]
           )
@@ -1359,11 +1505,25 @@ var render = function() {
           )
         ]),
         _vm._v(" "),
-        _vm._m(1)
+        _c("div", { staticClass: "col-xs-6 col-md-3 col-lg-3 no-padding" }, [
+          _c("div", { staticClass: "panel panel-red panel-widget" }, [
+            _c("div", { staticClass: "row no-padding" }, [
+              _c("em", { staticClass: "fa fa-xl fa-search color-red" }),
+              _vm._v(" "),
+              _c("div", { staticClass: "large" }, [
+                _vm._v(_vm._s(_vm.statistics.auctions))
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "text-muted" }, [
+                _vm._v("Auctions This Week")
+              ])
+            ])
+          ])
+        ])
       ])
     ]),
     _vm._v(" "),
-    _vm._m(2)
+    _vm._m(1)
   ])
 }
 var staticRenderFns = [
@@ -1372,25 +1532,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-lg-12" }, [
-        _c("h1", { staticClass: "page-header" }, [_vm._v("Dashboard")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-xs-6 col-md-3 col-lg-3 no-padding" }, [
-      _c("div", { staticClass: "panel panel-red panel-widget" }, [
-        _c("div", { staticClass: "row no-padding" }, [
-          _c("em", { staticClass: "fa fa-xl fa-search color-red" }),
-          _vm._v(" "),
-          _c("div", { staticClass: "large" }, [_vm._v("25.2k")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "text-muted" }, [_vm._v("Page Views")])
-        ])
-      ])
+      _c("div", { staticClass: "col-lg-12" })
     ])
   },
   function() {
@@ -2863,7 +3005,7 @@ var render = function() {
           [
             _c("router-link", { attrs: { to: "transactions" } }, [
               _c("a", { attrs: { href: "" } }, [
-                _c("em", { staticClass: "fa fa-plus-square-o" }, [_vm._v(" ")]),
+                _c("em", { staticClass: "fa fa-money" }, [_vm._v(" ")]),
                 _vm._v("\n          Transactions\n        ")
               ])
             ])
@@ -2888,7 +3030,11 @@ var staticRenderFns = [
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "profile-usertitle" }, [
-        _c("div", { staticClass: "profile-usertitle-name" }, [_vm._v("Admin")]),
+        _c(
+          "div",
+          { staticClass: "profile-usertitle-name font-800 all-uppercase" },
+          [_vm._v("Admin")]
+        ),
         _vm._v(" "),
         _c("div", { staticClass: "profile-usertitle-status" }, [
           _c("span", { staticClass: "indicator label-success" }),
@@ -2935,7 +3081,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "row" }, [
-    _c("div", { staticClass: "col-md-12" }, [
+    _c("div", { staticClass: "col-md-4" }, [
       _c("div", { staticClass: "panel panel-default" }, [
         _vm._m(0),
         _vm._v(" "),
@@ -2958,21 +3104,21 @@ var render = function() {
                   _c("div", { staticClass: "timeline-heading" }, [
                     _c("h4", { staticClass: "timeline-title" }, [
                       _vm._v(
-                        "\n                  " +
+                        "\n                    " +
                           _vm._s(item.dfname) +
                           " " +
                           _vm._s(item.dlname) +
-                          " \n                  "
+                          " \n                    "
                       ),
                       _c("em", {
                         staticClass: "glyphicon glyphicon-chevron-right"
                       }),
                       _vm._v(
-                        "\n                  " +
+                        "\n                    " +
                           _vm._s(item.cfname) +
                           " " +
                           _vm._s(item.clname) +
-                          "\n                "
+                          "\n                  "
                       )
                     ])
                   ]),
@@ -2980,11 +3126,11 @@ var render = function() {
                   _c("div", { staticClass: "timeline-body" }, [
                     _c("p", [
                       _vm._v(
-                        "\n                  Amount: " +
+                        "\n                    Amount: " +
                           _vm._s(item.amount) +
                           " | Date: " +
                           _vm._s(item.created_at) +
-                          "\n                "
+                          "\n                  "
                       )
                     ])
                   ])
@@ -2992,6 +3138,151 @@ var render = function() {
               ])
             }),
             0
+          )
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "col-md-4" }, [
+      _c("div", { staticClass: "panel panel-default" }, [
+        _vm._m(1),
+        _vm._v(" "),
+        _c("div", { staticClass: "panel-body timeline-container" }, [
+          _c(
+            "ul",
+            { staticClass: "timeline" },
+            _vm._l(_vm.distribTransactions, function(item) {
+              return _c("li", { key: item.trid }, [
+                _c("div", { staticClass: "timeline-badge warning" }, [
+                  item.orderid != null
+                    ? _c("em", {
+                        staticClass: "glyphicon glyphicon-shopping-cart",
+                        attrs: { title: "Order Payment" }
+                      })
+                    : _vm._e()
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "timeline-panel" }, [
+                  _c("div", { staticClass: "timeline-heading" }, [
+                    _c("h4", { staticClass: "timeline-title" }, [
+                      _vm._v(
+                        "\n                    " +
+                          _vm._s(item.dfname) +
+                          " " +
+                          _vm._s(item.dlname) +
+                          " \n                    "
+                      ),
+                      _c("em", {
+                        staticClass: "glyphicon glyphicon-chevron-right"
+                      }),
+                      _vm._v(
+                        "\n                    " +
+                          _vm._s(item.distrib_name) +
+                          "\n                  "
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "timeline-body" }, [
+                    _c("p", [
+                      _vm._v(
+                        "\n                    Amount: " +
+                          _vm._s(item.amount) +
+                          " | Date: " +
+                          _vm._s(item.created_at) +
+                          "\n                  "
+                      )
+                    ])
+                  ])
+                ])
+              ])
+            }),
+            0
+          )
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "col-md-4" }, [
+      _c("div", { staticClass: "panel panel-default" }, [
+        _vm._m(2),
+        _vm._v(" "),
+        _c("div", { staticClass: "panel-body timeline-container" }, [
+          _c(
+            "ul",
+            { staticClass: "timeline" },
+            [
+              _vm._l(_vm.walletTransfers, function(item) {
+                return _c("li", { key: item.trid }, [
+                  _vm._m(3, true),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "timeline-panel" }, [
+                    _c("div", { staticClass: "timeline-heading" }, [
+                      _c("h4", { staticClass: "timeline-title" }, [
+                        _vm._v(
+                          "\n                    " +
+                            _vm._s(item.cfname) +
+                            " " +
+                            _vm._s(item.clname) +
+                            " \n                    "
+                        ),
+                        _c("em", {
+                          staticClass: "glyphicon glyphicon-chevron-right"
+                        })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "timeline-body" }, [
+                      _c("p", [
+                        _vm._v(
+                          "\n                    Amount: " +
+                            _vm._s(item.amount) +
+                            " | Date: " +
+                            _vm._s(item.created_at) +
+                            "\n                  "
+                        )
+                      ])
+                    ])
+                  ])
+                ])
+              }),
+              _vm._v(" "),
+              _vm._l(_vm.walletTransfers2, function(item) {
+                return _c("li", { key: item.trid }, [
+                  _vm._m(4, true),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "timeline-panel" }, [
+                    _c("div", { staticClass: "timeline-heading" }, [
+                      _c("h4", { staticClass: "timeline-title" }, [
+                        _vm._v(
+                          "\n                    " +
+                            _vm._s(item.cfname) +
+                            " " +
+                            _vm._s(item.clname) +
+                            " \n                    "
+                        ),
+                        _c("em", {
+                          staticClass: "glyphicon glyphicon-chevron-right"
+                        })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "timeline-body" }, [
+                      _c("p", [
+                        _vm._v(
+                          "\n                    Amount: " +
+                            _vm._s(item.amount) +
+                            " | Date: " +
+                            _vm._s(item.created_at) +
+                            "\n                  "
+                        )
+                      ])
+                    ])
+                  ])
+                ])
+              })
+            ],
+            2
           )
         ])
       ])
@@ -3004,7 +3295,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "panel-heading" }, [
-      _vm._v("\n        Members\n        "),
+      _vm._v("\n          On Items\n          "),
       _c(
         "ul",
         { staticClass: "pull-right panel-settings panel-button-tab-right" },
@@ -3025,7 +3316,7 @@ var staticRenderFns = [
                   _c("li", [
                     _c("a", { attrs: { href: "#" } }, [
                       _c("em", { staticClass: "fa fa-cog" }),
-                      _vm._v(" Settings 1\n                    ")
+                      _vm._v(" Settings 1\n                      ")
                     ])
                   ]),
                   _vm._v(" "),
@@ -3034,7 +3325,7 @@ var staticRenderFns = [
                   _c("li", [
                     _c("a", { attrs: { href: "#" } }, [
                       _c("em", { staticClass: "fa fa-cog" }),
-                      _vm._v(" Settings 2\n                    ")
+                      _vm._v(" Settings 2\n                      ")
                     ])
                   ]),
                   _vm._v(" "),
@@ -3043,7 +3334,7 @@ var staticRenderFns = [
                   _c("li", [
                     _c("a", { attrs: { href: "#" } }, [
                       _c("em", { staticClass: "fa fa-cog" }),
-                      _vm._v(" Settings 3\n                    ")
+                      _vm._v(" Settings 3\n                      ")
                     ])
                   ])
                 ])
@@ -3060,6 +3351,154 @@ var staticRenderFns = [
         },
         [_c("em", { staticClass: "fa fa-toggle-up" })]
       )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "panel-heading" }, [
+      _vm._v("\n          Distributors\n          "),
+      _c(
+        "ul",
+        { staticClass: "pull-right panel-settings panel-button-tab-right" },
+        [
+          _c("li", { staticClass: "dropdown" }, [
+            _c(
+              "a",
+              {
+                staticClass: "pull-right dropdown-toggle",
+                attrs: { "data-toggle": "dropdown", href: "#" }
+              },
+              [_c("em", { staticClass: "fa fa-cogs" })]
+            ),
+            _vm._v(" "),
+            _c("ul", { staticClass: "dropdown-menu dropdown-menu-right" }, [
+              _c("li", [
+                _c("ul", { staticClass: "dropdown-settings" }, [
+                  _c("li", [
+                    _c("a", { attrs: { href: "#" } }, [
+                      _c("em", { staticClass: "fa fa-cog" }),
+                      _vm._v(" Settings 1\n                      ")
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("li", { staticClass: "divider" }),
+                  _vm._v(" "),
+                  _c("li", [
+                    _c("a", { attrs: { href: "#" } }, [
+                      _c("em", { staticClass: "fa fa-cog" }),
+                      _vm._v(" Settings 2\n                      ")
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("li", { staticClass: "divider" }),
+                  _vm._v(" "),
+                  _c("li", [
+                    _c("a", { attrs: { href: "#" } }, [
+                      _c("em", { staticClass: "fa fa-cog" }),
+                      _vm._v(" Settings 3\n                      ")
+                    ])
+                  ])
+                ])
+              ])
+            ])
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "span",
+        {
+          staticClass: "pull-right clickable panel-toggle panel-button-tab-left"
+        },
+        [_c("em", { staticClass: "fa fa-toggle-up" })]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "panel-heading" }, [
+      _vm._v("\n          Wallet Transfers\n          "),
+      _c(
+        "ul",
+        { staticClass: "pull-right panel-settings panel-button-tab-right" },
+        [
+          _c("li", { staticClass: "dropdown" }, [
+            _c(
+              "a",
+              {
+                staticClass: "pull-right dropdown-toggle",
+                attrs: { "data-toggle": "dropdown", href: "#" }
+              },
+              [_c("em", { staticClass: "fa fa-cogs" })]
+            ),
+            _vm._v(" "),
+            _c("ul", { staticClass: "dropdown-menu dropdown-menu-right" }, [
+              _c("li", [
+                _c("ul", { staticClass: "dropdown-settings" }, [
+                  _c("li", [
+                    _c("a", { attrs: { href: "#" } }, [
+                      _c("em", { staticClass: "fa fa-cog" }),
+                      _vm._v(" Settings 1\n                      ")
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("li", { staticClass: "divider" }),
+                  _vm._v(" "),
+                  _c("li", [
+                    _c("a", { attrs: { href: "#" } }, [
+                      _c("em", { staticClass: "fa fa-cog" }),
+                      _vm._v(" Settings 2\n                      ")
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("li", { staticClass: "divider" }),
+                  _vm._v(" "),
+                  _c("li", [
+                    _c("a", { attrs: { href: "#" } }, [
+                      _c("em", { staticClass: "fa fa-cog" }),
+                      _vm._v(" Settings 3\n                      ")
+                    ])
+                  ])
+                ])
+              ])
+            ])
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "span",
+        {
+          staticClass: "pull-right clickable panel-toggle panel-button-tab-left"
+        },
+        [_c("em", { staticClass: "fa fa-toggle-up" })]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "timeline-badge primary" }, [
+      _c("em", {
+        staticClass: "glyphicon glyphicon-log-in",
+        attrs: { title: "Credit Transfer" }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "timeline-badge danger" }, [
+      _c("em", {
+        staticClass: "glyphicon glyphicon-log-out",
+        attrs: { title: "Debit Transfer" }
+      })
     ])
   }
 ]
@@ -5875,7 +6314,18 @@ var app = new Vue({
     processing: false
   },
   router: router,
-  mounted: function mounted() {},
+  mounted: function mounted() {
+    var _this = this;
+
+    window.axios.interceptors.request.use(function (config) {
+      _this.processing = true;
+      return config;
+    });
+    window.axios.interceptors.response.use(function (response) {
+      _this.processing = false;
+      return response;
+    });
+  },
   methods: {
     register: function register() {
       var form = $('#regForm')[0];

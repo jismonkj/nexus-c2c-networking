@@ -11,6 +11,8 @@ use App\Http\Controllers\FileController;
 use Illuminate\Support\Facades\Log;
 use App\Member\Items;
 use App\Member\Wallet;
+use App\Member\Auction;
+use App\ItemOrders;
 
 class AdminController extends Controller
 {
@@ -31,8 +33,12 @@ class AdminController extends Controller
         $to = date('Y-m-d');
         $items = Items::whereBetween('created_at', [$from, $to])->count();
         $users = User::whereBetween('created_at', [$from, $to])->count();
+        $orders = ItemOrders::whereBetween('created_at', [$from, $to])->count();
+        $auctions = Auction::whereBetween('created_at', [$from, $to])->count();
         $data['items'] = $items;
         $data['users'] = $users;
+        $data['orders'] = $users;
+        $data['auctions'] = $users;
         return $data;
     }
 
@@ -165,11 +171,12 @@ class AdminController extends Controller
     {
         $data= [];
         //transer
-        // $data['transfer'] = Wallet::where('type', 'transfer')->leftJoin('nexus_member_profile', 'nexus_member_profile.uid', 'nexus_wallet_trans.refid')->select('nexus_member_profile.fname as cfname', 'nexus_member_profile.lname as clname', 'nexus_wallet_trans.*')->get();
+        $data['transferCredits'] = Wallet::where('type', 'transfer')->leftJoin('nexus_member_profile', 'nexus_member_profile.uid', 'nexus_wallet_trans.refid')->select('nexus_member_profile.fname as cfname', 'nexus_member_profile.lname as clname', 'nexus_wallet_trans.*')->where('nexus_wallet_trans.uid', '0')->get();
+        $data['transferDebits'] = Wallet::where('type', 'transfer')->leftJoin('nexus_member_profile', 'nexus_member_profile.uid', 'nexus_wallet_trans.uid')->select('nexus_member_profile.fname as cfname', 'nexus_member_profile.lname as clname', 'nexus_wallet_trans.*')->where('nexus_wallet_trans.refid', '0')->get();
         //member
         $data['member'] = Wallet::where('type', 'member')->leftJoin('nexus_member_profile as d', 'd.uid', 'nexus_wallet_trans.uid')->leftJoin('nexus_member_profile as c', 'c.uid', 'nexus_wallet_trans.refid')->select('d.fname as dfname', 'd.lname as dlname', 'c.fname as cfname', 'c.lname as clname', 'nexus_wallet_trans.*')->orderBy('nexus_wallet_trans.created_at', 'DESC')->get();
         //distributor
-        // $data['member'] = Wallet::where('type', 'member')->get();
+        $data['distributor'] = Wallet::where('type', 'distributor')->leftJoin('nexus_member_profile as d', 'd.uid', 'nexus_wallet_trans.uid')->leftJoin('nexus_distrib_profile as c', 'c.uid', 'nexus_wallet_trans.refid')->select('d.fname as dfname', 'd.lname as dlname', 'c.distrib_name', 'nexus_wallet_trans.*')->orderBy('nexus_wallet_trans.created_at', 'DESC')->get();
 
         return $data;
     }

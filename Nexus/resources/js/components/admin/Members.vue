@@ -118,7 +118,6 @@ export default {
   },
   methods: {
     blockOrUnblockUser(id) {
-      this.$root.processing = true;
       var index = this.users.findIndex(user => user.id == id);
       var status = this.users[index].status;
       if (status != "ban") {
@@ -128,7 +127,6 @@ export default {
           .then(data => {
             // update ui
             this.users[index].status = "ban";
-            this.$root.processing = false;
           });
       } else if (status == "ban") {
         //unblock user
@@ -137,7 +135,6 @@ export default {
           .then(data => {
             //update ui
             this.users[index].status = "active";
-            this.$root.processing = false;
           });
       }
     },

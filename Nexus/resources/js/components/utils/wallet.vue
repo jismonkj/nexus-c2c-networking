@@ -59,7 +59,7 @@ export default {
       this.$parent.isWalletModalVisible = false;
     },
     transferMoney:function(){
-      var data = {'uid':Math.ceil(Math.random()*10000), 'amount':this.transferAmount, 'type':'transfer'};
+      var data = {'uid':'0', 'amount':this.transferAmount, 'type':'transfer'};
       axios.post('my/wallet/credit', data).then(res => {
         if(res.data){
           this.walletBalance = res.data;
