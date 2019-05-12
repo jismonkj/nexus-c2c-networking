@@ -293,7 +293,7 @@ var app = new Vue({
       } else {
         delete this.errors.email;
       }
-    }, 200),
+    }, 100),
     password: _.debounce(function () {
       if (!this.rules.password.test(this.password)) {
         this.errors.password = true;
@@ -301,7 +301,7 @@ var app = new Vue({
       } else {
         delete this.errors.password;
       }
-    }, 200)
+    }, 100)
   }
 });
 

@@ -284,8 +284,7 @@ class HomeController extends Controller
     public static function verifyToken(Request $request)
     {
         $count = Tokens::where('uid', $request->uid)->where('token', $request->token)->where('type', $request->type)->get()->count();
-
-        Log::debug($count);
+        
         if ($count) {
             Tokens::where('uid', $request->uid)->where('token', $request->token)->where('type', $request->type)->delete();
         }

@@ -13,6 +13,7 @@ use App\Member\Items;
 use App\Member\Wallet;
 use App\Member\Auction;
 use App\ItemOrders;
+use App\Mail\DistribPassword;
 
 class AdminController extends Controller
 {
@@ -71,7 +72,7 @@ class AdminController extends Controller
      */
     public function show($id)
     {
-        $profile = User::find($id)->profile;        
+        $profile = User::find($id)->profile;
         $path = FileController::getImageUrl('avatar', $id);
         $profile->avatar = $path;
         return $profile;
@@ -142,6 +143,12 @@ class AdminController extends Controller
         }
     }
 
+    public function password_gen($chars)
+    {
+        $data = '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcefghijklmnopqrstuvwxyz';
+        return substr(str_shuffle($data), 0, $chars);
+    }
+
     public function addDistrib(Request $request)
     {
         //check if mail exists
@@ -152,7 +159,9 @@ class AdminController extends Controller
         $data['email'] = $request->email;
         $data['type'] = 'distrib';
         $data['status'] = 'active';
-        $data['password'] = Hash::make('user5');
+        $password = $this->password_gen(6);
+        Log::debug($password);
+        $data['password'] = Hash::make($password);
 
         $data['email_verified_at'] = date('Y-m-d h:i:s');
         // return $data;
@@ -164,12 +173,18 @@ class AdminController extends Controller
         //  return $profileData;
         //update distrib profile
         Profile::create($profileData);
+        try {
+            Mail::to($data['email'])->send(new DistribPassword($data['email'], $data['distrib_name'], $password));
+        
+        } catch (\Throwable $th) {
+            Log::debug($th);
+        }   
         return 1;
     }
 
     public function allTransactions()
     {
-        $data= [];
+        $data = [];
         //transer
         $data['transferCredits'] = Wallet::where('type', 'transfer')->leftJoin('nexus_member_profile', 'nexus_member_profile.uid', 'nexus_wallet_trans.refid')->select('nexus_member_profile.fname as cfname', 'nexus_member_profile.lname as clname', 'nexus_wallet_trans.*')->where('nexus_wallet_trans.uid', '0')->get();
         $data['transferDebits'] = Wallet::where('type', 'transfer')->leftJoin('nexus_member_profile', 'nexus_member_profile.uid', 'nexus_wallet_trans.uid')->select('nexus_member_profile.fname as cfname', 'nexus_member_profile.lname as clname', 'nexus_wallet_trans.*')->where('nexus_wallet_trans.refid', '0')->get();

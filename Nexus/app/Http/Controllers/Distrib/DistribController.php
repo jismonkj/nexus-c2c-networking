@@ -9,6 +9,7 @@ use App\Distrib\DistribCenter;
 use App\ItemOrders;
 use App\FileStore;
 use App\Http\Controllers\HomeController;
+use App\Member\Wallet;
 
 class DistribController extends Controller
 {
@@ -41,7 +42,7 @@ class DistribController extends Controller
                 $orders = ItemOrders::where('nexus_item_orders.status', 'fresh')->where('distrib_id', Auth::id())->join('nexus_member_addresses', 'nexus_item_orders.addr_id', 'nexus_member_addresses.addid')->join('cities as tcity', 'nexus_member_addresses.city_id', 'tcity.id')->join('states as tstate', 'tcity.sid', 'tstate.id')->join('countries as tcountry', 'tstate.cid', 'tcountry.id')->join('items', 'items.item_id', 'nexus_item_orders.item_id')->join('nexus_member_profile', 'items.uid', 'nexus_member_profile.uid')->join('cities as fcity', 'fcity.id', 'items.loc_id')->join('states as fstate', 'fcity.sid', 'fstate.id')->join('countries as fcountry', 'fcountry.id', 'fstate.cid')->select('nexus_item_orders.o_id', 'nexus_item_orders.uid as tuid', 'nexus_item_orders.item_id', 'nexus_item_orders.quantity', 'nexus_item_orders.amount', 'nexus_item_orders.service_charge', 'nexus_item_orders.addr_id', 'nexus_item_orders.created_at', 'nexus_item_orders.updated_at', 'nexus_member_addresses.fname as tfname', 'nexus_member_addresses.lname as tlname', 'nexus_member_addresses.contact as tcontact', 'nexus_member_addresses.address as taddress', 'nexus_member_addresses.zip as tzip', 'tcity.city_name as tcity_name', 'tstate.state_name as tstate_name', 'tcountry.country_name as tcountry_name', 'items.uid as fuid', 'items.contents', 'nexus_member_profile.fname as ffname', 'nexus_member_profile.lname as flname', 'nexus_member_profile.mobile as fcontact', 'fcity.city_name as fcity_name', 'fstate.state_name as fstate_name', 'fcountry.country_name as fcountry_name', 'nexus_item_orders.status')->paginate(6)->toArray();
                 break;
             case 'ontheway':
-                $orders = ItemOrders::where('nexus_item_orders.status', 'ontheway')->where('distrib_id', Auth::id())->join('nexus_member_addresses', 'nexus_item_orders.addr_id', 'nexus_member_addresses.addid')->join('cities as tcity', 'nexus_member_addresses.city_id', 'tcity.id')->join('states as tstate', 'tcity.sid', 'tstate.id')->join('countries as tcountry', 'tstate.cid', 'tcountry.id')->join('items', 'items.item_id', 'nexus_item_orders.item_id')->join('nexus_member_profile', 'items.uid', 'nexus_member_profile.uid')->join('cities as fcity', 'fcity.id', 'items.loc_id')->join('states as fstate', 'fcity.sid', 'fstate.id')->join('countries as fcountry', 'fcountry.id', 'fstate.cid')->select('nexus_item_orders.o_id', 'nexus_item_orders.uid as tuid', 'nexus_item_orders.item_id', 'nexus_item_orders.quantity', 'nexus_item_orders.amount', 'nexus_item_orders.service_charge', 'nexus_item_orders.addr_id', 'nexus_item_orders.created_at', 'nexus_item_orders.updated_at','nexus_member_addresses.fname as tfname', 'nexus_member_addresses.lname as tlname', 'nexus_member_addresses.contact as tcontact', 'nexus_member_addresses.address as taddress', 'nexus_member_addresses.zip as tzip', 'tcity.city_name as tcity_name', 'tstate.state_name as tstate_name', 'tcountry.country_name as tcountry_name', 'items.uid as fuid', 'items.contents', 'nexus_member_profile.fname as ffname', 'nexus_member_profile.lname as flname', 'nexus_member_profile.mobile as fcontact', 'fcity.city_name as fcity_name', 'fstate.state_name as fstate_name', 'fcountry.country_name as fcountry_name', 'nexus_item_orders.status')->paginate(6)->toArray();
+                $orders = ItemOrders::where('nexus_item_orders.status', 'ontheway')->where('distrib_id', Auth::id())->join('nexus_member_addresses', 'nexus_item_orders.addr_id', 'nexus_member_addresses.addid')->join('cities as tcity', 'nexus_member_addresses.city_id', 'tcity.id')->join('states as tstate', 'tcity.sid', 'tstate.id')->join('countries as tcountry', 'tstate.cid', 'tcountry.id')->join('items', 'items.item_id', 'nexus_item_orders.item_id')->join('nexus_member_profile', 'items.uid', 'nexus_member_profile.uid')->join('cities as fcity', 'fcity.id', 'items.loc_id')->join('states as fstate', 'fcity.sid', 'fstate.id')->join('countries as fcountry', 'fcountry.id', 'fstate.cid')->select('nexus_item_orders.o_id', 'nexus_item_orders.uid as tuid', 'nexus_item_orders.item_id', 'nexus_item_orders.quantity', 'nexus_item_orders.amount', 'nexus_item_orders.service_charge', 'nexus_item_orders.addr_id', 'nexus_item_orders.created_at', 'nexus_item_orders.updated_at', 'nexus_member_addresses.fname as tfname', 'nexus_member_addresses.lname as tlname', 'nexus_member_addresses.contact as tcontact', 'nexus_member_addresses.address as taddress', 'nexus_member_addresses.zip as tzip', 'tcity.city_name as tcity_name', 'tstate.state_name as tstate_name', 'tcountry.country_name as tcountry_name', 'items.uid as fuid', 'items.contents', 'nexus_member_profile.fname as ffname', 'nexus_member_profile.lname as flname', 'nexus_member_profile.mobile as fcontact', 'fcity.city_name as fcity_name', 'fstate.state_name as fstate_name', 'fcountry.country_name as fcountry_name', 'nexus_item_orders.status')->paginate(6)->toArray();
                 break;
             case 'delivered':
                 $orders = ItemOrders::where('nexus_item_orders.status', 'delivered')->where('distrib_id', Auth::id())->join('nexus_member_addresses', 'nexus_item_orders.addr_id', 'nexus_member_addresses.addid')->join('cities as tcity', 'nexus_member_addresses.city_id', 'tcity.id')->join('states as tstate', 'tcity.sid', 'tstate.id')->join('countries as tcountry', 'tstate.cid', 'tcountry.id')->join('items', 'items.item_id', 'nexus_item_orders.item_id')->join('nexus_member_profile', 'items.uid', 'nexus_member_profile.uid')->join('cities as fcity', 'fcity.id', 'items.loc_id')->join('states as fstate', 'fcity.sid', 'fstate.id')->join('countries as fcountry', 'fcountry.id', 'fstate.cid')->select('nexus_item_orders.o_id', 'nexus_item_orders.uid as tuid', 'nexus_item_orders.item_id', 'nexus_item_orders.quantity', 'nexus_item_orders.amount', 'nexus_item_orders.service_charge', 'nexus_item_orders.addr_id', 'nexus_item_orders.created_at', 'nexus_item_orders.updated_at', 'nexus_member_addresses.fname as tfname', 'nexus_member_addresses.lname as tlname', 'nexus_member_addresses.contact as tcontact', 'nexus_member_addresses.address as taddress', 'nexus_member_addresses.zip as tzip', 'tcity.city_name as tcity_name', 'tstate.state_name as tstate_name', 'tcountry.country_name as tcountry_name', 'items.uid as fuid', 'items.contents', 'nexus_member_profile.fname as ffname', 'nexus_member_profile.lname as flname', 'nexus_member_profile.mobile as fcontact', 'fcity.city_name as fcity_name', 'fstate.state_name as fstate_name', 'fcountry.country_name as fcountry_name', 'nexus_item_orders.status')->paginate(6)->toArray();
@@ -81,13 +82,36 @@ class DistribController extends Controller
 
     public function changeOrderStatus($status, Request $request)
     {
-        if($status == "delivered"){
-            if(!HomeController::verifyToken($request)){
+        if ($status == "delivered") {
+            if (!HomeController::verifyToken($request)) {
                 return 0;
             }
         }
         $orderid = $request->o_id;
         ItemOrders::where('o_id', $orderid)->update(['status' => $status]);
         return 1;
+    }
+
+    public function payHistory()
+    {
+        $data = [];
+        //transer
+        $data['transferCredits'] = Wallet::where('type', 'transfer')->leftJoin('nexus_member_profile', 'nexus_member_profile.uid', 'nexus_wallet_trans.refid')->select('nexus_member_profile.fname as cfname', 'nexus_member_profile.lname as clname', 'nexus_wallet_trans.*')->where('nexus_wallet_trans.uid', Auth::id())->get();
+        //
+        $data['transferDebits'] = Wallet::where('type', 'transfer')->leftJoin('nexus_member_profile', 'nexus_member_profile.uid', 'nexus_wallet_trans.uid')->select('nexus_member_profile.fname as cfname', 'nexus_member_profile.lname as clname', 'nexus_wallet_trans.*')->where('nexus_wallet_trans.refid', Auth::id())->get();
+        // //member
+        // $data['member'] = Wallet::where('type', 'member')->leftJoin('nexus_member_profile as d', 'd.uid', 'nexus_wallet_trans.uid')->leftJoin('nexus_member_profile as c', 'c.uid', 'nexus_wallet_trans.refid')->select('d.fname as dfname', 'd.lname as dlname', 'c.fname as cfname', 'c.lname as clname', 'nexus_wallet_trans.*')->orderBy('nexus_wallet_trans.created_at', 'DESC')->get();
+        //distributor
+        $data['distributor'] = Wallet::where('type', 'distributor')->leftJoin('nexus_member_profile as d', 'd.uid', 'nexus_wallet_trans.uid')->leftJoin('nexus_distrib_profile as c', 'c.uid', 'nexus_wallet_trans.refid')->select('d.fname as dfname', 'd.lname as dlname', 'c.distrib_name', 'nexus_wallet_trans.*')->where('nexus_wallet_trans.refid', Auth::id())->orderBy('nexus_wallet_trans.created_at', 'DESC')->get();
+
+        //wallet balance
+        $data['walletBalance'] = Wallet::where('type', 'distributor')->leftJoin('nexus_member_profile as d', 'd.uid', 'nexus_wallet_trans.uid')->leftJoin('nexus_distrib_profile as c', 'c.uid', 'nexus_wallet_trans.refid')->select('d.fname as dfname', 'd.lname as dlname', 'c.distrib_name', 'nexus_wallet_trans.*')->where('nexus_wallet_trans.refid', Auth::id())->sum('nexus_wallet_trans.amount');
+
+        return $data;
+    }
+
+    public function distribProfile()
+    {
+        return Auth::user()->distribProfile;
     }
 }

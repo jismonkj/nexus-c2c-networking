@@ -250,6 +250,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {// axios.post("/admin/distributor/list", this.postData).then(response => {
     //   this.users = response.data;
@@ -266,14 +270,25 @@ __webpack_require__.r(__webpack_exports__);
       service_charge: "",
       website: "",
       contact: "",
-      saveBtnText: "Save Distributor"
+      saveBtnText: "Save Distributor",
+      errors: [],
+      //validation rules
+      rules: {
+        email: /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/,
+        password: /^(?=.*\d).{4,10}$/,
+        fname: /[a-z]{1,10}/,
+        // lname: /[A-z][a-z]+/,
+        dob: /(\d{4})-(\d{2})-(\d{2})/,
+        gender: /^male$|^female$/
+      },
+      invalid: true
     };
   },
   methods: {
     saveDistributor: function saveDistributor() {
       var _this = this;
 
-      if (this.validateFormData()) {
+      if (!this.invalid) {
         var data = {
           email: this.email,
           distrib_name: this.distrib_name,
@@ -288,6 +303,8 @@ __webpack_require__.r(__webpack_exports__);
             _this.notify("Email Already Exists");
           } else {
             _this.notify("Distributor Has Added!");
+
+            _this.resetDistributor();
           }
         });
       }
@@ -301,12 +318,15 @@ __webpack_require__.r(__webpack_exports__);
       this.contact = "";
     },
     validateFormData: function validateFormData() {
-      if (this.email == "") {
-        this.notify("Email is required");
-        return false;
-      }
+      var len = Object.keys(this.errors).length;
 
-      return true;
+      if (len > 0) {
+        this.invalid = true;
+      } else if (this.email == "" || this.distrib_name == "" || this.headq == "" || this.service_charge == "" || this.website == "" || this.contact == "") {
+        this.invalid = true;
+      } else {
+        this.invalid = false;
+      }
     },
     notify: function notify(text) {
       var _this2 = this;
@@ -315,6 +335,75 @@ __webpack_require__.r(__webpack_exports__);
       setTimeout(function () {
         _this2.saveBtnText = "Save Distributor";
       }, 5000);
+    }
+  },
+  watch: {
+    email: function email() {
+      if (!this.rules.email.test(this.email) || this.email.length < 7) {
+        this.errors.email = true;
+        this.notify("Invalid Email!");
+      } else {
+        this.saveBtnText = "Save Distributor";
+        delete this.errors.email;
+      }
+
+      this.validateFormData();
+    },
+    distrib_name: function distrib_name() {
+      if (!this.rules.fname.test(this.distrib_name) || this.distrib_name.length < 3) {
+        this.errors.name = true;
+        this.notify("Invalid Distributor Name");
+      } else {
+        this.saveBtnText = "Save Distributor";
+        delete this.errors.name;
+      }
+
+      this.validateFormData();
+    },
+    headq: function headq() {
+      if (!this.rules.fname.test(this.headq) || this.headq.length < 3) {
+        this.errors.headq = true;
+        this.notify("Invalid Head Quarters");
+      } else {
+        this.saveBtnText = "Save Distributor";
+        delete this.errors.headq;
+      }
+
+      this.validateFormData();
+    },
+    service_charge: function service_charge() {
+      if (this.service_charge > 40 || isNaN(this.service_charge) || this.service_charge < 1) {
+        this.service_charge = 1;
+        this.errors.service_charge = true;
+        this.notify("Invalid Service Charge");
+      } else {
+        delete this.errors.service_charge;
+        this.saveBtnText = "Save Distributor";
+      }
+
+      this.validateFormData();
+    },
+    contact: function contact() {
+      if (this.contact.length != 10 || isNaN(this.contact)) {
+        this.errors.contact = true;
+        this.notify("Invalid Contact Number");
+      } else {
+        this.saveBtnText = "Save Distributor";
+        delete this.errors.contact;
+      }
+
+      this.validateFormData();
+    },
+    website: function website() {
+      if (this.website.length < 4) {
+        this.errors.website = true;
+        this.notify("Invalid Website");
+      } else {
+        this.saveBtnText = "Save Distributor";
+        delete this.errors.website;
+      }
+
+      this.validateFormData();
     }
   }
 });
@@ -1809,7 +1898,11 @@ var render = function() {
             _c(
               "button",
               {
-                staticClass: "btn btn-primary",
+                staticClass: "btn",
+                class: {
+                  "btn-danger": _vm.invalid,
+                  "btn-primary": !_vm.invalid
+                },
                 on: { click: _vm.saveDistributor }
               },
               [_vm._v(_vm._s(_vm.saveBtnText))]

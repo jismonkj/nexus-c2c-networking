@@ -176,7 +176,7 @@ const app = new Vue({
             } else {
                 delete this.errors.email;
             }
-        }, 200),
+        }, 100),
         password: _.debounce(
             function () {
                 if (!this.rules.password.test(this.password)) {
@@ -185,7 +185,7 @@ const app = new Vue({
                 } else {
                     delete this.errors.password;
                 }
-            }, 200
+            }, 100
         )
     }
 });

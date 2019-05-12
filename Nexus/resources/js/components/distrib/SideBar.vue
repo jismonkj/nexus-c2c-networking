@@ -5,7 +5,7 @@
         <img src="http://placehold.it/50/30a5ff/fff" class="img-responsive" alt>
       </div>
       <div class="profile-usertitle">
-        <div class="profile-usertitle-name">Distributor</div>
+        <div class="profile-usertitle-name">{{ distributor }}</div>
         <div class="profile-usertitle-status">
           <span class="indicator label-success"></span>Online
         </div>
@@ -30,7 +30,7 @@
       <li v-bind:class="{ active : activeTab == 'Places' }" @click="setBreadCumb('Places')">
         <router-link to="places">
           <a href>
-            <em class="fa fa-dashboard">&nbsp;</em>
+            <em class="fa fa-map">&nbsp;</em>
             Places
           </a>
         </router-link>
@@ -43,12 +43,25 @@
           </a>
         </router-link>
       </li>
+      <li v-bind:class="{ active : activeTab == 'Payments' }" @click="setBreadCumb('Payments')">
+        <router-link to="/payments">
+          <a href>
+            <em class="fa fa-money">&nbsp;</em>
+            Payments
+          </a>
+        </router-link>
+      </li>
     </ul>
   </div>
 </template>
 
 <script>
 export default {
+  mounted() {
+    axios.get("distrib/profile").then(res => {
+      this.distributor = res.data.distrib_name;
+    });
+  },
   methods: {
     setBreadCumb: function(title) {
       this.$parent.breadCumbPath = title;
@@ -56,7 +69,7 @@ export default {
     }
   },
   data: function() {
-    return { activeTab: false };
+    return { activeTab: false, distributor:"" };
   }
 };
 </script>

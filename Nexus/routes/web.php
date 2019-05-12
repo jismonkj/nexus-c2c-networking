@@ -87,6 +87,10 @@ ______________________________________________________________________________*/
 Route::post('/distrib/store/landm', 'Distrib\DistribController@storeLandMark');
 Route::get('/distrib/del/landm/{lid}', 'Distrib\DistribController@delLandMark');
 Route::get('/distrib/list/landm/{cityid}', 'Distrib\DistribController@listLandMarks');
+# -- pay history
+Route::get('/distrib/transactions', 'Distrib\DistribController@payHistory');
+# -- profile
+Route::get('/distrib/profile', 'Distrib\DistribController@distribProfile');
 # -- orders
 Route::get('orders/{type}', 'Distrib\DistribController@fetchOrders');
 Route::post('orders/status/update/{type}', 'Distrib\DistribController@changeOrderStatus');
